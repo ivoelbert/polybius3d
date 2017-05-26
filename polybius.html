@@ -31,7 +31,8 @@
 		<script src="build/three.js"></script>
 
 		<script src="js/controls/PolyControls.js"></script>
-
+		<script src="js/polybiusObjects/center.js"></script>
+		<script src="js/polybiusObjects/asteroid.js"></script>
 		<script src="js/shaders/CopyShader.js"></script>
 		<script src="js/shaders/FilmShader.js"></script>
 
@@ -72,8 +73,7 @@
 			var textureLoader = new THREE.TextureLoader();
 			var clock = new THREE.Clock();
 
-			var centerMesh = [], centerBodies = 6;
-			var hueOff = 0, colorChangeRate = 0.002;
+			var center, asteroid;
 
 			init();
 			animate();
@@ -82,7 +82,7 @@
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
-        camera = new THREE.PerspectiveCamera( 40, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1e7 );
+        camera = new THREE.PerspectiveCamera( 50, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1e7 );
 				camera.position.z = radius * 5;
 
 				scene = new THREE.Scene();
@@ -90,7 +90,7 @@
 
 				controls = new THREE.FlyControls( camera );
 				controls.domElement = container;
-        controls.rad = 5 * radius;
+        controls.rad = 10 * radius;
         controls.minRad = 2 * radius;
         controls.maxRad = 10 * radius;
       	controls.radSpeed = radius / 5;
@@ -101,10 +101,14 @@
         ambientLight = new THREE.AmbientLight( 0xffffff );
 				scene.add( ambientLight );
 
-
 				// centro
+					center = new Center(scene, radius, 6);
+					center.init();
 
-				for(var i = 0; i < centerBodies; i++) {
+				// Asteroide
+					asteroid = new Asteroid(scene, radius);
+					asteroid.init(new THREE.Vector3( 2 * radius, 0, 0 ), 40, 2);
+				/*for(var i = 0; i < centerBodies; i++) {
 	        var centerMaterial = new THREE.MeshBasicMaterial({
 	          wireframe: true
 	        });
@@ -116,7 +120,7 @@
 					centerMesh[i] = new THREE.Mesh(centerGeometry, centerMaterial);
 
 			  	scene.add( centerMesh[i] );
-				}
+				}*/
 
         /*
         // planet
@@ -227,12 +231,8 @@
 
 			function render() {
 				var delta = clock.getDelta();
-
-				// flasheo el centro
-				for(var i = 0; i < centerBodies; i++) {
-					centerMesh[i].material.color.setHSL((i / centerBodies) + hueOff % 1 , 1, 0.5);
-				}
-				hueOff += colorChangeRate;
+				center.update( delta );
+				asteroid.update( delta );
 				controls.update( delta );
 				composer.render( delta );
 			}
