@@ -14,7 +14,7 @@ THREE.FlyControls = function ( object, domElement ) {
   	this.rad = 1.0;
   	this.minRad = 1.0;
   	this.maxRad = 2.0;
-	this.radSpeed = 1.0;
+		this.radSpeed = 1.0;
   	this.angSpeed = 0.2;
   	this.rotation = 0.0;
   	this.rotSpeed = 0.2;
@@ -124,11 +124,7 @@ THREE.FlyControls = function ( object, domElement ) {
     var py = pos.y;
     var pz = pos.z;
 
-    this.object.position.set(px, py, pz);
-
-    var cameraup = new THREE.Vector3(0, 1, 0).applyMatrix4(this.tmatrix).normalize();
-    this.object.up.set(cameraup.x, cameraup.y, cameraup.z);
-    this.object.lookAt(new THREE.Vector3(0, 0, 0));
+		this.object.setpos(px, py, pz, this.tmatrix);
 	};
 
 	this.updateMovementVector = function() {

@@ -16,6 +16,7 @@ var composer;
 var textureLoader = new THREE.TextureLoader();
 var clock = new THREE.Clock();
 
+var nave;
 var center, asteroid;
 
 init();
@@ -25,16 +26,21 @@ function init() {
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
 
-	// camara
-	camera = new THREE.PerspectiveCamera( 50, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1e7 );
-		camera.position.z = radius * 5;
 
 	// escena
 	scene = new THREE.Scene();
 		scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
 
+	nave = new Nave( scene );
+		let pos = new THREE.Vector3(0, 0, radius * 5);
+		nave.init(pos, radius);
+
+	// camara
+	camera = new FollowCamera( nave );
+	camera.init(50, -radius * 3, radius * 0.75);
+
 	// controles
-	controls = new THREE.FlyControls( camera );
+	controls = new THREE.FlyControls( nave );
 		controls.domElement = container;
         controls.rad = 10 * radius;
         controls.minRad = 2 * radius;
@@ -108,9 +114,9 @@ function init() {
 		container.appendChild( stats.dom );
 
 	window.addEventListener( 'resize', onWindowResize, false );
-	
+
 	// postprocessing
-	var renderModel = new THREE.RenderPass( scene, camera );
+	var renderModel = new THREE.RenderPass( scene, camera.getCam() );
 	var effectFilm = new THREE.FilmPass( 0.35, 0.75, 2048, false );
 	effectFilm.renderToScreen = true;
 	composer = new THREE.EffectComposer( renderer );
@@ -122,8 +128,8 @@ function onWindowResize( event ) {
 	SCREEN_HEIGHT = window.innerHeight;
 	SCREEN_WIDTH  = window.innerWidth;
 	renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-	camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-	camera.updateProjectionMatrix();
+	camera.setAspect( SCREEN_WIDTH / SCREEN_HEIGHT );
+	camera.updateProy();
 	composer.reset();
 }
 
@@ -139,5 +145,6 @@ function render() {
 	center.update( delta );
 	asteroid.update( delta );
 	controls.update( delta );
+	camera.update( delta );
 	composer.render( delta );
 }
