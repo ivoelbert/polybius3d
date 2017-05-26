@@ -1,13 +1,14 @@
-Center = function( cscene, rad, cant ){
+Center = function( cscene, rad, cant ) {
   this.scene = cscene;
   this.radius = rad;
   this.centerMesh = [];
   this.centerBodies = cant;
   this.hueOff = 0;
   this.colorChangeRate = 0.002;
+
   //Init
   this.init = function() {
-    for (var i = 0; i < this.centerBodies; i++) {
+    for (let i = 0; i < this.centerBodies; i++) {
       let centerMaterial = new THREE.MeshBasicMaterial({
         wireframe: true
       });
@@ -22,8 +23,8 @@ Center = function( cscene, rad, cant ){
   };
 
   //Update
-  this.update = function(d) {
-    for(var i = 0; i < this.centerBodies; i++) {
+  this.update = function( d ) {
+    for(let i = 0; i < this.centerBodies; i++) {
       this.centerMesh[i].material.color.setHSL((i / this.centerBodies) + this.hueOff % 1 , 1, 0.5);
     }
     this.hueOff += this.colorChangeRate;

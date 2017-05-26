@@ -11,16 +11,14 @@ THREE.FlyControls = function ( object, domElement ) {
 
 	// API
 
-  this.rad = 1.0;
-  this.minRad = 1.0;
-  this.maxRad = 2.0;
+  	this.rad = 1.0;
+  	this.minRad = 1.0;
+  	this.maxRad = 2.0;
 	this.radSpeed = 1.0;
-  this.angSpeed = 0.2;
-  this.rotation = 0.0;
-  this.rotSpeed = 0.2;
-  this.tmatrix = new THREE.Matrix4().makeBasis(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, -1));
-
-	// disable default target object behavior
+  	this.angSpeed = 0.2;
+  	this.rotation = 0.0;
+  	this.rotSpeed = 0.2;
+  	this.tmatrix = new THREE.Matrix4().makeBasis(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, -1));
 
 	// internals
 
