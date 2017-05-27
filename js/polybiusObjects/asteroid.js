@@ -65,11 +65,11 @@ Asteroid = function( ascene, lado ) {
 
   // UPDATE orbita
   this.update = function( delta ) {
-    this.position.applyAxisAngle(this.rotation, this.angVel * delta);﻿
+    /*this.position.applyAxisAngle(this.rotation, this.angVel * delta);﻿
 
     let para = this.position.clone();
     para.normalize().multiplyScalar(this.radVel);
-    this.position.add(para);
+    this.position.add(para);*/
 
     // COLISIONES
       this.collider.set(this.position, this.size / 2);

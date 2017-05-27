@@ -9,7 +9,7 @@ Collider = function(){
   }
 
   this.collides = function(pObj, rObj){
-    return dist(this.position, this.radius, pObj, rObj) <= 1000 ? true : false;
+    return dist(this.position, this.radius, pObj, rObj) <= rObj + this.radius ? true : false;
   }
 
   // Normalizo el vector y lo multiplico por el radio.
@@ -20,7 +20,9 @@ Collider = function(){
 
   // Calculo distancia entre dos vectores
   let dist = function(v1 , r1, v2, r2){
-    let vector = setVector(v1, r1).sub(setVector(v2, r2));
+    let vector1 = v1.clone();
+    let vector2 = v2.clone();
+    let vector = vector1.sub(vector2);
     return vector.length();
   };
 }
