@@ -26,7 +26,6 @@ function init() {
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
 
-
 	// escena
 	scene = new THREE.Scene();
 		scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
@@ -37,20 +36,21 @@ function init() {
 
 	// camara
 	camera = new FollowCamera( nave );
-	camera.init(50, -radius * 3, radius * 0.75);
+	let off = new THREE.Vector3(0, radius, -2 * radius);
+	camera.init(80, off, 0.2, radius * 5);
 
 	// controles
 	controls = new THREE.FlyControls( nave );
 		controls.domElement = container;
-        controls.rad = 10 * radius;
-        controls.minRad = 2 * radius;
-        controls.maxRad = 10 * radius;
-      	controls.radSpeed = radius / 5;
-        controls.angSpeed = 0.03;
-        controls.rotation = 0.0;
-        controls.rotSpeed = 0.03;
+    controls.rad = 10 * radius;
+    controls.minRad = 2 * radius;
+    controls.maxRad = 12 * radius;
+  	controls.radSpeed = radius / 5;
+    controls.angSpeed = 0.03;
+    controls.rotation = 0.0;
+    controls.rotSpeed = 0.03;
 
-    // luz (al pedo, el material wireframe no la calcula)
+  // luz (al pedo, el material wireframe no la calcula)
 	ambientLight = new THREE.AmbientLight( 0xffffff );
 		scene.add( ambientLight );
 
