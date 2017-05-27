@@ -60,8 +60,10 @@ function init() {
 
 	// Asteroide
 	asteroid = new Asteroid(scene, radius);
-		asteroid.init(new THREE.Vector3( 2 * radius, 0, 0 ), 30, 1);
-
+		asteroid.init(new THREE.Vector3( 4 * radius, 0, 0 ), 30, 1);
+		asteroid.setMaybeCollision(nave);
+		console.log(nave);
+		console.log(asteroid);
 
 	// stars
 	var i, r = radius, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];

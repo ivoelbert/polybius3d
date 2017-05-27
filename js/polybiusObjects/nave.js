@@ -1,4 +1,3 @@
-
 Nave = function(nscene) {
 	this.pos = new THREE.Vector3();
 	this.size = 0;
