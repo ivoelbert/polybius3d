@@ -59,11 +59,13 @@ function init() {
 		center.init();
 
 	// Asteroide
-	asteroid = new Asteroid(scene, radius);
-		asteroid.init(new THREE.Vector3( 4 * radius, 0, 0 ), 30, 1);
-		asteroid.setMaybeCollision(nave);
-		console.log(nave);
-		console.log(asteroid);
+					/*asteroid = new Asteroid(scene, radius);
+						asteroid.init(new THREE.Vector3( 4 * radius, 0, 0 ), 30, 1);
+						asteroid.setMaybeCollision(nave);
+						console.log(nave);
+						console.log(asteroid);*/
+		asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
+		scene.add(asteroid.mesh);
 
 	// stars
 	var i, r = radius, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
