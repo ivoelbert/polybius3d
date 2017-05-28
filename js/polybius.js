@@ -39,6 +39,26 @@ function init() {
 	let off = new THREE.Vector3(0, radius, -2 * radius);
 	camera.init(80, off, 0.2, radius * 5);
 
+
+
+
+	/*Listener de audio*/
+    var audio_listener = new THREE.AudioListener();
+    camera.getCam().add( audio_listener );
+
+
+
+    /*sonido ambiente*/
+    var audioLoader = new THREE.AudioLoader();
+	var sound_base = new THREE.Audio( audio_listener );
+	audioLoader.load( 'sounds/base_editada_3.mp3', function( buffer ) {
+	    sound_base.setBuffer( buffer );
+	    sound_base.setLoop(true);
+	    sound_base.setVolume(.4);
+	    sound_base.play();
+	});
+
+
 	// controles
 	controls = new THREE.FlyControls( nave );
 		controls.domElement = container;
@@ -64,8 +84,23 @@ function init() {
 						asteroid.setMaybeCollision(nave);
 						console.log(nave);
 						console.log(asteroid);*/
-		asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
-		scene.add(asteroid.mesh);
+	asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
+	scene.add(asteroid.mesh);
+
+       /*audio del asteroide*/
+    var audioLoader = new THREE.AudioLoader();
+    var sound = new THREE.PositionalAudio( audio_listener );
+    audioLoader.load( 'sounds/asteroide.mp3', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setRefDistance( 20 );
+        sound.setVolume(.5);
+        sound.setLoop(true);
+      //  sound.play();
+        
+    });
+
+    asteroid.mesh.add( sound );
+
 
 	// stars
 	var i, r = radius, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
