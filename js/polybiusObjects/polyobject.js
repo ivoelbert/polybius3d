@@ -1,9 +1,8 @@
 class PolyObject extends THREE.Object3D {
-  constructor(type, hitboxPos, hitboxSize) {
+  constructor(hitboxPos, hitboxSize) {
     super();
 
-    this.type = type;
-    this.hitbox = new Hitbox(pos, size);
+    this.hitbox = new Hitbox(hitboxPos, hitboxSize);
   }
 
   onCollide(who) {
@@ -13,6 +12,8 @@ class PolyObject extends THREE.Object3D {
 
 class Hitbox extends THREE.Object3D {
   constructor(pos, size) {
+    super();
+
     this.radius = size;
     this.position.copy(pos);
   }

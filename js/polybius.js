@@ -175,9 +175,11 @@ function animate() {
 
 function render() {
 	var delta = clock.getDelta();
+
 	center.update( delta );
 	asteroid.update( delta );
 	controls.update( delta );
 	camera.update( delta );
+
 	composer.render( delta );
 }
