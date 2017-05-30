@@ -1,6 +1,6 @@
-class Asteroid extends THREE.Object3D {
-  constructor(pos, size ,radv, angv, rotationVector) {
-      super(); // new Object3D()
+class Asteroid extends PolyObject {
+  constructor(type, pos, size ,radv, angv, rotationVector) {
+      super(type, pos, size);
 
       this.position.set(pos.x, pos.y, pos.z);
       this.radVel = radv > 0 ? radv : 0;
@@ -33,18 +33,16 @@ class Asteroid extends THREE.Object3D {
 
       this.mesh = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
       this.mesh.position.set(this.position.x, this.position.y, this.position.z);
-      //init(pos, radv, angv);
-  }
+  };
 
   // UPDATE orbita
   update ( delta ) {
-    this.position.applyAxisAngle(this.rot, this.angVel * delta);﻿
+      this.position.applyAxisAngle(this.rot, this.angVel * delta);﻿
 
-    let para = this.position.clone();
-    para.normalize().multiplyScalar(this.radVel);
-    this.position.add(para);
+      let para = this.position.clone();
+      para.normalize().multiplyScalar(this.radVel);
+      this.position.add(para);
 
-    this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+      this.mesh.position.set(this.position.x, this.position.y, this.position.z);
   };
-
 }
