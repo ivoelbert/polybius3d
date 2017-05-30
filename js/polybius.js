@@ -30,9 +30,9 @@ function init() {
 	scene = new THREE.Scene();
 		scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
 
-	nave = new Nave( scene );
-		let pos = new THREE.Vector3(0, 0, radius * 5);
-		nave.init(pos, radius);
+  let pos = new THREE.Vector3(0, 0, radius * 5);
+	nave = new Nave( pos, radius );
+		scene.add(nave.mesh);
 
 	// camara
 	camera = new FollowCamera( nave );
@@ -50,8 +50,8 @@ function init() {
 
     /*sonido ambiente*/
     var audioLoader = new THREE.AudioLoader();
-	var sound_base = new THREE.Audio( audio_listener );
-	audioLoader.load( 'sounds/base_editada_3.mp3', function( buffer ) {
+  	var sound_base = new THREE.Audio( audio_listener );
+  	audioLoader.load( 'sounds/base_editada_3.mp3', function( buffer ) {
 	    sound_base.setBuffer( buffer );
 	    sound_base.setLoop(true);
 	    sound_base.setVolume(.4);
@@ -78,14 +78,8 @@ function init() {
 	center = new Center(scene, radius, 6);
 		center.init();
 
-	// Asteroide
-					/*asteroid = new Asteroid(scene, radius);
-						asteroid.init(new THREE.Vector3( 4 * radius, 0, 0 ), 30, 1);
-						asteroid.setMaybeCollision(nave);
-						console.log(nave);
-						console.log(asteroid);*/
-	asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
-	scene.add(asteroid.mesh);
+  asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
+    scene.add(asteroid.mesh);
 
        /*audio del asteroide*/
     var audioLoader = new THREE.AudioLoader();
@@ -96,7 +90,7 @@ function init() {
         sound.setVolume(.5);
         sound.setLoop(true);
       //  sound.play();
-        
+
     });
 
     asteroid.mesh.add( sound );

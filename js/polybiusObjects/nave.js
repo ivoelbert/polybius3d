@@ -1,42 +1,37 @@
-Nave = function(nscene) {
-	this.pos = new THREE.Vector3();
-	this.size = 0;
-	this.naveMesh;
-  this.scene = nscene;
-  this.tmatrix;
+class Nave extends THREE.Object3D {
+  constructor(pos, size) {
+    super();
 
-	this.init = function( pos, size ) {
-		this.size = size;
-		this.pos.set(pos.x, pos.y, pos.z);
-    this.tmatrix = new THREE.Matrix4();
+    this.position.copy(pos);
+    this.size = size;
+    this.matrix = new THREE.Matrix4();
 
-		let naveGeometry = new THREE.SphereGeometry(size, 3, 3);
-		let naveMaterial = new THREE.MeshBasicMaterial({
-	     wireframe: true
+    let naveGeometry = new THREE.SphereGeometry(size, 3, 3);
+    let naveMaterial = new THREE.MeshBasicMaterial({
+	     wireframe: true,
+       color: 0xffffff
 	  });
+    this.mesh = new THREE.Mesh(naveGeometry, naveMaterial);
+    this.mesh.scale.set(0.5, 0.25, 1);
+    this.mesh.position.copy(this.position);
+  }
 
-    this.naveMesh = new THREE.Mesh(naveGeometry, naveMaterial);
-    this.naveMesh.scale.set(0.5, 0.25, 1);
-    this.naveMesh.position.set(this.pos.x, this.pos.y, this.pos.z);
-    this.scene.add(this.naveMesh);
-	}
-
-  this.setpos = function(x, y, z, matrix) {
-    this.pos.set(x, y, z);
-    this.tmatrix = matrix.clone();
-    this.naveMesh.position.set(this.pos.x, this.pos.y, this.pos.z);
+  setpos(x, y, z, matrix) {
+    this.position.set(x, y, z);
+    this.matrix.copy(matrix);
+    this.mesh.position.copy(this.position);
 
     let upvec = new THREE.Vector3(0, 1, 0);
-    upvec.applyMatrix4(this.tmatrix);
-    this.naveMesh.up.set(upvec.x, upvec.y, upvec.z);
-    this.naveMesh.lookAt(new THREE.Vector3(0, 0, 0));
+    upvec.applyMatrix4(this.matrix);
+    this.mesh.up.copy(upvec);
+    this.mesh.lookAt(new THREE.Vector3(0, 0, 0));
   }
 
-  this.getPosition = function() {
-    return this.pos;
+  getPosition() {
+    return this.position.clone();
   }
 
-  this.getMatrix = function() {
-    return this.tmatrix;
+  getMatrix() {
+    return this.matrix.clone();
   }
 }
