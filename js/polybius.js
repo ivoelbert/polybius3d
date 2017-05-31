@@ -110,6 +110,7 @@ function init() {
 	collider = new Collider();
 	collider.addRegla(groupNaves, groupAsteroids);
 	collider.addRegla(groupAsteroids, groupTiritos);
+	collider.addRegla(groupTiritos, groupCenters);
 
 	////////////////////////////////////// lo que estaba //////////////////////////////////////
 

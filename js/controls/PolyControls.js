@@ -66,7 +66,6 @@ THREE.FlyControls = function ( object, domElement ) {
 
 		}
 
-		this.handleTiros();
 		this.updateMovementVector();
 
 	};
@@ -90,7 +89,6 @@ THREE.FlyControls = function ( object, domElement ) {
 			case 32: /* */ this.tiritoState = 0; break;
 		}
 
-		this.handleTiros();
 		this.updateMovementVector();
 
 	};
@@ -137,15 +135,12 @@ THREE.FlyControls = function ( object, domElement ) {
 				this.tiritoAvailable = true;
 				this.tiritoRecovery = 0;
 			}
-		}
-	};
-
-	this.handleTiros = function() {
-		if(this.tiritoState === 1 && this.tiritoAvailable) {
+		} else if (this.tiritoState === 1) {
 			this.tiritoAvailable = false;
 			shootTirito(object.position.clone());
 		}
-	}
+	};
+
 
 	this.updateMovementVector = function() {
 
