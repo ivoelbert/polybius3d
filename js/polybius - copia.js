@@ -74,9 +74,28 @@ function init() {
 	scene.add( ambientLight );
 
 	// centro
-  let center = new Center(new THREE.Vector3(0, 0, 0), radius);
+<<<<<<< HEAD
+	let center = new Center(new THREE.Vector3(0, 0, 0), radius);
 		center.addToScene( scene );
     groupCenters.add(center);
+
+  let asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
+		asteroid.addToScene( scene );
+		groupAsteroids.add(asteroid);
+
+  /*   audio del asteroide    TODO: llevar al asteroide...
+    var audioLoader = new THREE.AudioLoader();
+    var sound = new THREE.PositionalAudio( audio_listener );
+    audioLoader.load( 'sounds/asteroide.mp3', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setRefDistance( 20 );
+        sound.setVolume(.5);
+        sound.setLoop(true);
+      //  sound.play();
+=======
+	let center = new Center(scene, radius, 6);
+	center.init();
+>>>>>>> 91f246796ac19bc816ef789ae5457ebad8922aa2
 
   	let asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
 	asteroid.addToScene( scene );
