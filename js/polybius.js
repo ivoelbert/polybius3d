@@ -24,7 +24,11 @@ var groupCenters = new THREE.Group(); groupObjects.add(groupCenters);
 var groupAsteroids = new THREE.Group(); groupObjects.add(groupAsteroids);
 var groupTiritos = new THREE.Group(); groupObjects.add(groupTiritos);
 
+//colisiones
 var collider;
+
+//audio
+var polybiusAudio;
 
 init();
 animate();
@@ -35,35 +39,24 @@ function init() {
 
 	// escena
 	scene = new THREE.Scene();
-		scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
+	scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
 
-  let navepos = new THREE.Vector3(0, 0, radius * 5);
+  	let navepos = new THREE.Vector3(0, 0, radius * 5);
 	let nave = new Nave( navepos, radius );
-		nave.addToScene( scene );
-		groupNaves.add(nave);
+	nave.addToScene( scene );
+	groupNaves.add(nave);
 
 	// camara
 	camera = new FollowCamera( groupNaves.children[0] );
 	let off = new THREE.Vector3(0, radius, -2 * radius);
-		camera.init(80, off, 0.2, radius * 5);
+	camera.init(80, off, 0.2, radius * 5);
 
 
 
-	/*Listener de audio*/
-    var audio_listener = new THREE.AudioListener();
-    camera.getCam().add( audio_listener );
-
-
-    /*sonido ambiente*/
-    var audioLoader = new THREE.AudioLoader();
-  	var sound_base = new THREE.Audio( audio_listener );
-  	audioLoader.load( 'sounds/base_editada_3.mp3', function( buffer ) {
-	    sound_base.setBuffer( buffer );
-	    sound_base.setLoop(true);
-	    sound_base.setVolume(.4);
-	    sound_base.play();
-	});
-
+	/*Audio*/
+   	polybiusAudio= new PolybiusAudio();
+	polybiusAudio.init(true, true, true, 'sounds/base_editada_3.mp3')// ambStatus, astStatus , shootStatus , ambSrc, astSrc,shootSrc
+    camera.getCam().add( polybiusAudio.getListener() );
 
 	// controles
 	controls = new THREE.FlyControls( groupNaves.children[0] );
@@ -76,32 +69,18 @@ function init() {
     controls.rotation = 0.0;
     controls.rotSpeed = 0.03;
 
-  // luz (al pedo, el material wireframe no la calcula)
+    // luz (al pedo, el material wireframe no la calcula)
 	ambientLight = new THREE.AmbientLight( 0xffffff );
-		scene.add( ambientLight );
+	scene.add( ambientLight );
 
 	// centro
 	let center = new Center(scene, radius, 6);
-		center.init();
+	center.init();
 
-  let asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
-		asteroid.addToScene( scene );
-		groupAsteroids.add(asteroid);
+  	let asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
+	asteroid.addToScene( scene );
+	groupAsteroids.add(asteroid);
 
-  /*   audio del asteroide    TODO: llevar al asteroide...
-    var audioLoader = new THREE.AudioLoader();
-    var sound = new THREE.PositionalAudio( audio_listener );
-    audioLoader.load( 'sounds/asteroide.mp3', function( buffer ) {
-        sound.setBuffer( buffer );
-        sound.setRefDistance( 20 );
-        sound.setVolume(.5);
-        sound.setLoop(true);
-      //  sound.play();
-
-    });
-
-    asteroid.mesh.add( sound );
-	*/
 
 	groupObjects.add(groupAsteroids);
 	groupObjects.add(groupNaves);
@@ -243,6 +222,7 @@ function shootTirito(from) {
 	let tirito = new Tirito(from, radius * 0.1, vel);
 	tirito.addToScene(scene);
 	groupTiritos.add(tirito);
+	polybiusAudio.shoot();
 }
 
 function removeFromScene(object) {
