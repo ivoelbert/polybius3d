@@ -81,8 +81,9 @@ function init() {
 		scene.add( ambientLight );
 
 	// centro
-	let center = new Center(scene, radius, 6);
-		center.init();
+	let center = new Center(new THREE.Vector3(0, 0, 0), radius);
+		center.addToScene( scene );
+    groupCenters.add(center);
 
   let asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
 		asteroid.addToScene( scene );

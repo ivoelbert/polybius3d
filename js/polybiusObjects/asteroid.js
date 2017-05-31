@@ -2,7 +2,7 @@ class Asteroid extends PolyObject {
   constructor(pos, size ,radv, angv, rotationVector) {
       super(pos, size);
 
-      this.position.set(pos.x, pos.y, pos.z);
+      this.position.copy(pos);
       this.radVel = radv > 0 ? radv : 0;
       this.angVel = angv > 0 ? angv : 0;
       this.radio = pos.length();
