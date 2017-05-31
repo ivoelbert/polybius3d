@@ -5,8 +5,13 @@ class PolyObject extends THREE.Object3D {
     this.hitbox = new Hitbox(hitboxPos, hitboxSize);
   }
 
-  onCollide(who) {
-    console.log(who);
+  updateHitbox(pos, rad) {
+    this.hitbox.position.copy(pos);
+    this.hitbox.radius = rad;
+  }
+
+  addToScene( scene ) {
+    scene.add(this.mesh);
   }
 }
 

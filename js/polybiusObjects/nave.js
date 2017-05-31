@@ -1,6 +1,6 @@
-class Nave extends THREE.Object3D {
+class Nave extends PolyObject {
   constructor(pos, size) {
-    super();
+    super(pos, size);
 
     this.position.copy(pos);
     this.size = size;
@@ -16,8 +16,14 @@ class Nave extends THREE.Object3D {
     this.mesh.position.copy(this.position);
   }
 
-  setpos(x, y, z, matrix) {
-    this.position.set(x, y, z);
+  // Colisiones
+  onCollide(who) {
+    console.log("choque");
+  }
+
+  // Getters, setters y demas...
+  setpos(pos, matrix) {
+    this.position.copy(pos);
     this.matrix.copy(matrix);
     this.mesh.position.copy(this.position);
 
@@ -25,6 +31,8 @@ class Nave extends THREE.Object3D {
     upvec.applyMatrix4(this.matrix);
     this.mesh.up.copy(upvec);
     this.mesh.lookAt(new THREE.Vector3(0, 0, 0));
+
+    this.updateHitbox(this.position, this.size);
   }
 
   getPosition() {

@@ -18,9 +18,13 @@ THREE.FlyControls = function ( object, domElement ) {
   	this.angSpeed = 0.2;
   	this.rotation = 0.0;
   	this.rotSpeed = 0.2;
+
   	this.tmatrix = new THREE.Matrix4().makeBasis(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, -1));
 
 	// internals
+	this.tiritoState = 0;
+	this.tirotoAvailable = true;
+	this.tiritoRecovery = 0;
 
 	this.moveState = { up: 0, down: 0, left: 0, right: 0, forward: 0, back: 0, rollLeft: 0, rollRight: 0 };
 	this.moveVector = new THREE.Vector3( 0, 0, 0 );
@@ -44,7 +48,6 @@ THREE.FlyControls = function ( object, domElement ) {
 		}
 
 		//event.preventDefault();
-
 		switch ( event.keyCode ) {
 
 			case 87: /*W*/ this.moveState.up = 1; break;
@@ -59,8 +62,11 @@ THREE.FlyControls = function ( object, domElement ) {
 			case 74: /*J*/ this.moveState.rollLeft = 1; break;
 			case 76: /*L*/ this.moveState.rollRight = 1; break;
 
+			case 32: /* */ this.tiritoState = 1; break;
+
 		}
 
+		this.handleTiros();
 		this.updateMovementVector();
 
 	};
@@ -81,8 +87,10 @@ THREE.FlyControls = function ( object, domElement ) {
 			case 74: /*J*/ this.moveState.rollLeft = 0; break;
 			case 76: /*L*/ this.moveState.rollRight = 0; break;
 
+			case 32: /* */ this.tiritoState = 0; break;
 		}
 
+		this.handleTiros();
 		this.updateMovementVector();
 
 	};
@@ -120,12 +128,24 @@ THREE.FlyControls = function ( object, domElement ) {
     var pos = new THREE.Vector3(0, 0, -1).applyMatrix4(this.tmatrix);
     pos.multiplyScalar(this.rad);
 
-    var px = pos.x;
-    var py = pos.y;
-    var pz = pos.z;
+		this.object.setpos(pos, this.tmatrix);
 
-		this.object.setpos(px, py, pz, this.tmatrix);
+		// tiros
+		if(!this.tiritoAvailable) {
+			this.tiritoRecovery += delta;
+			if(this.tiritoRecovery > 0.1) {
+				this.tiritoAvailable = true;
+				this.tiritoRecovery = 0;
+			}
+		}
 	};
+
+	this.handleTiros = function() {
+		if(this.tiritoState === 1 && this.tiritoAvailable) {
+			this.tiritoAvailable = false;
+			shootTirito(object.position.clone());
+		}
+	}
 
 	this.updateMovementVector = function() {
 

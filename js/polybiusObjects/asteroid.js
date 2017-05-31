@@ -44,5 +44,12 @@ class Asteroid extends PolyObject {
       this.position.add(para);
 
       this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+
+      this.updateHitbox(this.position, this.size);
   };
+
+  // colisiones
+  onCollide(who) {
+    console.log("choque");
+  }
 }

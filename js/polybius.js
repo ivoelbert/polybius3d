@@ -16,8 +16,14 @@ var composer;
 var textureLoader = new THREE.TextureLoader();
 var clock = new THREE.Clock();
 
-var nave;
-var center, asteroid;
+// grupos
+var groupObjects = new THREE.Group();
+var groupNaves = new THREE.Group(); groupObjects.add(groupNaves);
+var groupCenters = new THREE.Group(); groupObjects.add(groupCenters);
+var groupAsteroids = new THREE.Group(); groupObjects.add(groupAsteroids);
+var groupTiritos = new THREE.Group(); groupObjects.add(groupTiritos);
+
+var collider;
 
 init();
 animate();
@@ -30,14 +36,15 @@ function init() {
 	scene = new THREE.Scene();
 		scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
 
-  let pos = new THREE.Vector3(0, 0, radius * 5);
-	nave = new Nave( pos, radius );
-		scene.add(nave.mesh);
+  let navepos = new THREE.Vector3(0, 0, radius * 5);
+	let nave = new Nave( navepos, radius );
+		nave.addToScene( scene );
+		groupNaves.add(nave);
 
 	// camara
-	camera = new FollowCamera( nave );
+	camera = new FollowCamera( groupNaves.children[0] );
 	let off = new THREE.Vector3(0, radius, -2 * radius);
-	camera.init(80, off, 0.2, radius * 5);
+		camera.init(80, off, 0.2, radius * 5);
 
 
 
@@ -60,7 +67,7 @@ function init() {
 
 
 	// controles
-	controls = new THREE.FlyControls( nave );
+	controls = new THREE.FlyControls( groupNaves.children[0] );
 		controls.domElement = container;
     controls.rad = 10 * radius;
     controls.minRad = 2 * radius;
@@ -75,13 +82,14 @@ function init() {
 		scene.add( ambientLight );
 
 	// centro
-	center = new Center(scene, radius, 6);
+	let center = new Center(scene, radius, 6);
 		center.init();
 
-  asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
-    scene.add(asteroid.mesh);
+  let asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
+		asteroid.addToScene( scene );
+		groupAsteroids.add(asteroid);
 
-       /*audio del asteroide*/
+  /*   audio del asteroide    TODO: llevar al asteroide...
     var audioLoader = new THREE.AudioLoader();
     var sound = new THREE.PositionalAudio( audio_listener );
     audioLoader.load( 'sounds/asteroide.mp3', function( buffer ) {
@@ -94,7 +102,16 @@ function init() {
     });
 
     asteroid.mesh.add( sound );
+	*/
 
+	groupObjects.add(groupAsteroids);
+	groupObjects.add(groupNaves);
+
+	collider = new Collider();
+	collider.addRegla(groupNaves, groupAsteroids);
+	collider.addRegla(groupAsteroids, groupTiritos);
+
+	////////////////////////////////////// lo que estaba //////////////////////////////////////
 
 	// stars
 	var i, r = radius, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
@@ -176,10 +193,36 @@ function animate() {
 function render() {
 	var delta = clock.getDelta();
 
-	center.update( delta );
-	asteroid.update( delta );
+	handleUpdates( delta );
+	collider.checkCollisions();
+	composer.render( delta );
+}
+
+// Maneja las updates de todo lo necesario.
+function handleUpdates( delta ) {
+	let centers = groupCenters.children;
+	for(let i = 0; i < centers.length; i++) {
+		centers[i].update( delta );
+	}
+
+	let asteroids = groupAsteroids.children;
+	for(let i = 0; i < asteroids.length; i++) {
+		asteroids[i].update( delta );
+	}
+
+	let tiritos = groupTiritos.children;
+	for(let i = 0; i < tiritos.length; i++) {
+		tiritos[i].update( delta );
+	}
+
 	controls.update( delta );
 	camera.update( delta );
+}
 
-	composer.render( delta );
+function shootTirito(from) {
+	let vel = from.clone();
+	vel.normalize().multiplyScalar(-radius * 0.5);
+	let tirito = new Tirito(from, radius * 0.1, vel);
+	tirito.addToScene(scene);
+	groupTiritos.add(tirito);
 }
