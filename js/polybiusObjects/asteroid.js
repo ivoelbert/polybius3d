@@ -9,6 +9,8 @@ class Asteroid extends PolyObject {
       this.size = size;
       this.rot = new THREE.Vector3();
 
+      this.setHp(300);
+
       //Calculo vector para orbitar
       if(rotationVector == undefined) {
         let orb = new THREE.Vector3(Math.random(), Math.random(), Math.random());
@@ -25,7 +27,7 @@ class Asteroid extends PolyObject {
       this.rot.normalize();
 
       // geometria, material y mesh
-      let asteroidGeometry = new THREE.IcosahedronGeometry(this.size, 0);
+      let asteroidGeometry = new THREE.SphereGeometry(this.size, 15, 15);
       let asteroidMaterial = new THREE.MeshBasicMaterial({
         wireframe: true,
         color: 0xffffff
@@ -50,6 +52,14 @@ class Asteroid extends PolyObject {
 
   // colisiones
   onCollide(who) {
-    console.log("choque");
+    let hit = who.getPower();
+    this.hp -= hit;
+    if(this.hp <= 0) {
+      removeFromScene(this);
+    } else {
+      let newDetail = this.hp * 0.05;
+      let newGeometry = new THREE.SphereGeometry(this.size, newDetail, newDetail);
+      this.mesh.geometry = newGeometry;
+    }
   }
 }

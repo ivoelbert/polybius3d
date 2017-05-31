@@ -15,6 +15,7 @@ var dirLight, pointLight, ambientLight;
 var composer;
 var textureLoader = new THREE.TextureLoader();
 var clock = new THREE.Clock();
+var createAsteroidAvailable = false;
 
 // grupos
 var groupObjects = new THREE.Group();
@@ -48,11 +49,9 @@ function init() {
 
 
 
-
 	/*Listener de audio*/
     var audio_listener = new THREE.AudioListener();
     camera.getCam().add( audio_listener );
-
 
 
     /*sonido ambiente*/
@@ -196,11 +195,14 @@ function render() {
 
 	handleUpdates( delta );
 	collider.checkCollisions();
+
 	composer.render( delta );
 }
 
 // Maneja las updates de todo lo necesario.
 function handleUpdates( delta ) {
+
+
 	let centers = groupCenters.children;
 	for(let i = 0; i < centers.length; i++) {
 		centers[i].update( delta );
@@ -218,6 +220,21 @@ function handleUpdates( delta ) {
 
 	controls.update( delta );
 	camera.update( delta );
+
+	// Crea meteoritos si es necesario.
+	if(clock.elapsedTime % 5 < 1 && createAsteroidAvailable) {
+		createAsteroidAvailable = false;
+
+		let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+		pos.normalize().multiplyScalar(2 * radius);
+		let asteroid = new Asteroid(pos, radius, 30, 1);
+			asteroid.addToScene( scene );
+			groupAsteroids.add(asteroid);
+
+	}
+	if(clock.elapsedTime % 5 > 1) {
+		createAsteroidAvailable = true;
+	}
 }
 
 function shootTirito(from) {
@@ -226,4 +243,9 @@ function shootTirito(from) {
 	let tirito = new Tirito(from, radius * 0.1, vel);
 	tirito.addToScene(scene);
 	groupTiritos.add(tirito);
+}
+
+function removeFromScene(object) {
+	object.parent.remove(object);
+	scene.remove(object.mesh);
 }

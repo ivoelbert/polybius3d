@@ -20,14 +20,15 @@ class Collider {
           let obj2 = grupo2objects[e2];
 
           let collides = function(obj1, obj2) {
-            let v1 = obj1.hitbox.position.clone();
-            let v2 = obj2.hitbox.position.clone();
+            if(obj1 != undefined && obj2 != undefined) {
+              let v1 = obj1.hitbox.position.clone();
+              let v2 = obj2.hitbox.position.clone();
 
-            if(v1.distanceTo(v2) < obj1.hitbox.radius + obj2.hitbox.radius) {
-              return true;
-            } else {
-              return false;
+              if(v1.distanceTo(v2) < obj1.hitbox.radius + obj2.hitbox.radius) {
+                return true;
+              }
             }
+            return false;
           };
 
           if(collides(obj1, obj2)) {

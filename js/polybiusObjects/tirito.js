@@ -4,7 +4,9 @@ class Tirito extends PolyObject {
     this.size = size;
     this.position.copy(pos);
     this.speed = vel.clone();
-    
+
+    this.setPower(100);
+
     let tiritoGeometry = new THREE.SphereGeometry(size, 5, 5);
     let tiritoMaterial = new THREE.MeshBasicMaterial({
 	     wireframe: true,
@@ -25,6 +27,6 @@ class Tirito extends PolyObject {
     scene.add(this.mesh);
   }
   onCollide(who) {
-    console.log("choque");
+    removeFromScene(this);
   }
 }
