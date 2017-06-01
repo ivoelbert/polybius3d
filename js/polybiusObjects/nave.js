@@ -18,7 +18,7 @@ class Nave extends PolyObject {
 
   // Colisiones
   onCollide(who) {
-    console.log("choque");
+    initGlitch();
   }
 
   // Getters, setters y demas...

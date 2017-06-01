@@ -27,10 +27,10 @@ class Asteroid extends PolyObject {
       this.rot.normalize();
 
       // geometria, material y mesh
-      let asteroidGeometry = new THREE.SphereGeometry(this.size, 15, 15);
+      let asteroidGeometry = new THREE.SphereGeometry(this.size, 10, 10);
       let asteroidMaterial = new THREE.MeshBasicMaterial({
-        wireframe: true,
-        color: 0xffffff
+        color: 0xffff00,
+        wireframe: true
       });
 
       this.mesh = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
@@ -57,7 +57,7 @@ class Asteroid extends PolyObject {
     if(this.hp <= 0) {
       removeFromScene(this);
     } else {
-      let newDetail = this.hp * 0.05;
+      let newDetail = this.hp * 0.03;
       let newGeometry = new THREE.SphereGeometry(this.size, newDetail, newDetail);
       this.mesh.geometry = newGeometry;
     }

@@ -17,6 +17,11 @@ var textureLoader = new THREE.TextureLoader();
 var clock = new THREE.Clock();
 var createAsteroidAvailable = false;
 
+// post
+var glitchPass;
+var glitchEllapsed = 0;
+var renderGlitch = false;
+
 // grupos
 var groupObjects = new THREE.Group();
 var groupNaves = new THREE.Group(); groupObjects.add(groupNaves);
@@ -150,8 +155,13 @@ function init() {
 	var effectFilm = new THREE.FilmPass( 0.35, 0.75, 2048, false );
 	effectFilm.renderToScreen = true;
 	composer = new THREE.EffectComposer( renderer );
-	composer.addPass( renderModel );
-	composer.addPass( effectFilm );
+	composer.addPass( new THREE.RenderPass( scene, camera.getCam() ) );
+
+	glitchPass = new THREE.GlitchPass();
+	glitchPass.goWild = true;
+	glitchPass.renderToScreen = true;
+	composer.addPass( glitchPass );
+
 }
 
 function onWindowResize( event ) {
@@ -176,12 +186,27 @@ function render() {
 	handleUpdates( delta );
 	collider.checkCollisions();
 
-	composer.render( delta );
+	chooseRenderer();
+}
+
+function chooseRenderer( delta ) {
+	if(renderGlitch)
+		composer.render( delta );
+	else
+		renderer.render( scene, camera.getCam() );
 }
 
 // Maneja las updates de todo lo necesario.
 function handleUpdates( delta ) {
 
+	// renderer updates
+	if(renderGlitch) {
+		glitchEllapsed += delta;
+	}
+	if(glitchEllapsed > 0.8) {
+		renderGlitch = false;
+		glitchEllapsed = 0;
+	}
 
 	let centers = groupCenters.children;
 	for(let i = 0; i < centers.length; i++) {
@@ -215,6 +240,8 @@ function handleUpdates( delta ) {
 	if(clock.elapsedTime % 5 > 1) {
 		createAsteroidAvailable = true;
 	}
+
+
 }
 
 function shootTirito(from) {
@@ -229,4 +256,8 @@ function shootTirito(from) {
 function removeFromScene(object) {
 	object.parent.remove(object);
 	scene.remove(object.mesh);
+}
+
+function initGlitch() {
+	renderGlitch = true;
 }
