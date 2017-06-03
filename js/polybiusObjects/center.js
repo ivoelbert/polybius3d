@@ -9,26 +9,57 @@ class Center extends PolyObject {
     this.hitsReceived = 0;
     this.needToCreate = true;
 
-    this.mesh = new THREE.Mesh();
 
-    for(let i = 0; i < 6; i++) {
-      let centerMaterial = new THREE.MeshBasicMaterial({
-        wireframe: true
-      });
-      centerMaterial.color.setHSL(i / this.centerBodies, 1, 0.6);
+    this.centerMesh = [];
+    this.lado = 2000;
+    this.t = 0;
 
-      let centerGeometry = new THREE.SphereGeometry( (i+1) * this.size / 6, 20, 20);
 
-      let mesh = new THREE.Mesh(centerGeometry, centerMaterial);
-      this.mesh.add(mesh);
-    }
+    let centerMaterial = new THREE.MeshBasicMaterial({
+      wireframe: true
+    });
+/*    centerMaterial.color.setHSL( Math.random(), 1, 0.6);
+*/
+    //estrella
+    let tetra0 = new THREE.TetrahedronGeometry(this.lado * 10, 0);    
+    let tetra1 = new THREE.TetrahedronGeometry(this.lado  * 10, 0);
+    this.centerMesh[0] = new THREE.Mesh(tetra0, centerMaterial);
+    this.centerMesh[1] = new THREE.Mesh(tetra1, centerMaterial);
+    this.centerMesh[0].rotation.y = Math.PI / 2;
+
+    //falopa
+    let falopa = new THREE.IcosahedronGeometry(this.lado * 4 , 0);
+    this.centerMesh[2] = new THREE.Mesh(falopa, centerMaterial);
+
+    //nucleo
+    let nucleo = new THREE.CubeGeometry(this.lado/5 , this.lado/5, this.lado/5);
+    this.centerMesh[3] = new THREE.Mesh(nucleo, centerMaterial);
   }
+  
 
   update( delta ) {
-    for(let i = 0; i < 6; i++) {
-      this.mesh.children[i].material.color.setHSL((i / 6) + this.hueOff % 1 , 1, 0.5);
+    //rotacion
+    //estrella
+    this.centerMesh[0].rotation.x += 2 * delta;
+    this.centerMesh[0].rotation.y += 2 * delta;
+    this.centerMesh[1].rotation.x += 2 * delta;
+    this.centerMesh[1].rotation.y += 2 * delta;
+
+    //falopa
+    this.centerMesh[2].rotation.x -= 1 * delta;
+    this.centerMesh[2].rotation.y += 1 * delta;
+    this.centerMesh[2].scale.set( Math.cos(this.t), Math.sin(this.t), Math.cos(this.t));
+    this.t += 0.02;
+
+    //nucleo
+    this.centerMesh[3].rotation.x += 10 * delta;
+    this.centerMesh[3].rotation.y += 10 * delta;
+
+
+/*    for(let i = 0; i < 3; i++) {
+      this.centerMesh.children[i].material.color.setHSL((i / 3) + this.hueOff % 1 , 1, 0.5);
     }
-    this.hueOff += this.colorChangeRate;
+    this.hueOff += this.colorChangeRate;*/
   }
 
   onCollide( who ) {
@@ -44,7 +75,10 @@ class Center extends PolyObject {
   }
 
   addToScene(scene) {
-    scene.add(this.mesh);
+    scene.add(this.centerMesh[0]);
+    scene.add(this.centerMesh[1]);
+    scene.add(this.centerMesh[2]);
+    scene.add(this.centerMesh[3]);
   }
 }
 
