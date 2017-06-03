@@ -256,13 +256,7 @@ function handleUpdates( delta ) {
 	// Crea meteoritos si es necesario.
 	if(clock.elapsedTime % 5 < 1 && createAsteroidAvailable) {
 		createAsteroidAvailable = false;
-
-		let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
-		pos.normalize().multiplyScalar(2 * radius);
-		let asteroid = new Asteroid(pos, radius, 30, 1);
-			asteroid.addToScene( scene );
-			groupAsteroids.add(asteroid);
-
+		createRandomAsteroid();
 	}
 	if(clock.elapsedTime % 5 > 1) {
 		createAsteroidAvailable = true;
@@ -285,4 +279,12 @@ function removeFromScene(object) {
 
 function initGlitch() {
 	renderGlitch = true;
+}
+
+function createRandomAsteroid() {
+	let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+	pos.normalize().multiplyScalar(3 * radius);
+	let asteroid = new Asteroid(pos, radius, 30, 1);
+		asteroid.addToScene( scene );
+		groupAsteroids.add(asteroid);
 }

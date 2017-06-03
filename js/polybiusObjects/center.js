@@ -6,6 +6,8 @@ class Center extends PolyObject {
     this.size = size;
     this.hueOff = 0;
     this.colorChangeRate = 0.003;
+    this.hitsReceived = 0;
+    this.needToCreate = true;
 
     this.mesh = new THREE.Mesh();
 
@@ -31,6 +33,14 @@ class Center extends PolyObject {
 
   onCollide( who ) {
     this.hueOff += 0.2;
+    this.hitsReceived = (this.hitsReceived + 1) % 4;
+    if(this.hitsReceived == 3 && this.needToCreate) {
+      createRandomAsteroid();
+      this.needToCreate = false;
+    }
+    if(this.hitsReceived == 0) {
+      this.needToCreate = true;
+    }
   }
 
   addToScene(scene) {
