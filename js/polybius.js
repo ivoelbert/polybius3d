@@ -74,7 +74,7 @@ function init() {
 		controls.domElement = container;
     controls.rad = 10 * radius;
     controls.minRad = 2 * radius;
-    controls.maxRad = 12 * radius;
+    controls.maxRad = 40 * radius;
   	controls.radSpeed = radius / 5;
     controls.angSpeed = 0.03;
     controls.rotation = 0.0;
