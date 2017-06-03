@@ -12,15 +12,19 @@ var container, stats;
 var camera, controls, scene, renderer;
 var dirLight, pointLight, ambientLight;
 
-var composer;
 var textureLoader = new THREE.TextureLoader();
 var clock = new THREE.Clock();
 var createAsteroidAvailable = false;
 
 // post
+var glitchComposer;
 var glitchPass;
 var glitchEllapsed = 0;
 var renderGlitch = false;
+
+var RGBComposer;
+var RGBPass;
+var renderRGB = true;
 
 // grupos
 var groupObjects = new THREE.Group();
@@ -39,6 +43,8 @@ init();
 animate();
 
 function init() {
+	noise.seed(Math.random());
+
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
 
@@ -150,17 +156,25 @@ function init() {
 
 	window.addEventListener( 'resize', onWindowResize, false );
 
-	// postprocessing
-	var renderModel = new THREE.RenderPass( scene, camera.getCam() );
-	var effectFilm = new THREE.FilmPass( 0.35, 0.75, 2048, false );
-	effectFilm.renderToScreen = true;
-	composer = new THREE.EffectComposer( renderer );
-	composer.addPass( new THREE.RenderPass( scene, camera.getCam() ) );
+	////////////////////// POSTPROCESSING ////////////////////////
+
+	// Glitch pass
+	glitchComposer = new THREE.EffectComposer( renderer );
+	glitchComposer.addPass( new THREE.RenderPass( scene, camera.getCam() ) );
 
 	glitchPass = new THREE.GlitchPass();
 	glitchPass.goWild = true;
 	glitchPass.renderToScreen = true;
-	composer.addPass( glitchPass );
+	glitchComposer.addPass( glitchPass );
+
+	// RGB pass
+	RGBComposer = new THREE.EffectComposer( renderer );
+	RGBComposer.addPass( new THREE.RenderPass( scene, camera.getCam() ) );
+
+	RGBPass = new THREE.ShaderPass( THREE.RGBShiftShader );
+	RGBPass.uniforms[ 'amount' ].value = 0.005;
+	RGBPass.renderToScreen = true;
+	RGBComposer.addPass( RGBPass );
 
 }
 
@@ -170,7 +184,8 @@ function onWindowResize( event ) {
 	renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
 	camera.setAspect( SCREEN_WIDTH / SCREEN_HEIGHT );
 	camera.updateProy();
-	composer.reset();
+	glitchComposer.reset();
+	RGBComposer.reset();
 }
 
 
@@ -191,23 +206,19 @@ function render() {
 
 function chooseRenderer( delta ) {
 	if(renderGlitch)
-		composer.render( delta );
+		glitchComposer.render( delta );
 	else
-		renderer.render( scene, camera.getCam() );
+		RGBComposer.render( delta );
+		//renderer.render( scene, camera.getCam() );
 }
 
 // Maneja las updates de todo lo necesario.
 function handleUpdates( delta ) {
 
-	// renderer updates
-	if(renderGlitch) {
-		glitchEllapsed += delta;
-	}
-	if(glitchEllapsed > 0.8) {
-		renderGlitch = false;
-		glitchEllapsed = 0;
-	}
+	// previo a update...
+	let oldPos = groupNaves.children[0].getPosition();
 
+	// object updates
 	let centers = groupCenters.children;
 	for(let i = 0; i < centers.length; i++) {
 		centers[i].update( delta );
@@ -226,6 +237,22 @@ function handleUpdates( delta ) {
 	controls.update( delta );
 	camera.update( delta );
 
+	// despues de update...
+	let newPos = groupNaves.children[0].getPosition();
+	let moved = oldPos.distanceTo(newPos);
+
+	// renderer updates
+	if(renderGlitch) {
+		glitchEllapsed += delta;
+	}
+	if(glitchEllapsed > 0.8) {
+		renderGlitch = false;
+		glitchEllapsed = 0;
+	}
+
+	let acid = moved * 0.000001 + 0.002;
+	RGBPass.uniforms[ 'amount' ].value = acid;
+
 	// Crea meteoritos si es necesario.
 	if(clock.elapsedTime % 5 < 1 && createAsteroidAvailable) {
 		createAsteroidAvailable = false;
@@ -240,8 +267,6 @@ function handleUpdates( delta ) {
 	if(clock.elapsedTime % 5 > 1) {
 		createAsteroidAvailable = true;
 	}
-
-
 }
 
 function shootTirito(from) {
