@@ -16,7 +16,8 @@ THREE.RGBShiftShader = {
 
 		"tDiffuse": { value: null },
 		"amount":   { value: 0.005 },
-		"angle":    { value: 0.0 }
+		"angle":    { value: 0.0 },
+    "cshift":   { value: 0.02 }
 
 	},
 
@@ -38,12 +39,15 @@ THREE.RGBShiftShader = {
 		"uniform sampler2D tDiffuse;",
 		"uniform float amount;",
 		"uniform float angle;",
+    "uniform float cshift;",
 
 		"varying vec2 vUv;",
 
 		"void main() {",
+      "vec2 dir = vUv - vec2(0.5, 0.5);",
+      "float amp = clamp(length(dir) - 0.1, 0.05, 1.0);",
+      "vec2 offset = amp * cshift * normalize(dir);",
 
-			"vec2 offset = amount * vec2( cos(angle), sin(angle));",
 			"vec4 cr = texture2D(tDiffuse, vUv + offset);",
 			"vec4 cga = texture2D(tDiffuse, vUv);",
 			"vec4 cb = texture2D(tDiffuse, vUv - offset);",
@@ -52,5 +56,26 @@ THREE.RGBShiftShader = {
 		"}"
 
 	].join( "\n" )
+
+  /*
+  "uniform sampler2D tDiffuse;",
+  "uniform float amount;",
+  "uniform float angle;",
+  "uniform float cshift;",
+
+  "varying vec2 vUv;",
+
+  "void main() {",
+    "vec2 dir = vUv - vec2(0.5, 0.5);",
+    "float amp = clamp(length(dir) - 0.1, 0.8, 1.0);",
+
+    "vec2 offset = amp * cshift * normalize(dir);",
+    "vec4 cr = texture2D(texture, vUv + offset);",
+    "vec4 cga = texture2D(texture, vUv);",
+    "vec4 cb = texture2D(texture, vUv - offset);",
+    "gl_FragColor = vec4(cr.r, cga.g, cb.b, cga.a);",
+
+  "}"
+  */
 
 };

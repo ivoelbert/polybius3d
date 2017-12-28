@@ -1,8 +1,6 @@
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var radius = 6371;
-var tilt = 0.41;
-var cloudsScale = 1.005;
 
 var MARGIN = 0;
 var SCREEN_HEIGHT = window.innerHeight - MARGIN * 2;
@@ -30,6 +28,7 @@ var renderRGB = true;
 var groupObjects = new THREE.Group();
 var groupNaves = new THREE.Group(); groupObjects.add(groupNaves);
 var groupCenters = new THREE.Group(); groupObjects.add(groupCenters);
+var groupCenterAsteroids = new THREE.Group(); groupObjects.add(groupCenterAsteroids);
 var groupAsteroids = new THREE.Group(); groupObjects.add(groupAsteroids);
 var groupTiritos = new THREE.Group(); groupObjects.add(groupTiritos);
 
@@ -50,31 +49,31 @@ function init() {
 
 	// escena
 	scene = new THREE.Scene();
-	scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
+	 scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
 
-  	let navepos = new THREE.Vector3(0, 0, radius * 5);
+  let navepos = new THREE.Vector3(0, 0, radius * 5);
 	let nave = new Nave( navepos, radius );
-	nave.addToScene( scene );
-	groupNaves.add(nave);
+    nave.addToScene( scene );
+    groupNaves.add(nave);
 
 	// camara
 	camera = new FollowCamera( groupNaves.children[0] );
-	let off = new THREE.Vector3(0, radius, -2 * radius);
-	camera.init(80, off, 0.2, radius * 5);
+  	let off = new THREE.Vector3(0, radius, -2 * radius);
+  	camera.init(80, off, 0.4, radius * 5);
 
 
 
 	/*Audio*/
-   	polybiusAudio= new PolybiusAudio();
-	polybiusAudio.init(true, true, true, 'sounds/base_editada_3.mp3')// ambStatus, astStatus , shootStatus , ambSrc, astSrc,shootSrc
+  polybiusAudio= new PolybiusAudio();
+	  polybiusAudio.init(true, true, true, 'sounds/base_editada_3.mp3')// ambStatus, astStatus , shootStatus , ambSrc, astSrc,shootSrc
     camera.getCam().add( polybiusAudio.getListener() );
 
 	// controles
 	controls = new THREE.FlyControls( groupNaves.children[0] );
 		controls.domElement = container;
     controls.rad = 10 * radius;
-    controls.minRad = 2 * radius;
-    controls.maxRad = 40 * radius;
+    controls.minRad = 5 * radius;
+    controls.maxRad = 30 * radius;
   	controls.radSpeed = radius / 5;
     controls.angSpeed = 0.03;
     controls.rotation = 0.0;
@@ -85,22 +84,23 @@ function init() {
 	scene.add( ambientLight );
 
 	// centro
+
   let center = new Center(new THREE.Vector3(0, 0, 0), radius);
 		center.addToScene( scene );
     groupCenters.add(center);
+    center.addShieldToGroup( groupCenters );
+    groupCenterAsteroids = center.getAsteroidsGroup();
 
-  	let asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
-	asteroid.addToScene( scene );
-	groupAsteroids.add(asteroid);
-
-
-	groupObjects.add(groupAsteroids);
-	groupObjects.add(groupNaves);
+  let asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
+  	asteroid.addToScene( scene );
+  	groupAsteroids.add(asteroid);
 
 	collider = new Collider();
-	collider.addRegla(groupNaves, groupAsteroids);
-	collider.addRegla(groupAsteroids, groupTiritos);
-	collider.addRegla(groupTiritos, groupCenters);
+  	collider.addRegla(groupNaves, groupAsteroids);
+  	collider.addRegla(groupAsteroids, groupTiritos);
+    collider.addRegla(groupTiritos, groupCenters);
+    collider.addRegla(groupTiritos, groupCenterAsteroids);
+
 
 	////////////////////////////////////// lo que estaba //////////////////////////////////////
 

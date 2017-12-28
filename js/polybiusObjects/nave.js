@@ -14,6 +14,8 @@ class Nave extends PolyObject {
     this.mesh = new THREE.Mesh(naveGeometry, naveMaterial);
     this.mesh.scale.set(0.5, 0.25, 1);
     this.mesh.position.copy(this.position);
+
+    this.setPower(500);
   }
 
   // Colisiones
