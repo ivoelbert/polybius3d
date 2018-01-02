@@ -27,6 +27,8 @@ class Tirito extends PolyObject {
     scene.add(this.mesh);
   }
   onCollide(who) {
+    let explosionPos = this.position.clone();
+    createExplosion(explosionPos, this.size * 2, 16);
     removeFromScene(this);
   }
 }

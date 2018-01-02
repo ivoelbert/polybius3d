@@ -31,6 +31,8 @@ var groupCenters = new THREE.Group(); groupObjects.add(groupCenters);
 var groupCenterAsteroids = new THREE.Group(); groupObjects.add(groupCenterAsteroids);
 var groupAsteroids = new THREE.Group(); groupObjects.add(groupAsteroids);
 var groupTiritos = new THREE.Group(); groupObjects.add(groupTiritos);
+var groupExplosions = new THREE.Group(); groupObjects.add(groupExplosions);
+
 
 //colisiones
 var collider;
@@ -84,7 +86,6 @@ function init() {
 	scene.add( ambientLight );
 
 	// centro
-
   let center = new Center(new THREE.Vector3(0, 0, 0), radius);
 		center.addToScene( scene );
     groupCenters.add(center);
@@ -100,6 +101,8 @@ function init() {
   	collider.addRegla(groupAsteroids, groupTiritos);
     collider.addRegla(groupTiritos, groupCenters);
     collider.addRegla(groupTiritos, groupCenterAsteroids);
+    collider.addRegla(groupNaves, groupExplosions);
+
 
 
 	////////////////////////////////////// lo que estaba //////////////////////////////////////
@@ -229,9 +232,14 @@ function handleUpdates( delta ) {
 		asteroids[i].update( delta );
 	}
 
-	let tiritos = groupTiritos.children;
+  let tiritos = groupTiritos.children;
 	for(let i = 0; i < tiritos.length; i++) {
 		tiritos[i].update( delta );
+	}
+
+  let fragments = groupExplosions.children;
+	for(let i = 0; i < fragments.length; i++) {
+		fragments[i].update( delta );
 	}
 
 	controls.update( delta );
@@ -287,4 +295,20 @@ function createRandomAsteroid() {
 	let asteroid = new Asteroid(pos, radius, 30, 1);
 		asteroid.addToScene( scene );
 		groupAsteroids.add(asteroid);
+}
+
+function createExplosion( pos, size, frags ) {
+  for(let i = 0; i < frags; i++) {
+
+    let vx = Math.random() - 0.5;
+    let vy = Math.random() - 0.5;
+    let vz = Math.random() - 0.5;
+    let dir = new THREE.Vector3(vx, vy, vz);
+    dir.normalize();
+    dir.multiplyScalar(radius * THREE.Math.randFloat(2, 2.5));
+
+    let nFrag = new ExplosionFragment(pos, size * THREE.Math.randFloat(0.5, 1), dir);
+    nFrag.addToScene( scene );
+    groupExplosions.add( nFrag );
+  }
 }

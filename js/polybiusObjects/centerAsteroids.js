@@ -46,7 +46,6 @@ class CenterAsteroid extends PolyObject {
   // colisiones
   onCollide(who) {
     let hit = who.getPower();
-    console.log(hit);
     this.hp -= hit;
     if(this.hp <= 0) {
       removeFromScene(this);

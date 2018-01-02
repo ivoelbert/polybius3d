@@ -35,5 +35,7 @@ class CenterShield extends PolyObject {
   onCollide(who) {
     this.colorResetTime = this.t;
     this.mesh.material.color.setHex( 0x016804 );
+
+    createExplosion(new THREE.Vector3(0, 0, 0), this.size);
   }
 }
