@@ -13,8 +13,8 @@ class Center extends PolyObject {
     this.t = 0;
 
     this.asteroids = new THREE.Group();
-    this.wAsteroids = 4; //32;
-    this.hAsteroids = 4; //20;
+    this.wAsteroids = 8; //32;
+    this.hAsteroids = 6; //20;
 
     this.hp = 100 * 1000;
 

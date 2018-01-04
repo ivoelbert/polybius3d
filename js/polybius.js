@@ -74,8 +74,8 @@ function init() {
 	controls = new THREE.FlyControls( groupNaves.children[0] );
 		controls.domElement = container;
     controls.rad = 10 * radius;
-    controls.minRad = 5 * radius;
-    controls.maxRad = 30 * radius;
+    controls.minRad = 6 * radius;
+    controls.maxRad = 18 * radius;
   	controls.radSpeed = radius / 5;
     controls.angSpeed = 0.03;
     controls.rotation = 0.0;
@@ -292,6 +292,12 @@ function initGlitch() {
 function createRandomAsteroid() {
 	let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
 	pos.normalize().multiplyScalar(3 * radius);
+	let asteroid = new Asteroid(pos, radius, 30, 1);
+		asteroid.addToScene( scene );
+		groupAsteroids.add(asteroid);
+}
+
+function createAsteroidAt( pos ) {
 	let asteroid = new Asteroid(pos, radius, 30, 1);
 		asteroid.addToScene( scene );
 		groupAsteroids.add(asteroid);

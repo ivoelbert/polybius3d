@@ -48,6 +48,7 @@ class CenterAsteroid extends PolyObject {
     let hit = who.getPower();
     this.hp -= hit;
     if(this.hp <= 0) {
+      createAsteroidAt(this.position.clone());
       removeFromScene(this);
     }
   }
