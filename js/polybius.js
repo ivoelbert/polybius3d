@@ -19,6 +19,8 @@ var glitchComposer;
 var glitchPass;
 var glitchEllapsed = 0;
 var renderGlitch = false;
+var acidEllapsed = 0;
+var renderAcid = false;
 
 var RGBComposer;
 var RGBPass;
@@ -30,6 +32,7 @@ var groupNaves = new THREE.Group(); groupObjects.add(groupNaves);
 var groupCenters = new THREE.Group(); groupObjects.add(groupCenters);
 var groupCenterAsteroids = new THREE.Group(); groupObjects.add(groupCenterAsteroids);
 var groupAsteroids = new THREE.Group(); groupObjects.add(groupAsteroids);
+var groupPills = new THREE.Group(); groupObjects.add(groupPills);
 var groupTiritos = new THREE.Group(); groupObjects.add(groupTiritos);
 var groupExplosions = new THREE.Group(); groupObjects.add(groupExplosions);
 
@@ -66,7 +69,7 @@ function init() {
 
 
 	/*Audio*/
-  polybiusAudio= new PolybiusAudio();
+  polybiusAudio = new PolybiusAudio();
 	  polybiusAudio.init(true, true, true, 'sounds/base_editada_3.mp3')// ambStatus, astStatus , shootStatus , ambSrc, astSrc,shootSrc
     camera.getCam().add( polybiusAudio.getListener() );
 
@@ -102,6 +105,7 @@ function init() {
     collider.addRegla(groupTiritos, groupCenters);
     collider.addRegla(groupTiritos, groupCenterAsteroids);
     collider.addRegla(groupNaves, groupExplosions);
+    collider.addRegla(groupNaves, groupPills);
 
 
 
@@ -175,9 +179,14 @@ function init() {
 	RGBComposer.addPass( new THREE.RenderPass( scene, camera.getCam() ) );
 
 	RGBPass = new THREE.ShaderPass( THREE.RGBShiftShader );
-	RGBPass.uniforms[ 'amount' ].value = 0.005;
 	RGBPass.renderToScreen = true;
 	RGBComposer.addPass( RGBPass );
+
+  RGBPass.uniforms[ 'time' ].value = 0;
+  RGBPass.uniforms[ 'waveAmp' ].value = 0;
+  RGBPass.uniforms[ 'waveFreq' ].value = 10 * 3.14;
+  RGBPass.uniforms[ 'colorOff' ].value = 0;
+  RGBPass.uniforms[ 'colorFreq' ].value = 50;
 
 }
 
@@ -232,6 +241,11 @@ function handleUpdates( delta ) {
 		asteroids[i].update( delta );
 	}
 
+  let pills = groupPills.children;
+	for(let i = 0; i < pills.length; i++) {
+		pills[i].update( delta );
+	}
+
   let tiritos = groupTiritos.children;
 	for(let i = 0; i < tiritos.length; i++) {
 		tiritos[i].update( delta );
@@ -258,13 +272,49 @@ function handleUpdates( delta ) {
 		glitchEllapsed = 0;
 	}
 
-	let acid = moved * 0.000001 + 0.002;
-	RGBPass.uniforms[ 'amount' ].value = acid;
+  let speed = 0.01;
+  if(moved > 0)
+    speed = 0.1;
+
+  let acidDuration = 15;
+  if(renderAcid)
+  {
+    acidEllapsed += delta;
+
+    let timeMult = 0;
+
+    if(acidEllapsed < acidDuration / 3)
+      timeMult = THREE.Math.mapLinear(acidEllapsed, 0, acidDuration / 3, 0, 1);
+    else if(acidEllapsed < 2 * acidDuration / 3)
+      timeMult = 1;
+    else
+      timeMult = THREE.Math.mapLinear(acidEllapsed, 2 * acidDuration / 3, acidDuration, 1, 0);
+
+    RGBPass.uniforms[ 'time' ].value += delta * speed;
+    RGBPass.uniforms[ 'waveAmp' ].value = 0.03 * timeMult;
+    RGBPass.uniforms[ 'waveFreq' ].value = 10 * 3.14;
+    RGBPass.uniforms[ 'colorOff' ].value = 0.05 * timeMult;
+    RGBPass.uniforms[ 'colorFreq' ].value = 50;
+  }
+  if(acidEllapsed > acidDuration)
+  {
+    acidEllapsed = 0;
+    renderAcid = false;
+
+    RGBPass.uniforms[ 'time' ].value = 0;
+    RGBPass.uniforms[ 'waveAmp' ].value = 0;
+    RGBPass.uniforms[ 'waveFreq' ].value = 10 * 3.14;
+    RGBPass.uniforms[ 'colorOff' ].value = 0;
+    RGBPass.uniforms[ 'colorFreq' ].value = 50;
+  }
 
 	// Crea meteoritos si es necesario.
 	if(clock.elapsedTime % 5 < 1 && createAsteroidAvailable) {
 		createAsteroidAvailable = false;
-		createRandomAsteroid();
+    if(Math.random() > 0.5)
+		  createRandomAsteroid();
+    else
+      createRandomAcidPill();
 	}
 	if(clock.elapsedTime % 5 > 1) {
 		createAsteroidAvailable = true;
@@ -289,12 +339,26 @@ function initGlitch() {
 	renderGlitch = true;
 }
 
+function initAcid() {
+  if(renderAcid == true)
+    acidEllapsed = 5;
+  renderAcid = true;
+}
+
 function createRandomAsteroid() {
 	let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
 	pos.normalize().multiplyScalar(3 * radius);
 	let asteroid = new Asteroid(pos, radius, 30, 1);
 		asteroid.addToScene( scene );
 		groupAsteroids.add(asteroid);
+}
+
+function createRandomAcidPill() {
+	let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+	pos.normalize().multiplyScalar(3 * radius);
+	let acidPill = new AcidPill(pos, radius, 30, 1);
+		acidPill.addToScene( scene );
+		groupPills.add(acidPill);
 }
 
 function createAsteroidAt( pos ) {

@@ -20,7 +20,10 @@ class Nave extends PolyObject {
 
   // Colisiones
   onCollide(who) {
-    initGlitch();
+    if(who.isAcid)
+      initAcid();
+    else
+      initGlitch();
   }
 
   // Getters, setters y demas...
