@@ -356,7 +356,7 @@ function createRandomAsteroid() {
 function createRandomAcidPill() {
 	let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
 	pos.normalize().multiplyScalar(3 * radius);
-	let acidPill = new AcidPill(pos, radius, 30, 1);
+	let acidPill = new AcidPill(pos, radius, 100, 1);
 		acidPill.addToScene( scene );
 		groupPills.add(acidPill);
 }
