@@ -31,7 +31,7 @@ class ExplosionFragment extends PolyObject {
 
       this.mesh.position.copy(this.position);
 
-      let black = new THREE.Color( 0x4c0000 );
+      let black = new THREE.Color( 0x4c1111 );
       let l = THREE.Math.mapLinear( this.lifetime, 0, 10, 0, 1 );
       this.mesh.material.color.lerp(black, l);
 

@@ -1,6 +1,6 @@
 class Nave extends PolyObject {
   constructor(pos, size) {
-    super(pos, size);
+    super(pos, size * 0.6);
 
     this.position.copy(pos);
     this.size = size;
@@ -37,7 +37,7 @@ class Nave extends PolyObject {
     this.mesh.up.copy(upvec);
     this.mesh.lookAt(new THREE.Vector3(0, 0, 0));
 
-    this.updateHitbox(this.position, this.size);
+    this.updateHitbox(this.position, this.size * 0.6);
   }
 
   getPosition() {

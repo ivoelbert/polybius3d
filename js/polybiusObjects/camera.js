@@ -18,7 +18,7 @@ FollowCamera = function(followed) {
     let followedMatrix = this.followed.getMatrix();
     this.pos.set(followedPos.x + this.offset.x, followedPos.y + this.offset.y, followedPos.z  + this.offset.z);
 
-    this.cam = new THREE.PerspectiveCamera( fov, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1e7 );
+    this.cam = new THREE.PerspectiveCamera( fov, SCREEN_WIDTH / SCREEN_HEIGHT, 10, 10000 );
     this.cam.position.set(this.pos.x, this.pos.y, this.pos.z);
 
     let upvec = new THREE.Vector3(0, 1, 0);

@@ -1,6 +1,6 @@
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
-var radius = 6371;
+var radius = 60;
 
 var MARGIN = 0;
 var SCREEN_HEIGHT = window.innerHeight - MARGIN * 2;
@@ -54,10 +54,10 @@ function init() {
 
 	// escena
 	scene = new THREE.Scene();
-	 scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
+	 scene.fog = new THREE.FogExp2( 0x000000, 0.000025 );
 
   let navepos = new THREE.Vector3(0, 0, radius * 5);
-	let nave = new Nave( navepos, radius );
+	let nave = new Nave( navepos, radius * 0.8 );
     nave.addToScene( scene );
     groupNaves.add(nave);
 
@@ -76,10 +76,10 @@ function init() {
 	// controles
 	controls = new THREE.FlyControls( groupNaves.children[0] );
 		controls.domElement = container;
-    controls.rad = 10 * radius;
-    controls.minRad = 6 * radius;
-    controls.maxRad = 18 * radius;
-  	controls.radSpeed = radius / 5;
+    controls.rad = 6 * radius;
+    controls.minRad = 4 * radius;
+    controls.maxRad = 10 * radius;
+  	controls.radSpeed = radius / 6;
     controls.angSpeed = 0.03;
     controls.rotation = 0.0;
     controls.rotSpeed = 0.03;
@@ -95,9 +95,7 @@ function init() {
     center.addShieldToGroup( groupCenters );
     groupCenterAsteroids = center.getAsteroidsGroup();
 
-  let asteroid = new Asteroid(new THREE.Vector3( 4 * radius, 0, 0 ), radius, 30, 1);
-  	asteroid.addToScene( scene );
-  	groupAsteroids.add(asteroid);
+  createAsteroidAt(new THREE.Vector3( radius, 0, 0 ))
 
 	collider = new Collider();
   	collider.addRegla(groupNaves, groupAsteroids);
@@ -347,22 +345,20 @@ function initAcid() {
 
 function createRandomAsteroid() {
 	let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
-	pos.normalize().multiplyScalar(3 * radius);
-	let asteroid = new Asteroid(pos, radius, 30, 1);
-		asteroid.addToScene( scene );
-		groupAsteroids.add(asteroid);
+	pos.normalize().multiplyScalar( radius );
+	createAsteroidAt( pos );
 }
 
 function createRandomAcidPill() {
 	let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
-	pos.normalize().multiplyScalar(3 * radius);
-	let acidPill = new AcidPill(pos, radius, 100, 1);
+	pos.normalize().multiplyScalar( radius );
+	let acidPill = new AcidPill(pos, radius/2, 1, 1);
 		acidPill.addToScene( scene );
 		groupPills.add(acidPill);
 }
 
 function createAsteroidAt( pos ) {
-	let asteroid = new Asteroid(pos, radius, 30, 1);
+	let asteroid = new Asteroid(pos, radius/2, 0.8, 1);
 		asteroid.addToScene( scene );
 		groupAsteroids.add(asteroid);
 }
@@ -375,7 +371,7 @@ function createExplosion( pos, size, frags ) {
     let vz = Math.random() - 0.5;
     let dir = new THREE.Vector3(vx, vy, vz);
     dir.normalize();
-    dir.multiplyScalar(radius * THREE.Math.randFloat(2, 2.5));
+    dir.multiplyScalar(radius * THREE.Math.randFloat(1, 1.5));
 
     let nFrag = new ExplosionFragment(pos, size * THREE.Math.randFloat(0.5, 1), dir);
     nFrag.addToScene( scene );

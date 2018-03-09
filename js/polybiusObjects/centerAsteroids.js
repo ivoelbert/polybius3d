@@ -1,6 +1,6 @@
 class CenterAsteroid extends PolyObject {
   constructor(pos, size, angVel) {
-      super(pos, size);
+      super(pos, size * 1.3);
 
       this.position.copy(pos);
       this.size = size;
@@ -40,7 +40,7 @@ class CenterAsteroid extends PolyObject {
 
       this.mesh.position.set(this.position.x, this.position.y, this.position.z);
 
-      this.updateHitbox(this.position, this.size);
+      this.updateHitbox(this.position, this.size * 1.3);
   };
 
   // colisiones

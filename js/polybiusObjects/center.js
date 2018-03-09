@@ -9,7 +9,7 @@ class Center extends PolyObject {
     this.needToCreate = true;
 
     this.centerMesh = [];
-    this.lado = 2000;
+    this.lado = size;
     this.t = 0;
 
     this.asteroids = new THREE.Group();
@@ -18,7 +18,7 @@ class Center extends PolyObject {
 
     this.hp = 100 * 1000;
 
-    this.shield = new CenterShield(this.position.clone(), this.lado * 9);
+    this.shield = new CenterShield(this.position.clone(), this.lado * 1.6);
 
     // CENTRO
 
@@ -28,18 +28,18 @@ class Center extends PolyObject {
     });
 
     //estrella
-    let tetra0 = new THREE.TetrahedronGeometry(this.lado * 8, 0);
-    let tetra1 = new THREE.TetrahedronGeometry(this.lado  * 8, 0);
+    let tetra0 = new THREE.TetrahedronGeometry(this.lado, 0);
+    let tetra1 = new THREE.TetrahedronGeometry(this.lado, 0);
     this.centerMesh[0] = new THREE.Mesh(tetra0, centerMaterial);
     this.centerMesh[1] = new THREE.Mesh(tetra1, centerMaterial);
     this.centerMesh[0].rotation.y = Math.PI / 2;
 
     //falopa
-    let falopa = new THREE.IcosahedronGeometry(this.lado * 4 , 0);
+    let falopa = new THREE.IcosahedronGeometry(this.lado / 2 , 0);
     this.centerMesh[2] = new THREE.Mesh(falopa, centerMaterial);
 
     //nucleo
-    let nucleo = new THREE.CubeGeometry(this.lado/5 , this.lado/5, this.lado/5);
+    let nucleo = new THREE.CubeGeometry(this.lado/20 , this.lado/20, this.lado/20);
     this.centerMesh[3] = new THREE.Mesh(nucleo, centerMaterial);
 
 
@@ -48,10 +48,10 @@ class Center extends PolyObject {
     ///////////////////////
 
     //asteroides
-    let sph = new THREE.SphereGeometry(this.lado * 10, this.wAsteroids, this.hAsteroids);
+    let sph = new THREE.SphereGeometry(this.lado * 1.8, this.wAsteroids, this.hAsteroids);
     for(let i = 0; i < sph.vertices.length; i++)
     {
-      this.asteroids.add( new CenterAsteroid(sph.vertices[i].clone(), this.lado * 1, 0 ) );   //Math.random(-0.1, 0.1)
+      this.asteroids.add( new CenterAsteroid(sph.vertices[i].clone(), this.lado / 6, 0 ) );   //Math.random(-0.1, 0.1)
     }
   }
 
