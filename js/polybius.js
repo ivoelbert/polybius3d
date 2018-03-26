@@ -7,7 +7,7 @@ var SCREEN_HEIGHT = window.innerHeight - MARGIN * 2;
 var SCREEN_WIDTH  = window.innerWidth;
 
 var container, stats;
-var camera, controls, scene, renderer;
+var camera, scene, renderer;
 var dirLight, pointLight, ambientLight;
 
 var textureLoader = new THREE.TextureLoader();
@@ -65,6 +65,7 @@ function init() {
 	camera = new FollowCamera( groupNaves.children[0] );
   	let off = new THREE.Vector3(0, radius, -2 * radius);
   	camera.init(80, off, 0.4, radius * 5);
+		console.log(camera);
 
 
 
@@ -72,17 +73,6 @@ function init() {
   polybiusAudio = new PolybiusAudio();
 	  polybiusAudio.init(true, true, true, 'sounds/base_editada_3.mp3')// ambStatus, astStatus , shootStatus , ambSrc, astSrc,shootSrc
     camera.getCam().add( polybiusAudio.getListener() );
-
-	// controles
-	controls = new THREE.FlyControls( groupNaves.children[0] );
-		controls.domElement = container;
-    controls.rad = 6 * radius;
-    controls.minRad = 4 * radius;
-    controls.maxRad = 10 * radius;
-  	controls.radSpeed = radius / 6;
-    controls.angSpeed = 0.03;
-    controls.rotation = 0.0;
-    controls.rotSpeed = 0.03;
 
     // luz (al pedo, el material wireframe no la calcula)
 	ambientLight = new THREE.AmbientLight( 0xffffff );
@@ -254,7 +244,11 @@ function handleUpdates( delta ) {
 		fragments[i].update( delta );
 	}
 
-	controls.update( delta );
+	let naves = groupNaves.children;
+	for(let i = 0; i < naves.length; i++) {
+		naves[i].update( delta );
+	}
+
 	camera.update( delta );
 
 	// despues de update...
