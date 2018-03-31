@@ -19,7 +19,7 @@ class CenterShield extends PolyObject {
       let shieldGeometry = new THREE.SphereGeometry(this.size, 10, 10);
 
       this.mesh = new THREE.Mesh(shieldGeometry, shieldMaterial);
-      this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+      this.mesh.position.copy(this.position);
   };
 
   // UPDATE orbita
