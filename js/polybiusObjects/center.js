@@ -51,7 +51,7 @@ class Center extends PolyObject {
     let sph = new THREE.SphereGeometry(this.lado * 1.8, this.wAsteroids, this.hAsteroids);
     for(let i = 0; i < sph.vertices.length; i++)
     {
-      this.asteroids.add( new CenterAsteroid(sph.vertices[i].clone(), this.lado / 6, 0 ) );   //Math.random(-0.1, 0.1)
+      this.asteroids.add( new CenterAsteroid(sph.vertices[i].clone(), this.lado / 6, 0 ) );
     }
   }
 
@@ -79,20 +79,10 @@ class Center extends PolyObject {
     for(let i = 0; i < this.asteroids.children.length; i++)
     {
       this.asteroids.children[i].update( delta );
-      //console.log(this.asteroids.children[i]);
-    }
-
-    if( ! (this.t - this.colorResetTime < 0.05) ) {
-      for(let i = 0; i < 4; i++) {
-        this.centerMesh[i].material.color.setRGB( 0xff0c00 );
-      }
     }
 
     this.shield.update( delta );
-/*    for(let i = 0; i < 3; i++) {
-      this.centerMesh.children[i].material.color.setHSL((i / 3) + this.hueOff % 1 , 1, 0.5);
-    }
-    this.hueOff += this.colorChangeRate;*/
+
   }
 
   onCollide( who ) {
@@ -107,11 +97,6 @@ class Center extends PolyObject {
       this.needToCreate = true;
     }
 
-    // Handle color when hit
-    for(let i = 0; i < 4; i++) {
-      this.centerMesh[i].material.color.setRGB( 1, 1, 1 );
-      this.colorResetTime = this.t;
-    }
   }
 
   addShieldToGroup( gr ) {

@@ -65,9 +65,6 @@ function init() {
 	camera = new FollowCamera( groupNaves.children[0] );
   	let off = new THREE.Vector3(0, radius, -2 * radius);
   	camera.init(80, off, 0.4, radius * 5);
-		console.log(camera);
-
-
 
 	/*Audio*/
   polybiusAudio = new PolybiusAudio();

@@ -10,6 +10,10 @@ class Asteroid extends PolyObject {
       this.rot = new THREE.Vector3();
 
       this.setHp(300);
+      this.t = 0;
+      this.timeToLive = Infinity;
+
+      this.radToLive = 800;
 
       //Calculo vector para orbitar
       if(rotationVector == undefined) {
@@ -48,6 +52,14 @@ class Asteroid extends PolyObject {
       this.mesh.position.set(this.position.x, this.position.y, this.position.z);
 
       this.updateHitbox(this.position, this.size);
+
+      this.t += delta;
+      if(this.t > this.timeToLive || this.position.length() > this.radToLive)
+      {
+          let explosionPos = this.position.clone();
+          createExplosion(explosionPos, this.size , 8);
+          removeFromScene(this);
+      }
   };
 
   // colisiones

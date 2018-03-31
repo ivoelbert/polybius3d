@@ -30,8 +30,10 @@ function initAcid() {
 
 
 // Creates asteroid at position -pos-
-function createAsteroidAt( pos ) {
-	let asteroid = new Asteroid(pos, radius/2, 0.8, 1);
+function createAsteroidAt( pos, radvv, angvv ) {
+  let rv = radvv === undefined ? 0.8 : radvv;
+  let av = angvv === undefined ? 1 : angvv;
+	let asteroid = new Asteroid(pos, radius/2, rv, av);
 		asteroid.addToScene( scene );
 		groupAsteroids.add(asteroid);
 }
@@ -73,5 +75,13 @@ function createExplosion( pos, size, frags ) {
     let nFrag = new ExplosionFragment(pos, size * THREE.Math.randFloat(0.5, 1), dir);
     nFrag.addToScene( scene );
     groupExplosions.add( nFrag );
+  }
+}
+
+function createAsteroidBarrier() {
+  let sph = new THREE.SphereGeometry(radius, 16, 8);
+  for(let i = 0; i < sph.vertices.length; i++)
+  {
+    createAsteroidAt(sph.vertices[i], 1.2, 0);
   }
 }
