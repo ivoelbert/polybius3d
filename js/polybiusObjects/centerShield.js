@@ -26,7 +26,9 @@ class CenterShield extends PolyObject {
   update ( delta ) {
     this.t += delta;
 
-    if( ! (this.t - this.colorResetTime < 0.05) ) {
+    let d = this.t - this.colorResetTime;
+    let blinkTime = 0.08;
+    if( d > blinkTime && d < 2*blinkTime) {
       this.mesh.material.color.setHex( 0x000000 );
     }
   };
@@ -35,7 +37,5 @@ class CenterShield extends PolyObject {
   onCollide(who) {
     this.colorResetTime = this.t;
     this.mesh.material.color.setHex( 0x016804 );
-
-    createExplosion(new THREE.Vector3(0, 0, 0), this.size);
   }
 }
