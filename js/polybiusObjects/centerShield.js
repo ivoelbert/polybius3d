@@ -8,6 +8,12 @@ class CenterShield extends PolyObject {
       this.size = size;
       this.t = 0;
       this.colorResetTime = 0;
+      this.blinkTime = 0.08;
+
+      this.setHp(15000);
+
+      // center asteroids
+      this.asteroidCount = Infinity;
 
       // geometria, material y mesh
       // SHIELD
@@ -27,15 +33,37 @@ class CenterShield extends PolyObject {
     this.t += delta;
 
     let d = this.t - this.colorResetTime;
-    let blinkTime = 0.08;
-    if( d > blinkTime && d < 2*blinkTime) {
+
+    if( d > this.blinkTime && d < 2*this.blinkTime) {
       this.mesh.material.color.setHex( 0x000000 );
     }
+
+
   };
 
   // colisiones
   onCollide(who) {
     this.colorResetTime = this.t;
     this.mesh.material.color.setHex( 0x016804 );
+
+    if(this.asteroidCount < 1) {
+      this.blinkTime = 0.15;
+      this.hp -= who.getPower();
+
+      let shotsTilBlow = 20;
+      let blow = (this.hp % (100 * shotsTilBlow)) / 100;
+      let scl = THREE.Math.mapLinear(blow, shotsTilBlow - 1, 0, 1, 1.2);
+      this.mesh.scale.set(scl, scl, scl);
+      if(blow == 0)
+      {
+        createAsteroidBarrier();
+      }
+
+      if(this.hp < 0)
+      {
+        createExplosion(new THREE.Vector3(0, 0, 0), this.size, 16, 2);
+        removeFromScene(this);
+      }
+    }
   }
 }

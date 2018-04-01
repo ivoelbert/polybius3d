@@ -57,7 +57,7 @@ class Asteroid extends PolyObject {
       if(this.t > this.timeToLive || this.position.length() > this.radToLive)
       {
           let explosionPos = this.position.clone();
-          createExplosion(explosionPos, this.size , 8);
+          createExplosion(explosionPos, this.size , 4);
           removeFromScene(this);
       }
   };

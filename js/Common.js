@@ -62,15 +62,17 @@ function createRandomAcidPill() {
 
 
 // Creates an explosion of size -size- at -pos- with -frags- fragments
-function createExplosion( pos, size, frags ) {
+function createExplosion( pos, size, frags, speed ) {
   for(let i = 0; i < frags; i++) {
 
+    let sp = speed === undefined ? 1 : speed;
     let vx = Math.random() - 0.5;
     let vy = Math.random() - 0.5;
     let vz = Math.random() - 0.5;
     let dir = new THREE.Vector3(vx, vy, vz);
     dir.normalize();
     dir.multiplyScalar(radius * THREE.Math.randFloat(1, 1.5));
+    dir.multiplyScalar(sp);
 
     let nFrag = new ExplosionFragment(pos, size * THREE.Math.randFloat(0.5, 1), dir);
     nFrag.addToScene( scene );
