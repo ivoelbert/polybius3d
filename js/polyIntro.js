@@ -66,6 +66,8 @@ function init() {
 
   let asteroid = new Asteroid(new THREE.Vector3( 6 * radius, 0, 0 ), radius, 0, 1);
   	asteroid.addToScene( scene );
+    asteroid.radToLive = Infinity;
+    asteroid.timeToLive = Infinity;
   	groupAsteroids.add(asteroid);
 
 	////////////////////////////////////// lo que estaba //////////////////////////////////////
