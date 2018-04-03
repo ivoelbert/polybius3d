@@ -31,14 +31,9 @@ class Asteroid extends PolyObject {
       this.rot.normalize();
 
       // geometria, material y mesh
-      let asteroidGeometry = new THREE.SphereGeometry(this.size, 10, 10);
-      let asteroidMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffff00,
-        wireframe: true
-      });
-
-      this.mesh = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
+      this.mesh = new THREE.Mesh(COMMON.asteroidGeometry[0], COMMON.asteroidMaterial);
       this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+      this.mesh.scale.multiplyScalar(this.size);
   };
 
   // UPDATE orbita
@@ -69,9 +64,8 @@ class Asteroid extends PolyObject {
     if(this.hp <= 0) {
       removeFromScene(this);
     } else {
-      let newDetail = this.hp * 0.03;
-      let newGeometry = new THREE.SphereGeometry(this.size, newDetail, newDetail);
-      this.mesh.geometry = newGeometry;
+      let geom = Math.floor(THREE.Math.mapLinear(this.hp, 300, 0, 0, 3));
+      this.mesh.geometry = COMMON.asteroidGeometry[geom];
     }
   }
 }

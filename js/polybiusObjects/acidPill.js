@@ -28,16 +28,9 @@ class AcidPill extends PolyObject {
       this.rot.normalize();
 
       // geometria, material y mesh
-
-      let pillGeometry = new THREE.CylinderGeometry(this.size/3, this.size/3, this.size, 12);
-
-      let pillMaterial = new THREE.MeshBasicMaterial({
-        color: 0x22ff22,
-        wireframe: true
-      });
-
-      this.mesh = new THREE.Mesh(pillGeometry, pillMaterial);
+      this.mesh = new THREE.Mesh(COMMON.pillGeometry, COMMON.pillMaterial);
       this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+      this.mesh.scale.multiplyScalar(this.size);
   };
 
   // UPDATE orbita

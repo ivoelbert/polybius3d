@@ -1,3 +1,8 @@
+
+
+var COMMON = {};
+
+
 // Shoots from the vector -from- towards the center
 function shootTirito(from) {
 	let vel = from.clone();
@@ -29,6 +34,19 @@ function initAcid() {
 }
 
 
+
+// ASTEROIDS
+
+COMMON.asteroidGeometry = [ new THREE.SphereGeometry(1, 10, 10),
+                            new THREE.SphereGeometry(1, 6, 6),
+                            new THREE.SphereGeometry(1, 3, 3)
+                          ];
+COMMON.asteroidMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffff00,
+  wireframe: true
+});
+
+
 // Creates asteroid at position -pos-
 function createAsteroidAt( pos, radvv, angvv ) {
   let rv = radvv === undefined ? 0.8 : radvv;
@@ -46,6 +64,15 @@ function createRandomAsteroid() {
 }
 
 
+
+// ACID PILL
+COMMON.pillGeometry = new THREE.CylinderGeometry(0.333, 0.333, 1, 12);
+
+COMMON.pillMaterial = new THREE.MeshBasicMaterial({
+  color: 0x22ff22,
+  wireframe: true
+});
+
 // Creates acid pill at position -pos-
 function createAcidPillAt( pos ) {
 	let acidPill = new AcidPill(pos, radius/2, 1, 1);
@@ -60,6 +87,18 @@ function createRandomAcidPill() {
 	createAcidPillAt( pos );
 }
 
+
+
+
+// EXPLOSION
+COMMON.fragmentGeometry = [ new THREE.TetrahedronGeometry( 1, 0 ),
+                            new THREE.TetrahedronGeometry( 1, 1 )
+                          ];
+
+COMMON.fragmentMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffe075,
+  wireframe: true
+});
 
 // Creates an explosion of size -size- at -pos- with -frags- fragments
 function createExplosion( pos, size, frags, speed ) {

@@ -11,14 +11,10 @@ class ExplosionFragment extends PolyObject {
       this.setPower(100);
 
       // geometria, material y mesh
-      let fragmentGeometry = new THREE.TetrahedronGeometry( this.size, Math.floor(Math.random() + 0.5) );
-      let fragmentMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffe075,
-        wireframe: true
-      });
-
-      this.mesh = new THREE.Mesh(fragmentGeometry, fragmentMaterial);
+      let geom = COMMON.fragmentGeometry[Math.floor(Math.random() * 2)];
+      this.mesh = new THREE.Mesh(geom, COMMON.fragmentMaterial.clone());
       this.mesh.position.copy(this.position);
+      this.mesh.scale.multiplyScalar(this.size);
   };
 
   // UPDATE orbita
