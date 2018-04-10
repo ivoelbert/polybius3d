@@ -11,15 +11,10 @@ class CenterAsteroid extends PolyObject {
       this.setHp(100);
 
 
-      // geometria, material y mesh
-      let asteroidGeometry = new THREE.BoxGeometry( this.size, this.size, this.size );
-      let asteroidMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        wireframe: true
-      });
-
-      this.mesh = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
-      this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+      // mesh
+      this.mesh = COMMON.centerAsteroidMesh.clone();
+      this.mesh.position.copy(this.position);
+      this.mesh.scale.multiplyScalar( this.size );
 
       //Calculo vector para orbitar
       let orb = new THREE.Vector3(Math.random(), Math.random(), Math.random());

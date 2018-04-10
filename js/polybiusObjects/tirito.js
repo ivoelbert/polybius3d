@@ -7,7 +7,7 @@ class Tirito extends PolyObject {
 
     this.setPower(100);
 
-    this.mesh = new THREE.Mesh( COMMON.tiritoGeometry, COMMON.tiritoMaterial );
+    this.mesh = COMMON.tiritoMesh.clone();
     this.mesh.scale.multiplyScalar( this.size );
   }
 

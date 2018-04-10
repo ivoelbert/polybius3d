@@ -28,8 +28,8 @@ class AcidPill extends PolyObject {
       this.rot.normalize();
 
       // geometria, material y mesh
-      this.mesh = new THREE.Mesh(COMMON.pillGeometry, COMMON.pillMaterial);
-      this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+      this.mesh = COMMON.pillMesh.clone();
+      this.mesh.position.copy(this.position);
       this.mesh.scale.multiplyScalar(this.size);
   };
 

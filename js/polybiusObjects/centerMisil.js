@@ -8,6 +8,7 @@ class CenterMisil extends PolyObject {
 
     this.followed = followed;
 
+    this.t = 0;
     this.radToLive = 700;
 
     if(dir === undefined)
@@ -24,8 +25,7 @@ class CenterMisil extends PolyObject {
 
     this.setPower(100);
 
-    this.mesh = new THREE.Mesh( COMMON.misilGeometry, COMMON.misilMaterial );
-
+    this.mesh = COMMON.misilMesh.clone();
     this.mesh.scale.multiplyScalar( this.size );
 
     let lookAtPos = this.position.clone();
@@ -35,6 +35,7 @@ class CenterMisil extends PolyObject {
   }
 
   update( delta ) {
+    this.t += delta;
 
     let towards = this.followed.position.clone();
     towards.sub(this.position);
@@ -52,6 +53,12 @@ class CenterMisil extends PolyObject {
     lookAtPos.add(this.direction);
     this.mesh.lookAt(lookAtPos);
     this.mesh.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI * 0.5);
+
+    let fireRot = 10;
+    this.mesh.children[0].scale.y += Math.sin(this.t * 10) * 0.05;
+    this.mesh.children[0].rotateY(delta * fireRot);
+    this.mesh.children[1].scale.y -= Math.cos(this.t * 10) * 0.05;
+    this.mesh.children[1].rotateY(delta * -fireRot);
 
     let goto = this.direction.clone();
     goto.multiplyScalar( delta );

@@ -23,11 +23,12 @@ function initAcid() {
 
 
 // TIRITO
-COMMON.tiritoGeometry = new THREE.SphereGeometry(1, 5, 5);
-COMMON.tiritoMaterial = new THREE.MeshBasicMaterial({
+let tiritoGeometry = new THREE.SphereGeometry(1, 5, 5);
+let tiritoMaterial = new THREE.MeshBasicMaterial({
 	 wireframe: true,
 	 color: 0xffffff
 });
+COMMON.tiritoMesh = new THREE.Mesh( tiritoGeometry, tiritoMaterial );
 
 // Shoots from the vector -from- towards the center
 function shootTirito(from) {
@@ -41,11 +42,34 @@ function shootTirito(from) {
 
 
 // MISIL
-COMMON.misilGeometry = new THREE.CylinderGeometry(0.2, 0.4, 1, 6, 1, );
-COMMON.misilMaterial = new THREE.MeshBasicMaterial({
+let misilGeometry = new THREE.CylinderGeometry(0.2, 0.4, 1, 6, 1);
+let misilMaterial = new THREE.MeshBasicMaterial({
 	 wireframe: true,
 	 color: 0xffffff
 });
+
+let fireGeom = new THREE.ConeGeometry( 0.2, 0.6, 6 );
+
+let lightFireMat = new THREE.MeshBasicMaterial({
+	 wireframe: true,
+	 color: 0xfffc84
+});
+
+let darkFireMat = new THREE.MeshBasicMaterial({
+	 wireframe: true,
+	 color: 0xff6147
+});
+
+let lightFire = new THREE.Mesh(fireGeom, lightFireMat);
+let darkFire = new THREE.Mesh(fireGeom, darkFireMat);
+lightFire.position.y -= 1;
+darkFire.position.y -= 1;
+lightFire.rotateX(Math.PI);
+darkFire.rotateX(Math.PI);
+
+COMMON.misilMesh = new THREE.Mesh( misilGeometry, misilMaterial );
+COMMON.misilMesh.add(lightFire);
+COMMON.misilMesh.add(darkFire);
 
 // Shoots a misil from -from- following -to-
 function shootMisil( from, to )
@@ -62,6 +86,16 @@ function shootMisilFromCenter()
 {
 	shootMisil(new THREE.Vector3(0, 0, 0), groupNaves.children[0]);
 }
+
+
+// CENTER ASTEROIDS
+let centerAsteroidGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+let centerAsteroidMaterial = new THREE.MeshBasicMaterial({
+	color: 0xffffff,
+	wireframe: true
+});
+
+COMMON.centerAsteroidMesh = new THREE.Mesh( centerAsteroidGeometry, centerAsteroidMaterial );
 
 
 // ASTEROIDS
@@ -93,12 +127,14 @@ function createRandomAsteroid() {
 
 
 // ACID PILL
-COMMON.pillGeometry = new THREE.CylinderGeometry(0.333, 0.333, 1, 12);
+let pillGeometry = new THREE.CylinderGeometry(0.333, 0.333, 1, 12);
 
-COMMON.pillMaterial = new THREE.MeshBasicMaterial({
+let pillMaterial = new THREE.MeshBasicMaterial({
   color: 0x22ff22,
   wireframe: true
 });
+
+COMMON.pillMesh = new THREE.Mesh( pillGeometry, pillMaterial );
 
 // Creates acid pill at position -pos-
 function createAcidPillAt( pos ) {
@@ -126,6 +162,7 @@ COMMON.fragmentMaterial = new THREE.MeshBasicMaterial({
   color: 0xffe075,
   wireframe: true
 });
+
 
 // Creates an explosion of size -size- at -pos- with -frags- fragments
 function createExplosion( pos, size, frags, speed ) {
