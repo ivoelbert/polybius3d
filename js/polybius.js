@@ -13,6 +13,7 @@ var dirLight, pointLight, ambientLight;
 var textureLoader = new THREE.TextureLoader();
 var clock = new THREE.Clock();
 var createAsteroidAvailable = false;
+var createMisilAvailable = false;
 
 // post
 var glitchComposer;
@@ -34,6 +35,7 @@ var groupCenterAsteroids = new THREE.Group(); groupObjects.add(groupCenterAstero
 var groupAsteroids = new THREE.Group(); groupObjects.add(groupAsteroids);
 var groupPills = new THREE.Group(); groupObjects.add(groupPills);
 var groupTiritos = new THREE.Group(); groupObjects.add(groupTiritos);
+var groupMisiles = new THREE.Group(); groupObjects.add(groupMisiles);
 var groupExplosions = new THREE.Group(); groupObjects.add(groupExplosions);
 
 
@@ -91,6 +93,9 @@ function init() {
     collider.addRegla(groupTiritos, groupCenterAsteroids);
     collider.addRegla(groupNaves, groupExplosions);
     collider.addRegla(groupNaves, groupPills);
+		collider.addRegla(groupNaves, groupMisiles);
+		collider.addRegla(groupAsteroids, groupMisiles);
+		collider.addRegla(groupTiritos, groupMisiles);
 
 
 
@@ -236,6 +241,11 @@ function handleUpdates( delta ) {
 		tiritos[i].update( delta );
 	}
 
+	let misiles = groupMisiles.children;
+	for(let i = 0; i < misiles.length; i++) {
+		misiles[i].update( delta );
+	}
+
   let fragments = groupExplosions.children;
 	for(let i = 0; i < fragments.length; i++) {
 		fragments[i].update( delta );
@@ -297,15 +307,26 @@ function handleUpdates( delta ) {
     RGBPass.uniforms[ 'colorFreq' ].value = 50;
   }
 
-	// Crea meteoritos si es necesario.
-	if(clock.elapsedTime % 5 < 1 && createAsteroidAvailable) {
+	// Crea meteoritos acidPills o misiles si es necesario.
+	let elapsed = clock.elapsedTime;
+	if(elapsed % 2 < 1 && createMisilAvailable) {
+		createMisilAvailable = false;
+    if(Math.random() > 0.5)
+			shootMisilFromCenter();
+	}
+	else if (elapsed % 2 > 1) {
+		createMisilAvailable = true;
+	}
+
+
+	if(elapsed % 5 < 1 && createAsteroidAvailable) {
 		createAsteroidAvailable = false;
     if(Math.random() > 0.5)
 		  createRandomAsteroid();
     else
       createRandomAcidPill();
 	}
-	if(clock.elapsedTime % 5 > 1) {
+	else if(elapsed % 5 > 1) {
 		createAsteroidAvailable = true;
 	}
 }

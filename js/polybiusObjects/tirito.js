@@ -7,13 +7,8 @@ class Tirito extends PolyObject {
 
     this.setPower(100);
 
-    let tiritoGeometry = new THREE.SphereGeometry(size, 5, 5);
-    let tiritoMaterial = new THREE.MeshBasicMaterial({
-	     wireframe: true,
-       color: 0xffffff
-	  });
-    this.mesh = new THREE.Mesh( tiritoGeometry, tiritoMaterial );
-
+    this.mesh = new THREE.Mesh( COMMON.tiritoGeometry, COMMON.tiritoMaterial );
+    this.mesh.scale.multiplyScalar( this.size );
   }
 
   update( delta ) {

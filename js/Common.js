@@ -1,17 +1,5 @@
 
-
 var COMMON = {};
-
-
-// Shoots from the vector -from- towards the center
-function shootTirito(from) {
-	let vel = from.clone();
-	vel.normalize().multiplyScalar(-radius * 0.5);
-	let tirito = new Tirito(from, radius * 0.1, vel);
-	tirito.addToScene(scene);
-	groupTiritos.add(tirito);
-	polybiusAudio.shoot();
-}
 
 
 // Removes an object from the scene (and from its group)
@@ -19,7 +7,6 @@ function removeFromScene(object) {
 	object.parent.remove(object);
 	scene.remove(object.mesh);
 }
-
 
 // Initalizes glitch shader
 function initGlitch() {
@@ -35,8 +22,49 @@ function initAcid() {
 
 
 
-// ASTEROIDS
+// TIRITO
+COMMON.tiritoGeometry = new THREE.SphereGeometry(1, 5, 5);
+COMMON.tiritoMaterial = new THREE.MeshBasicMaterial({
+	 wireframe: true,
+	 color: 0xffffff
+});
 
+// Shoots from the vector -from- towards the center
+function shootTirito(from) {
+	let vel = from.clone();
+	vel.normalize().multiplyScalar(-radius * 0.5);
+	let tirito = new Tirito(from, radius * 0.1, vel);
+	tirito.addToScene(scene);
+	groupTiritos.add(tirito);
+	polybiusAudio.shoot();
+}
+
+
+// MISIL
+COMMON.misilGeometry = new THREE.CylinderGeometry(0.2, 0.4, 1, 6, 1, );
+COMMON.misilMaterial = new THREE.MeshBasicMaterial({
+	 wireframe: true,
+	 color: 0xffffff
+});
+
+// Shoots a misil from -from- following -to-
+function shootMisil( from, to )
+{
+	let randomDir = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+	let misil = new CenterMisil(to, from, radius * 0.5, radius * 9, Math.PI * 0.9, randomDir);
+	misil.addToScene(scene);
+	groupMisiles.add(misil);
+	//TODO: AUDIO
+}
+
+// Shoots a misil from the center Following nave
+function shootMisilFromCenter()
+{
+	shootMisil(new THREE.Vector3(0, 0, 0), groupNaves.children[0]);
+}
+
+
+// ASTEROIDS
 COMMON.asteroidGeometry = [ new THREE.SphereGeometry(1, 10, 10),
                             new THREE.SphereGeometry(1, 6, 6),
                             new THREE.SphereGeometry(1, 3, 3)
@@ -45,7 +73,6 @@ COMMON.asteroidMaterial = new THREE.MeshBasicMaterial({
   color: 0xffff00,
   wireframe: true
 });
-
 
 // Creates asteroid at position -pos-
 function createAsteroidAt( pos, radvv, angvv ) {
