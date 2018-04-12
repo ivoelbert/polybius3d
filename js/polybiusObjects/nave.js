@@ -5,7 +5,7 @@ class Nave extends PolyObject {
     this.position.copy(pos);
     this.size = size;
     this.matrix = new THREE.Matrix4();
-
+    /*
     let naveGeometry = new THREE.SphereGeometry(size, 3, 3);
     let naveMaterial = new THREE.MeshBasicMaterial({
 	     wireframe: true,
@@ -13,7 +13,11 @@ class Nave extends PolyObject {
 	  });
     this.mesh = new THREE.Mesh(naveGeometry, naveMaterial);
     this.mesh.scale.set(0.5, 0.25, 1);
+    */
+    console.log(COMMON.naveMesh);
+    this.mesh = COMMON.naveMesh;
     this.mesh.position.copy(this.position);
+    this.mesh.scale.multiplyScalar(this.size);
 
     this.setPower(500);
 
@@ -62,7 +66,6 @@ class Nave extends PolyObject {
   {
     // Actualizo los controles
     this.updateControls();
-
     // Actualizo el radio
     var zoffset = this.forwardBack * this.radSpeed;
 

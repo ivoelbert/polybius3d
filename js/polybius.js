@@ -45,9 +45,6 @@ var collider;
 //audio
 var polybiusAudio;
 
-init();
-animate();
-
 function init() {
 	noise.seed(Math.random());
 
@@ -59,7 +56,7 @@ function init() {
 	 scene.fog = new THREE.FogExp2( 0x000000, 0.000025 );
 
   let navepos = new THREE.Vector3(0, 0, radius * 5);
-	let nave = new Nave( navepos, radius * 0.8 );
+	let nave = new Nave( navepos, radius * 0.09);
     nave.addToScene( scene );
     groupNaves.add(nave);
 
@@ -177,6 +174,9 @@ function init() {
   RGBPass.uniforms[ 'waveFreq' ].value = 10 * 3.14;
   RGBPass.uniforms[ 'colorOff' ].value = 0;
   RGBPass.uniforms[ 'colorFreq' ].value = 50;
+
+
+  animate();
 
 }
 

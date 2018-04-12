@@ -190,3 +190,37 @@ function createAsteroidBarrier() {
     createAsteroidAt(sph.vertices[i], 1.2, 0);
   }
 }
+
+
+// NAVE
+var loader = new THREE.OBJLoader();
+
+COMMON.naveMesh;
+
+loader.load(
+	// resource URL
+	'models/polyNave6.obj',
+	// called when resource is loaded
+	function ( object ) {
+		COMMON.naveMesh = object;
+		COMMON.naveMesh.material = new THREE.MeshStandardMaterial({
+       		color: 0xffffff,
+       		metalness: 0.5,
+       		roughness: 1
+	  	});
+	  	COMMON.naveMesh.material.needsUpdate = true;
+		init();
+	},
+	// called when loading is in progresses
+	function ( xhr ) {
+
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+	},
+	// called when loading has errors
+	function ( error ) {
+
+		console.log( 'An error happened' );
+
+	}
+);
