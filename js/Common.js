@@ -199,17 +199,17 @@ COMMON.naveMesh;
 
 loader.load(
 	// resource URL
-	'models/polyNave6.obj',
+	'models/polyNave6wire.obj',
 	// called when resource is loaded
 	function ( object ) {
 		COMMON.naveMesh = object;
-		COMMON.naveMesh.material = new THREE.MeshStandardMaterial({
+/*		COMMON.naveMesh.material = new THREE.MeshStandardMaterial({
        		color: 0xffffff,
        		metalness: 0.5,
        		roughness: 1
-	  	});
-	  	COMMON.naveMesh.material.needsUpdate = true;
-		init();
+	  	});*/
+/*	  	COMMON.naveMesh.material.needsUpdate = true;
+*/		init();
 	},
 	// called when loading is in progresses
 	function ( xhr ) {
