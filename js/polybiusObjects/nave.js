@@ -14,7 +14,6 @@ class Nave extends PolyObject {
     this.mesh = new THREE.Mesh(naveGeometry, naveMaterial);
     this.mesh.scale.set(0.5, 0.25, 1);
     */
-    console.log(COMMON.naveMesh);
     this.mesh = COMMON.naveMesh;
     this.mesh.position.copy(this.position);
     this.mesh.scale.multiplyScalar(this.size);
