@@ -74,7 +74,7 @@ class selectionCenter extends PolyObject {
 
     if(this.hp < 0)
     {
-      document.location.replace("/polybius.html?selectedMesh=" + COMMON.selectedMesh);
+      window.location.href = "polybius.html?selectedMesh=" + COMMON.selectedMesh;
     }
   }
 
