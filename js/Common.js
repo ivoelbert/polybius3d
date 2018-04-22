@@ -1,6 +1,8 @@
 
 var COMMON = {};
 
+// Loader para .obj
+var loader = new THREE.OBJLoader();
 
 // Removes an object from the scene (and from its group)
 function removeFromScene(object) {
@@ -18,6 +20,10 @@ function initAcid() {
   if(renderAcid == true)
     acidEllapsed = 5;
   renderAcid = true;
+}
+
+function easeInOut(t) {
+	return t<.5 ? 2*t*t : -1+(4-2*t)*t
 }
 
 
@@ -127,14 +133,36 @@ function createRandomAsteroid() {
 
 
 // ACID PILL
-let pillGeometry = new THREE.CylinderGeometry(0.333, 0.333, 1, 12);
 
 let pillMaterial = new THREE.MeshBasicMaterial({
   color: 0x22ff22,
   wireframe: true
 });
 
-COMMON.pillMesh = new THREE.Mesh( pillGeometry, pillMaterial );
+COMMON.pillMesh;
+
+loader.load(
+	// resource URL
+	'models/acidpill.obj',
+
+	// called when resource is loaded
+	function ( object ) {
+		let pillGeometry = object.children[0].geometry;
+		COMMON.pillMesh = new THREE.Mesh(pillGeometry, pillMaterial);
+
+		loadNaves();
+	},
+	
+	// called when loading is in progresses
+	function ( xhr ) {
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+	},
+
+	// called when loading has errors
+	function ( error ) {
+		console.log( 'An error happened' );
+	}
+);
 
 // Creates acid pill at position -pos-
 function createAcidPillAt( pos ) {
@@ -192,24 +220,95 @@ function createAsteroidBarrier() {
 }
 
 
-// NAVE
-var loader = new THREE.OBJLoader();
+// NAVES
 
-COMMON.naveMesh;
+COMMON.naveMesh = [];
+
+COMMON.selectedMesh;
+
+function loadNaves() {
+	let navesToLoad = 	[	
+							"polyNave6wire.obj",
+							"naveMonoswire.obj",
+							"ApoloWireframe.obj",
+							"naveChala180origSize.obj"
+						];
+
+	let naves = navesToLoad.length;
+	let loadedNaves = 0;
+	
+	let loadNextNave = function() {
+		if(loadedNaves >= naves)
+		{
+			init();
+		}
+		else
+		{
+			loader.load(
+				// resource URL
+				'models/' + navesToLoad[loadedNaves],
+				// called when resource is loaded
+				function ( object ) {
+					COMMON.naveMesh[loadedNaves] = object;
+					
+					loadedNaves++;
+					loadNextNave();
+				},
+				
+				// called when loading is in progresses
+				function ( xhr ) {
+					console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+				},
+
+				// called when loading has errors
+				function ( error ) {
+					console.log( 'An error happened' );
+				}
+			);
+		}
+	};
+
+	loadNextNave();
+}
+
+
+function getScale(nave)
+{
+	switch(nave)
+	{
+		// DEFAULT
+		case 0:
+		return 1;
+		break;
+
+		// FRUTA
+		case 1:
+		return 1;
+		break;
+
+		// APOLO
+		case 2:
+		return 3;
+		break;
+
+		// CHALA
+		case 3:
+		return 2;
+		break;
+	}
+}
+
+
+
+// POWER UP
+COMMON.powerUpMesh;
 
 loader.load(
 	// resource URL
-	'models/polyNave6wire.obj',
+	'models/powerUp.obj',
 	// called when resource is loaded
 	function ( object ) {
-		COMMON.naveMesh = object;
-/*		COMMON.naveMesh.material = new THREE.MeshStandardMaterial({
-       		color: 0xffffff,
-       		metalness: 0.5,
-       		roughness: 1
-	  	});*/
-/*	  	COMMON.naveMesh.material.needsUpdate = true;
-*/		init();
+		COMMON.powerUpMesh = object;
 	},
 	// called when loading is in progresses
 	function ( xhr ) {
@@ -224,3 +323,9 @@ loader.load(
 
 	}
 );
+
+function createPowerUp(pos, sz) {
+	let powerup = new powerUp(pos, sz);
+	powerup.addToScene( scene );
+	groupPowerUps.add( powerup );
+}

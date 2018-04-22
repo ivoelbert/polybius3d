@@ -16,21 +16,11 @@
 				font-size:13px;
 				text-align:center;
 			}
-			#info {
-				position: absolute;
-				top: 0px; width: 100%;
-				padding: 5px;
-				z-index:100;
-			}
-			a {
-				color: #0080ff;
-			}
-			b { color:orange }
 		</style>
 
 		<script src="js/math/noise.js"></script>
 
-    <script src="build/three.js"></script>
+    	<script src="build/three.js"></script>
 
 		<script src="js/controls/PolyControls.js"></script>
 		<script src="js/loaders/OBJLoader.js"></script>
@@ -39,13 +29,13 @@
 		<script src="js/polybiusObjects/tirito.js"></script>
 		<script src="js/polybiusObjects/centerMisil.js"></script>
 		<script src="js/polybiusObjects/collider.js"></script>
-		<script src="js/polybiusObjects/center.js"></script>
+		<script src="js/polybiusObjects/selectionCenter.js"></script>
 		<script src="js/polybiusObjects/asteroid.js"></script>
 		<script src="js/polybiusObjects/acidPill.js"></script>
-    <script src="js/polybiusObjects/centerAsteroids.js"></script>
-    <script src="js/polybiusObjects/centerShield.js"></script>
-    <script src="js/polybiusObjects/powerup.js"></script>
-		<script src="js/polybiusObjects/nave.js"></script>
+	    <script src="js/polybiusObjects/centerAsteroids.js"></script>
+	    <script src="js/polybiusObjects/centerShield.js"></script>
+	    <script src="js/polybiusObjects/powerup.js"></script>
+		<script src="js/polybiusObjects/selectionNave.js"></script>
 		<script src="js/polybiusObjects/explosion.js"></script>
 		<script src="js/polybiusObjects/camera.js"></script>
 		<script src="js/polybiusObjects/sounds.js"></script>
@@ -65,11 +55,43 @@
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
 
+		<style>
+			.health-bar {
+				position: absolute;
+				top: 4vh;
+				width: 50%;
+				margin-left: 25%;
+				padding: 0.6vh;
+				border-radius: 5vh;
+				border: 1px white;
+				background-color: #383838;
+				border-style: solid;
+				border-width: 1px;
+				border-color: grey;
+			}
+
+			#health {
+				height: 0.05vh;
+				float: right;
+				width: 98.5%;
+				padding: 0.4vh;
+				border-radius: 5vh;
+				background-color: red;
+
+			}
+
+		</style>
+
 	</head>
 
 	<body>
+    	<script src="js/Common.js"></script>
+		<script src="js/selectNave.js"></script>
+		<div>
 
-    <script src="js/Common.js"></script>
-		<script src="js/polybius.js"></script>
+		</div>
+		<div class="health-bar">
+	      <div id="health"></div>
+	    </div>
 	</body>
 </html>

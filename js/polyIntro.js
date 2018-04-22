@@ -35,8 +35,7 @@ var groupAsteroids = new THREE.Group(); groupObjects.add(groupAsteroids);
 //audio
 var polybiusAudio;
 
-init();
-animate();
+var time;
 
 function init() {
 	noise.seed(Math.random());
@@ -145,6 +144,8 @@ function init() {
   RGBPass.uniforms[ 'colorOff' ].value = 0;
   RGBPass.uniforms[ 'colorFreq' ].value = 50;
 
+  animate();
+
 }
 
 function onWindowResize( event ) {
@@ -165,8 +166,13 @@ function animate() {
 
 function render() {
 	var delta = clock.getDelta();
+	time += delta;
 
 	handleUpdates( delta );
+
+	let t = THREE.Math.mapLinear(time, 0, 2, 0, Math.PI * 2);
+	let sz = THREE.Math.mapLinear(Math.sin(t), -1, 1, 0.95, 1.05);
+	document.getElementById("title").style["transform"] = "scale(" + sz + ")";
 
 	chooseRenderer();
 }

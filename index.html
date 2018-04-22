@@ -5,6 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>
+
+      @font-face {
+        font-family: polyFont;
+        src: url(fonts/polyfont.ttf);
+      }
+
       body {
         background:#000;
         color: #000000;
@@ -12,32 +18,51 @@
         margin:0;
         font-weight:bold;
         overflow:hidden;
-        font-family:Monospace;
+        font-family: Monospace;
         font-size:16px;
         text-align:center;
       }
+
       #info {
         position: absolute;
-        top: 40%; width: 100%;
+        top: 35%;
+        width: 100%;
         padding: 0px;
         z-index:100;
       }
+
       .info_box {
+        width: 90vh;
         margin: auto;
         padding: 2%;
-        width: 600px;
-        border-radius: 1em;
-        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 2vh;
+        background-color: rgba(255, 246, 246, 0.55);
       }
+
       .play_button {
-        font-size: 34px;
-        color: #b90404;
+        font-size: 10vh;
+        font-family: polyFont;
+        color: black;
       }
+
+      #title {
+        margin: 0;
+        padding-top: 5%;
+      }
+
+      .controls {
+        padding-top: 5vh;
+        padding-bottom: 4vh;
+        font-size: 1.1em;
+      }
+
       b { color: #b90404 }
     </style>
 
     <script src="js/math/noise.js"></script>
     <script src="build/three.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+    
     <script src="js/polybiusObjects/polyobject.js"></script>
     <script src="js/polybiusObjects/center.js"></script>
     <script src="js/polybiusObjects/asteroid.js"></script>
@@ -62,8 +87,12 @@
 
     <div id="info">
       <div class="info_box">
-        <a href="polybius.html" class="play_button" style="text-decoration:none"><div><p>PLAY Polybius3D</p></div></a>
-        <b>WASD</b> orbit, <b>IK</b> forwards/backwards, <b>JL</b> roll, <b>SPACE</b> shoot!
+        <div>
+          <a href="selection.html" class="play_button" style="text-decoration:none"><div><p id="title">POLYBIUS</p></div></a>
+        </div>
+        <div class="controls">
+          <b>WASD</b> orbit, <b>IK</b> forwards/backwards, <b>JL</b> roll, <b>SPACE</b> shoot!
+        </div>
       </div>
     </div>
 

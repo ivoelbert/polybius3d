@@ -12,8 +12,6 @@ var dirLight, pointLight, ambientLight;
 
 var textureLoader = new THREE.TextureLoader();
 var clock = new THREE.Clock();
-var createAsteroidAvailable = false;
-var createMisilAvailable = false;
 
 // post
 var glitchComposer;
@@ -58,7 +56,7 @@ function init() {
 	 scene.fog = new THREE.FogExp2( 0x000000, 0.000025 );
 
   let navepos = new THREE.Vector3(0, 0, radius * 5);
-	let nave = new Nave( navepos, radius * 0.09);
+	let nave = new selectionNave( navepos, radius * 0.09);
     nave.addToScene( scene );
     groupNaves.add(nave);
 
@@ -77,26 +75,12 @@ function init() {
 	scene.add( ambientLight );
 
 	// centro
-  let center = new Center(new THREE.Vector3(0, 0, 0), radius);
+  	let center = new selectionCenter(new THREE.Vector3(0, 0, 0), radius);
 		center.addToScene( scene );
-    groupCenters.add(center);
-    center.addShieldToGroup( groupCenters );
-    groupCenterAsteroids = center.getAsteroidsGroup();
-
-  createAsteroidAt(new THREE.Vector3( radius, 0, 0 ))
+	    groupCenters.add(center);
 
 	collider = new Collider();
-  	collider.addRegla(groupNaves, groupAsteroids);
-  	collider.addRegla(groupAsteroids, groupTiritos);
     collider.addRegla(groupTiritos, groupCenters);
-    collider.addRegla(groupTiritos, groupCenterAsteroids);
-    collider.addRegla(groupNaves, groupExplosions);
-    collider.addRegla(groupNaves, groupPills);
-	collider.addRegla(groupNaves, groupMisiles);
-	collider.addRegla(groupAsteroids, groupMisiles);
-	collider.addRegla(groupTiritos, groupMisiles);
-	collider.addRegla(groupNaves, groupPowerUps);
-
 
 
 	////////////////////////////////////// lo que estaba //////////////////////////////////////
@@ -172,15 +156,14 @@ function init() {
 	RGBPass.renderToScreen = true;
 	RGBComposer.addPass( RGBPass );
 
-  RGBPass.uniforms[ 'time' ].value = 0;
-  RGBPass.uniforms[ 'waveAmp' ].value = 0;
-  RGBPass.uniforms[ 'waveFreq' ].value = 10 * 3.14;
-  RGBPass.uniforms[ 'colorOff' ].value = 0;
-  RGBPass.uniforms[ 'colorFreq' ].value = 50;
+	RGBPass.uniforms[ 'time' ].value = 0;
+	RGBPass.uniforms[ 'waveAmp' ].value = 0;
+	RGBPass.uniforms[ 'waveFreq' ].value = 10 * 3.14;
+	RGBPass.uniforms[ 'colorOff' ].value = 0;
+	RGBPass.uniforms[ 'colorFreq' ].value = 50;
 
 
-  animate();
-
+	animate();
 }
 
 function onWindowResize( event ) {
@@ -229,27 +212,12 @@ function handleUpdates( delta ) {
 		centers[i].update( delta );
 	}
 
-	let asteroids = groupAsteroids.children;
-	for(let i = 0; i < asteroids.length; i++) {
-		asteroids[i].update( delta );
-	}
-
-  let pills = groupPills.children;
-	for(let i = 0; i < pills.length; i++) {
-		pills[i].update( delta );
-	}
-
-  let tiritos = groupTiritos.children;
+  	let tiritos = groupTiritos.children;
 	for(let i = 0; i < tiritos.length; i++) {
 		tiritos[i].update( delta );
 	}
 
-	let misiles = groupMisiles.children;
-	for(let i = 0; i < misiles.length; i++) {
-		misiles[i].update( delta );
-	}
-
-  let fragments = groupExplosions.children;
+  	let fragments = groupExplosions.children;
 	for(let i = 0; i < fragments.length; i++) {
 		fragments[i].update( delta );
 	}
@@ -309,27 +277,4 @@ function handleUpdates( delta ) {
     RGBPass.uniforms[ 'colorOff' ].value = 0;
     RGBPass.uniforms[ 'colorFreq' ].value = 50;
   }
-
-	// Crea meteoritos acidPills o misiles si es necesario.
-	let elapsed = clock.elapsedTime;
-	if(elapsed % 2 < 1 && createMisilAvailable) {
-		createMisilAvailable = false;
-    if(Math.random() > 0.5)
-			shootMisilFromCenter();
-	}
-	else if (elapsed % 2 > 1) {
-		createMisilAvailable = true;
-	}
-
-
-	if(elapsed % 5 < 1 && createAsteroidAvailable) {
-		createAsteroidAvailable = false;
-    if(Math.random() > 0.5)
-		  createRandomAsteroid();
-    else
-      createRandomAcidPill();
-	}
-	else if(elapsed % 5 > 1) {
-		createAsteroidAvailable = true;
-	}
 }

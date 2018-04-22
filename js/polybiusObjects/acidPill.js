@@ -30,7 +30,7 @@ class AcidPill extends PolyObject {
       // geometria, material y mesh
       this.mesh = COMMON.pillMesh.clone();
       this.mesh.position.copy(this.position);
-      this.mesh.scale.multiplyScalar(this.size);
+      this.mesh.scale.multiplyScalar(this.size * 0.5);
   };
 
   // UPDATE orbita
