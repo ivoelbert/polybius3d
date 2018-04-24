@@ -1,6 +1,6 @@
 class Nave extends PolyObject {
   constructor(pos, size) {
-    super(pos, size * 0.6);
+    super(pos, size);
 
     this.position.copy(pos);
     this.size = size;
@@ -20,6 +20,8 @@ class Nave extends PolyObject {
     this.mesh.position.copy(this.position);
 
     this.mesh.scale.multiplyScalar(this.size * getScale(selectedMesh));
+    this.hitbox.mesh.scale.multiplyScalar(getHitboxScale(selectedMesh));
+    this.updateHitbox(this.position, this.hitbox.radius * getHitboxScale(selectedMesh));
 
     this.setPower(500);
 
@@ -108,7 +110,7 @@ class Nave extends PolyObject {
     this.mesh.up.copy(upvec);
     this.mesh.lookAt(new THREE.Vector3(0, 0, 0));
 
-    this.updateHitbox(this.position, this.size * 0.6);
+    this.updateHitbox(this.position, this.hitbox.radius);
 
 		// tiros
 		if(!this.tiritoAvailable) {

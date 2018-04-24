@@ -17,11 +17,16 @@ class PolyObject extends THREE.Object3D {
 
   updateHitbox(pos, rad) {
     this.hitbox.position.copy(pos);
+    this.hitbox.mesh.position.copy(pos);
     this.hitbox.radius = rad;
   }
 
   addToScene( scene ) {
     scene.add(this.mesh);
+
+    if(COMMON.debug) {
+      scene.add(this.hitbox.mesh)
+    }
   }
 
   //Getters a setters
@@ -36,5 +41,8 @@ class Hitbox extends THREE.Object3D {
 
     this.radius = size;
     this.position.copy(pos);
+
+    this.mesh = COMMON.hitboxMesh.clone();
+    this.mesh.scale.multiplyScalar(this.radius);
   }
 }

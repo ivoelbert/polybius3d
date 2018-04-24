@@ -8,6 +8,8 @@ var loader = new THREE.OBJLoader();
 function removeFromScene(object) {
 	object.parent.remove(object);
 	scene.remove(object.mesh);
+	if(COMMON.debug)
+		scene.remove(object.hitbox.mesh);
 }
 
 // Initalizes glitch shader
@@ -226,11 +228,16 @@ COMMON.naveMesh = [];
 
 COMMON.selectedMesh;
 
+let naveMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  wireframe: true
+});
+
 function loadNaves() {
 	let navesToLoad = 	[	
-							"polyNave6wire.obj",
-							"naveMonoswire.obj",
-							"ApoloWireframe.obj",
+							"polyNave6wire.obj"
+,							"naveMonoswire.obj",
+							"ApoloWireframeFix.obj",
 							"naveChala180origSize.obj"
 						];
 
@@ -249,7 +256,8 @@ function loadNaves() {
 				'models/' + navesToLoad[loadedNaves],
 				// called when resource is loaded
 				function ( object ) {
-					COMMON.naveMesh[loadedNaves] = object;
+					let naveGeometry = object.children[0].geometry;
+					COMMON.naveMesh[loadedNaves] = new THREE.Mesh(naveGeometry, naveMaterial);
 					
 					loadedNaves++;
 					loadNextNave();
@@ -262,7 +270,7 @@ function loadNaves() {
 
 				// called when loading has errors
 				function ( error ) {
-					console.log( 'An error happened' );
+					console.log( error );
 				}
 			);
 		}
@@ -298,6 +306,33 @@ function getScale(nave)
 	}
 }
 
+function getHitboxScale(nave)
+{
+	switch(nave)
+	{
+		// DEFAULT
+		case 0:
+		return 4;
+		break;
+
+		// FRUTA
+		case 1:
+		return 4;
+		break;
+
+		// APOLO
+		case 2:
+		return 7;
+		break;
+
+		// CHALA
+		case 3:
+		return 4;
+		break;
+	}
+}
+
+
 
 
 // POWER UP
@@ -329,3 +364,17 @@ function createPowerUp(pos, sz) {
 	powerup.addToScene( scene );
 	groupPowerUps.add( powerup );
 }
+
+
+// HITBOX DEBUG
+
+COMMON.debug = false;
+
+let hitboxMaterial = new THREE.MeshBasicMaterial({
+  color: 0x003ea3,
+  wireframe: true
+});
+
+let hitboxGeometry = new THREE.SphereGeometry(1, 12, 8);
+
+COMMON.hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);

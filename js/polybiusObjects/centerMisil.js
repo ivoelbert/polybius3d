@@ -60,10 +60,10 @@ class CenterMisil extends PolyObject {
     this.mesh.children[1].scale.y -= Math.cos(this.t * 10) * 0.05;
     this.mesh.children[1].rotateY(delta * -fireRot);
 
-    let goto = this.direction.clone();
-    goto.multiplyScalar( delta );
+    let gotov = this.direction.clone();
+    gotov.multiplyScalar( delta );
 
-    this.position.add(goto);
+    this.position.add(gotov);
 
     this.updateHitbox(this.position, this.size * 0.6);
     this.mesh.position.copy(this.position);
@@ -78,6 +78,9 @@ class CenterMisil extends PolyObject {
 
   addToScene( scene ) {
     scene.add(this.mesh);
+    if(COMMON.debug) {
+      scene.add(this.hitbox.mesh)
+    }
   }
 
   onCollide(who) {
