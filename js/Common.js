@@ -253,9 +253,7 @@ function loadNaves() {
 	let loadNextNave = function() {
 		if(loadedNaves >= naves)
 		{
-			init();
 			endLoading();
-			showHealth();
 		}
 		else
 		{
@@ -273,7 +271,6 @@ function loadNaves() {
 
 				// called when loading is in progresses
 				function ( xhr ) {
-					console.log("cargue algo!!");
 					loadedPercent = (loadedNaves + 1) * (100 / naves) + (( xhr.loaded / xhr.total * 100 ) / naves);
 					loadTo(loadedPercent);
 				},
@@ -420,5 +417,13 @@ function loadTo(percent) {
 
 
 function endLoading() {
-	document.getElementById("loading-container").style.display = "none";
+	setTimeout( () => {
+		document.getElementById("loading-container").style.display = "none";
+		document.getElementById("info").style["animation-name"] = "fade-in";
+		document.getElementById("info").style["animation-duration"] = "1.5s";
+		document.getElementById("info").style["animation-delay"] = "0.5s";
+
+		init();
+		showHealth();
+	}, 1000 );
 }
