@@ -419,9 +419,11 @@ function loadTo(percent) {
 function endLoading() {
 	setTimeout( () => {
 		document.getElementById("loading-container").style.display = "none";
-		document.getElementById("info").style["animation-name"] = "fade-in";
-		document.getElementById("info").style["animation-duration"] = "1.5s";
-		document.getElementById("info").style["animation-delay"] = "0.5s";
+		if(document.getElementById("info").style != undefined) {
+			document.getElementById("info").style["animation-name"] = "fade-in";
+			document.getElementById("info").style["animation-duration"] = "1.5s";
+			document.getElementById("info").style["animation-delay"] = "0.5s";
+		}
 
 		init();
 		showHealth();
