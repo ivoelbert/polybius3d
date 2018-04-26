@@ -154,7 +154,7 @@ loader.load(
 
 		loadNaves();
 	},
-	
+
 	// called when loading is in progresses
 	function ( xhr ) {
 		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
@@ -238,23 +238,23 @@ let naveMaterial = new THREE.MeshBasicMaterial({
 
 
 function loadNaves() {
-	let navesToLoad = 	[	
-							"polyNave6wire.obj",
-							"starWars.obj",
-							"ApoloWireframeFix.obj",
-							"naveChala180origSize.obj",
-							"fetusLow6666.obj",
-
-						];
+	let navesToLoad = [
+											"polyNave6wire.obj",
+											"starWars.obj",
+											"ApoloWireframeFix.obj",
+											"naveChala180origSize.obj",
+											"fetusLow6666.obj"
+										];
 
 	let naves = navesToLoad.length;
-	
+
 	let loadedNaves = 0;
-	
+
 	let loadNextNave = function() {
 		if(loadedNaves >= naves)
 		{
 			init();
+			endLoading();
 			showHealth();
 		}
 		else
@@ -266,15 +266,16 @@ function loadNaves() {
 				function ( object ) {
 					let naveGeometry = object.children[0].geometry;
 					COMMON.naveMesh[loadedNaves] = new THREE.Mesh(naveGeometry, naveMaterial);
-					
+
 					loadedNaves++;
 					loadNextNave();
 				},
-				
+
 				// called when loading is in progresses
 				function ( xhr ) {
 					console.log("cargue algo!!");
-					loadedPercent = (loadedNaves + 1) *(( xhr.loaded / xhr.total * 100 ) / naves);
+					loadedPercent = (loadedNaves + 1) * (100 / naves) + (( xhr.loaded / xhr.total * 100 ) / naves);
+					loadTo(loadedPercent);
 				},
 
 				// called when loading has errors
@@ -330,7 +331,7 @@ function getHitboxScale(nave)
 		return 4;
 		break;
 
-		// FRUTA
+		// STARWARS
 		case 1:
 		return 4;
 		break;
@@ -413,3 +414,11 @@ function showHealth() {
 }
 
 // LOADING BAR
+function loadTo(percent) {
+	document.getElementById("loaded").style.width = percent + "%";
+}
+
+
+function endLoading() {
+	document.getElementById("loading-container").style.display = "none";
+}
