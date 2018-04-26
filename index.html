@@ -81,9 +81,32 @@
     <script src="js/postprocessing/GlitchPass.js"></script>
     <script src="js/Detector.js"></script>
 
+    <style>
+      #loading-container {
+        display: none;
+        width: 100vw;
+        height: 10vh;
+        padding-top: 45vh;
+        background-color: #000000;
+      }
+
+      #loaded {
+        background-color: #ffffff;
+        float: right;
+        width: 0%;
+        height: 100%;
+      }
+    </style>
+
   </head>
 
   <body>
+
+    <div id="loading-container">
+      <div id="loaded">
+
+      </div>
+    </div>
 
     <div id="info">
       <div class="info_box">

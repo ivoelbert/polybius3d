@@ -228,26 +228,34 @@ COMMON.naveMesh = [];
 
 COMMON.selectedMesh;
 
+let loadedPercent = 0;
+
 let naveMaterial = new THREE.MeshBasicMaterial({
   color: 0xffffff,
   wireframe: true
 });
 
+
+
 function loadNaves() {
 	let navesToLoad = 	[	
-							"polyNave6wire.obj"
-,							"naveMonoswire.obj",
+							"polyNave6wire.obj",
+							"starWars.obj",
 							"ApoloWireframeFix.obj",
-							"naveChala180origSize.obj"
+							"naveChala180origSize.obj",
+							"fetusLow6666.obj",
+
 						];
 
 	let naves = navesToLoad.length;
+	
 	let loadedNaves = 0;
 	
 	let loadNextNave = function() {
 		if(loadedNaves >= naves)
 		{
 			init();
+			showHealth();
 		}
 		else
 		{
@@ -265,7 +273,8 @@ function loadNaves() {
 				
 				// called when loading is in progresses
 				function ( xhr ) {
-					console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+					console.log("cargue algo!!");
+					loadedPercent = (loadedNaves + 1) *(( xhr.loaded / xhr.total * 100 ) / naves);
 				},
 
 				// called when loading has errors
@@ -289,9 +298,9 @@ function getScale(nave)
 		return 1;
 		break;
 
-		// FRUTA
+		// STARWARS
 		case 1:
-		return 1;
+		return 10;
 		break;
 
 		// APOLO
@@ -303,6 +312,12 @@ function getScale(nave)
 		case 3:
 		return 2;
 		break;
+
+		// FETUS
+		case 4:
+		return 2;
+		break;
+
 	}
 }
 
@@ -327,6 +342,11 @@ function getHitboxScale(nave)
 
 		// CHALA
 		case 3:
+		return 4;
+		break;
+
+		// FETUS
+		case 4:
 		return 4;
 		break;
 	}
@@ -378,3 +398,18 @@ let hitboxMaterial = new THREE.MeshBasicMaterial({
 let hitboxGeometry = new THREE.SphereGeometry(1, 12, 8);
 
 COMMON.hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
+
+
+
+
+/////////////////////////////////////
+//////////////// CSS ////////////////
+/////////////////////////////////////
+
+// SHOW HEALTH
+function showHealth() {
+	document.getElementById("health-bar").style["animation-name"] = "show-health";
+	document.getElementById("health-bar").style["animation-duration"] = "1s";
+}
+
+// LOADING BAR

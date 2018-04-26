@@ -47,6 +47,7 @@ var collider;
 //audio
 var polybiusAudio;
 
+
 function init() {
 	noise.seed(Math.random());
 

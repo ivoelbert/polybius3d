@@ -56,9 +56,15 @@
 		<script src="js/libs/stats.min.js"></script>
 
 		<style>
-			.health-bar {
+
+			@keyframes show-health {
+			    from {top: -10vh;}
+			    to {top: 4vh;}
+			}
+
+			#health-bar {
 				position: absolute;
-				top: 4vh;
+				top: -10vh;
 				width: 50%;
 				margin-left: 25%;
 				padding: 0.6vh;
@@ -68,6 +74,7 @@
 				border-style: solid;
 				border-width: 1px;
 				border-color: grey;
+				animation-fill-mode: forwards;
 			}
 
 			#health {
@@ -80,18 +87,39 @@
 
 			}
 
+			#loading-container {
+				display: none;
+	            width: 100vw;
+	            height: 10vh;
+	            padding-top: 45vh;
+	            background-color: #000000;
+	        }
+
+	        #loaded {
+	            background-color: #ffffff;
+	            float: right;
+	            width: 0%;
+	            height: 100%;
+	        }
+
 		</style>
 
 	</head>
 
 	<body>
-    	<script src="js/Common.js"></script>
-		<script src="js/selectNave.js"></script>
 		<div>
 
+		<div id="loading-container">
+	      <div id="loaded"></div>
+	    </div>
+
 		</div>
-		<div class="health-bar">
+		<div id="health-bar">
 	      <div id="health"></div>
 	    </div>
+
+
+    	<script src="js/Common.js"></script>
+		<script src="js/selectNave.js"></script>
 	</body>
 </html>
