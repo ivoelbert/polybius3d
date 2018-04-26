@@ -419,7 +419,7 @@ function loadTo(percent) {
 function endLoading() {
 	setTimeout( () => {
 		document.getElementById("loading-container").style.display = "none";
-		if(document.getElementById("info").style != undefined) {
+		if(document.getElementById("info") != null) {
 			document.getElementById("info").style["animation-name"] = "fade-in";
 			document.getElementById("info").style["animation-duration"] = "1.5s";
 			document.getElementById("info").style["animation-delay"] = "0.5s";
