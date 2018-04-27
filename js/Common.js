@@ -1,7 +1,7 @@
 
 var COMMON = {};
 
-// Loader para .obj
+// .obj loader
 var loader = new THREE.OBJLoader();
 
 // Removes an object from the scene (and from its group)
@@ -24,6 +24,7 @@ function initAcid() {
   renderAcid = true;
 }
 
+// quadratic easing function
 function easeInOut(t) {
 	return t<.5 ? 2*t*t : -1+(4-2*t)*t
 }
@@ -31,6 +32,7 @@ function easeInOut(t) {
 
 
 // TIRITO
+
 let tiritoGeometry = new THREE.SphereGeometry(1, 5, 5);
 let tiritoMaterial = new THREE.MeshBasicMaterial({
 	 wireframe: true,
@@ -50,6 +52,7 @@ function shootTirito(from) {
 
 
 // MISIL
+
 let misilGeometry = new THREE.CylinderGeometry(0.2, 0.4, 1, 6, 1);
 let misilMaterial = new THREE.MeshBasicMaterial({
 	 wireframe: true,
@@ -97,6 +100,7 @@ function shootMisilFromCenter()
 
 
 // CENTER ASTEROIDS
+
 let centerAsteroidGeometry = new THREE.BoxGeometry( 1, 1, 1 );
 let centerAsteroidMaterial = new THREE.MeshBasicMaterial({
 	color: 0xffffff,
@@ -132,6 +136,15 @@ function createRandomAsteroid() {
 	createAsteroidAt( pos );
 }
 
+// Creates an asteroid barrier
+function createAsteroidBarrier() {
+  let sph = new THREE.SphereGeometry(radius, 16, 8);
+  for(let i = 0; i < sph.vertices.length; i++)
+  {
+    createAsteroidAt(sph.vertices[i], 1.2, 0);
+  }
+}
+
 
 
 // ACID PILL
@@ -143,6 +156,7 @@ let pillMaterial = new THREE.MeshBasicMaterial({
 
 COMMON.pillMesh;
 
+// load pill mesh, when finished load naves
 loader.load(
 	// resource URL
 	'models/acidpill.obj',
@@ -182,8 +196,8 @@ function createRandomAcidPill() {
 
 
 
-
 // EXPLOSION
+
 COMMON.fragmentGeometry = [ new THREE.TetrahedronGeometry( 1, 0 ),
                             new THREE.TetrahedronGeometry( 1, 1 )
                           ];
@@ -213,14 +227,6 @@ function createExplosion( pos, size, frags, speed ) {
   }
 }
 
-function createAsteroidBarrier() {
-  let sph = new THREE.SphereGeometry(radius, 16, 8);
-  for(let i = 0; i < sph.vertices.length; i++)
-  {
-    createAsteroidAt(sph.vertices[i], 1.2, 0);
-  }
-}
-
 
 // NAVES
 
@@ -236,7 +242,7 @@ let naveMaterial = new THREE.MeshBasicMaterial({
 });
 
 
-
+// Load naves from .obj files. This is called from loadPill() callback
 function loadNaves() {
 	let navesToLoad = [
 											"polyNave6wire.obj",
@@ -286,7 +292,7 @@ function loadNaves() {
 	loadNextNave();
 }
 
-
+// .obj files have some trouble with scale. This sets scale manually. Order of naves comes from loadNaves() array of paths.
 function getScale(nave)
 {
 	switch(nave)
@@ -319,6 +325,8 @@ function getScale(nave)
 	}
 }
 
+
+// Manually set spherical hitbox radius, as complex models may need tweeking
 function getHitboxScale(nave)
 {
 	switch(nave)
@@ -352,8 +360,8 @@ function getHitboxScale(nave)
 
 
 
+// POWER UP    TODO: IMPLEMENT
 
-// POWER UP
 COMMON.powerUpMesh;
 
 loader.load(
@@ -386,6 +394,7 @@ function createPowerUp(pos, sz) {
 
 // HITBOX DEBUG
 
+// If debug is true, spherical hitboxes are added as blue wireframe meshes.
 COMMON.debug = false;
 
 let hitboxMaterial = new THREE.MeshBasicMaterial({
@@ -410,12 +419,12 @@ function showHealth() {
 	document.getElementById("health-bar").style["animation-duration"] = "1s";
 }
 
-// LOADING BAR
+// Update loading bar to show it is -percent-% finished
 function loadTo(percent) {
 	document.getElementById("loaded").style.width = percent + "%";
 }
 
-
+// When all objects load, update some css and call init() which starts each page three scene.
 function endLoading() {
 	setTimeout( () => {
 		document.getElementById("loading-container").style.display = "none";
