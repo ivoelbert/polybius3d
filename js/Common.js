@@ -28,6 +28,12 @@ function easeInOut(t) {
 	return t<.5 ? 2*t*t : -1+(4-2*t)*t
 }
 
+function randomUnitVector() {
+	let vec = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+	vec.normalize();
+
+	return vec;
+}
 
 
 // TIRITO
@@ -399,6 +405,16 @@ let hitboxGeometry = new THREE.SphereGeometry(1, 12, 8);
 
 COMMON.hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
 
+
+
+// Laser
+
+let laserMaterial = new THREE.LineBasicMaterial( {color: 0xffffff} );
+let laserGeometry = new THREE.Geometry();
+laserGeometry.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
+laserGeometry.vertices.push( new THREE.Vector3( 0, 0, 1 ) );
+
+COMMON.laserMesh = new THREE.Line( geometry, material );
 
 
 
