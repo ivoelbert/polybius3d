@@ -84,23 +84,36 @@
 				padding: 0.4vh;
 				border-radius: 5vh;
 				background-color: red;
-
 			}
 
 			#loading-container {
-				display: none;
-	            width: 100vw;
-	            height: 10vh;
-	            padding-top: 45vh;
-	            background-color: #000000;
-	        }
+				width: 100vw;
+				height: 100vh;
+				background-color: #000000;
+			}
 
-	        #loaded {
-	            background-color: #ffffff;
-	            float: right;
-	            width: 0%;
-	            height: 100%;
-	        }
+			#loaded {
+				background-color: #ffffff;
+				float: left;
+				width: 0%;
+				margin-top: 45vh;
+				height: 10vh;
+
+				-moz-transition: width 1s;
+				-moz-transition-timing-function: ease-in-out;
+
+				-webkit-transition: width 1s;
+				-webkit-transition-timing-function: ease-in-out;
+
+				-ms-transition: width 1s;
+				-ms-transition-timing-function: ease-in-out;
+
+				-o-transition: width 1s;
+				-o-transition-timing-function: ease-in-out;
+
+				transition: width 1s;
+				transition-timing-function: ease-in-out;
+			}
 
 		</style>
 
@@ -108,18 +121,16 @@
 
 	<body>
 		<div>
-
-		<div id="loading-container">
-	      <div id="loaded"></div>
-	    </div>
-
+			<div id="loading-container">
+				<div id="loaded"></div>
+			</div>
 		</div>
+
 		<div id="health-bar">
-	      <div id="health"></div>
-	    </div>
+			<div id="health"></div>
+		</div>
 
-
-    	<script src="js/Common.js"></script>
+		<script src="js/Common.js"></script>
 		<script src="js/selectNave.js"></script>
 	</body>
 </html>

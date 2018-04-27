@@ -11,6 +11,11 @@
         src: url(fonts/polyfont.ttf);
       }
 
+      @keyframes fade-in {
+			    from {opacity: 0;}
+			    to {opacity: 1;}
+			}
+
       body {
         background:#000;
         color: #000000;
@@ -29,7 +34,39 @@
         width: 100%;
         padding: 0px;
         z-index:100;
+
+        opacity: 0;
+				animation-fill-mode: forwards;
       }
+
+      #loading-container {
+				width: 100vw;
+				height: 100vh;
+				background-color: #000000;
+			}
+
+			#loaded {
+				background-color: #ffffff;
+				float: left;
+				width: 0%;
+				margin-top: 45vh;
+				height: 10vh;
+
+				-moz-transition: width 1s;
+				-moz-transition-timing-function: ease-in-out;
+
+				-webkit-transition: width 1s;
+				-webkit-transition-timing-function: ease-in-out;
+
+				-ms-transition: width 1s;
+				-ms-transition-timing-function: ease-in-out;
+
+				-o-transition: width 1s;
+				-o-transition-timing-function: ease-in-out;
+
+				transition: width 1s;
+				transition-timing-function: ease-in-out;
+			}
 
       .info_box {
         width: 90vh;
@@ -62,7 +99,7 @@
     <script src="js/math/noise.js"></script>
     <script src="build/three.js"></script>
     <script src="js/loaders/OBJLoader.js"></script>
-    
+
     <script src="js/polybiusObjects/polyobject.js"></script>
     <script src="js/polybiusObjects/center.js"></script>
     <script src="js/polybiusObjects/asteroid.js"></script>
@@ -80,23 +117,6 @@
     <script src="js/postprocessing/RenderPass.js"></script>
     <script src="js/postprocessing/GlitchPass.js"></script>
     <script src="js/Detector.js"></script>
-
-    <style>
-      #loading-container {
-        display: none;
-        width: 100vw;
-        height: 10vh;
-        padding-top: 45vh;
-        background-color: #000000;
-      }
-
-      #loaded {
-        background-color: #ffffff;
-        float: right;
-        width: 0%;
-        height: 100%;
-      }
-    </style>
 
   </head>
 

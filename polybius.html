@@ -26,6 +26,35 @@
 				color: #0080ff;
 			}
 			b { color:orange }
+
+			#loading-container {
+				width: 100vw;
+				height: 100vh;
+				background-color: #000000;
+			}
+
+			#loaded {
+				background-color: #ffffff;
+				float: left;
+				width: 0%;
+				margin-top: 45vh;
+				height: 10vh;
+
+				-moz-transition: width 1s;
+				-moz-transition-timing-function: ease-in-out;
+
+				-webkit-transition: width 1s;
+				-webkit-transition-timing-function: ease-in-out;
+
+				-ms-transition: width 1s;
+				-ms-transition-timing-function: ease-in-out;
+
+				-o-transition: width 1s;
+				-o-transition-timing-function: ease-in-out;
+
+				transition: width 1s;
+				transition-timing-function: ease-in-out;
+			}
 		</style>
 
 		<script src="js/math/noise.js"></script>
@@ -68,7 +97,12 @@
 	</head>
 
 	<body>
+		<div id="loading-container">
+      <div id="loaded">
 
+      </div>
+    </div>
+		
     <script src="js/Common.js"></script>
 		<script src="js/polybius.js"></script>
 	</body>
