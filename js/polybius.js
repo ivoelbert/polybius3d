@@ -21,6 +21,7 @@ var glitchPass;
 var glitchEllapsed = 0;
 var renderGlitch = false;
 var acidEllapsed = 0;
+var acidAmp = 0;
 var renderAcid = false;
 
 var RGBComposer;
@@ -70,7 +71,7 @@ function init() {
 
 	/*Audio*/
   polybiusAudio = new PolybiusAudio();
-	  polybiusAudio.init(true, true, true, 'sounds/base_editada_3.mp3')// ambStatus, astStatus , shootStatus , ambSrc, astSrc,shootSrc
+	  polybiusAudio.init(true, true, 'sounds/base_editada_3.mp3');
     camera.getCam().add( polybiusAudio.getListener() );
 
     // luz (al pedo, el material wireframe no la calcula)
@@ -174,7 +175,8 @@ function init() {
 	RGBComposer.addPass( RGBPass );
 
   RGBPass.uniforms[ 'time' ].value = 0;
-  RGBPass.uniforms[ 'waveAmp' ].value = 0;
+  acidAmp = 0;
+  RGBPass.uniforms[ 'waveAmp' ].value = acidAmp;
   RGBPass.uniforms[ 'waveFreq' ].value = 10 * 3.14;
   RGBPass.uniforms[ 'colorOff' ].value = 0;
   RGBPass.uniforms[ 'colorFreq' ].value = 50;
@@ -294,7 +296,8 @@ function handleUpdates( delta ) {
       timeMult = THREE.Math.mapLinear(acidEllapsed, 2 * acidDuration / 3, acidDuration, 1, 0);
 
     RGBPass.uniforms[ 'time' ].value += delta * speed;
-    RGBPass.uniforms[ 'waveAmp' ].value = 0.03 * timeMult;
+    acidAmp = 0.03 * timeMult;
+    RGBPass.uniforms[ 'waveAmp' ].value = acidAmp;
     RGBPass.uniforms[ 'waveFreq' ].value = 10 * 3.14;
     RGBPass.uniforms[ 'colorOff' ].value = 0.05 * timeMult;
     RGBPass.uniforms[ 'colorFreq' ].value = 50;
@@ -305,7 +308,8 @@ function handleUpdates( delta ) {
     renderAcid = false;
 
     RGBPass.uniforms[ 'time' ].value = 0;
-    RGBPass.uniforms[ 'waveAmp' ].value = 0;
+    acidAmp = 0;
+    RGBPass.uniforms[ 'waveAmp' ].value = acidAmp;
     RGBPass.uniforms[ 'waveFreq' ].value = 10 * 3.14;
     RGBPass.uniforms[ 'colorOff' ].value = 0;
     RGBPass.uniforms[ 'colorFreq' ].value = 50;

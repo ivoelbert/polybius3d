@@ -29,6 +29,10 @@ function easeInOut(t) {
 	return t<.5 ? 2*t*t : -1+(4-2*t)*t
 }
 
+// random number between a and b
+function randBetween(a, b) {
+  return THREE.Math.mapLinear(Math.random(), 0, 1, a, b);
+}
 
 
 // TIRITO
@@ -47,7 +51,7 @@ function shootTirito(from) {
 	let tirito = new Tirito(from, radius * 0.1, vel);
 	tirito.addToScene(scene);
 	groupTiritos.add(tirito);
-	polybiusAudio.shoot();
+	polybiusAudio.shoot(acidAmp);
 }
 
 
@@ -225,6 +229,7 @@ function createExplosion( pos, size, frags, speed ) {
     nFrag.addToScene( scene );
     groupExplosions.add( nFrag );
   }
+
 }
 
 
