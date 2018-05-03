@@ -67,7 +67,7 @@ function init() {
 
 	/*Audio*/
   polybiusAudio = new PolybiusAudio();
-	  polybiusAudio.init(true, true, true, 'sounds/base_editada_3.mp3')// ambStatus, astStatus , shootStatus , ambSrc, astSrc,shootSrc
+	  polybiusAudio.init(true, true, 'sounds/base_editada_3.mp3');
     camera.getCam().add( polybiusAudio.getListener() );
 
     // luz (al pedo, el material wireframe no la calcula)
