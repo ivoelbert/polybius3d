@@ -85,7 +85,18 @@ PolybiusAudio = function() {
   };
 
   this.explode = function() {
-    return;
+    let context = this.audioListener.context;
+    let currentTime = context.currentTime;
+
+    // varios osciladores haciendo ruido rojo?
+    let oscils = 5;
+    for(let i = 0; i < oscils; i++)
+    {
+      let oscillator = context.createOscillator();
+      let gainNode = context.createGain();
+      oscillator.frequency.setValueAtTime(freq, currentTime);
+
+    }
   }
 
 }

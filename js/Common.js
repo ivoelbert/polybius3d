@@ -416,12 +416,44 @@ COMMON.hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
 
 // Laser
 
-let laserMaterial = new THREE.LineBasicMaterial( {color: 0xffffff} );
+let laserMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffb6b5,
+  wireframe: true
+});
+
+loader.load(
+	// resource URL
+	'models/laser.obj',
+	// called when resource is loaded
+	function ( object ) {
+		let laserGeometry = object.children[0].geometry;
+		COMMON.laserMesh = new THREE.Mesh(laserGeometry, laserMaterial);
+	},
+	// called when loading is in progresses
+	function ( xhr ) {
+
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+	},
+	// called when loading has errors
+	function ( error ) {
+
+		console.log( 'An error happened' );
+
+	}
+);
+
 let laserGeometry = new THREE.Geometry();
 laserGeometry.vertices.push( new THREE.Vector3( 0, 0, 0 ) );
 laserGeometry.vertices.push( new THREE.Vector3( 0, 0, 1 ) );
 
-COMMON.laserMesh = new THREE.Line( geometry, material );
+COMMON.laserMesh = new THREE.Line( laserGeometry, laserMaterial );
+
+function shootLaser() {
+	let laser = new polyLaser(groupNaves.children[0], radius * 50, 1.9);
+	laser.addToScene( scene );
+	groupLasers.add( laser );
+}
 
 
 

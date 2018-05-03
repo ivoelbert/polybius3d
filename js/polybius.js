@@ -28,16 +28,16 @@ var RGBPass;
 var renderRGB = true;
 
 // grupos
-var groupObjects = new THREE.Group();
-var groupNaves = new THREE.Group(); groupObjects.add(groupNaves);
-var groupCenters = new THREE.Group(); groupObjects.add(groupCenters);
-var groupCenterAsteroids = new THREE.Group(); groupObjects.add(groupCenterAsteroids);
-var groupAsteroids = new THREE.Group(); groupObjects.add(groupAsteroids);
-var groupPills = new THREE.Group(); groupObjects.add(groupPills);
-var groupTiritos = new THREE.Group(); groupObjects.add(groupTiritos);
-var groupMisiles = new THREE.Group(); groupObjects.add(groupMisiles);
-var groupExplosions = new THREE.Group(); groupObjects.add(groupExplosions);
-var groupPowerUps = new THREE.Group(); groupObjects.add(groupPowerUps);
+var groupNaves = new THREE.Group();
+var groupCenters = new THREE.Group();
+var groupCenterAsteroids = new THREE.Group();
+var groupAsteroids = new THREE.Group();
+var groupPills = new THREE.Group();
+var groupTiritos = new THREE.Group();
+var groupMisiles = new THREE.Group();
+var groupExplosions = new THREE.Group();
+var groupPowerUps = new THREE.Group();
+var groupLasers = new THREE.Group();
 
 
 
@@ -253,6 +253,11 @@ function handleUpdates( delta ) {
   let fragments = groupExplosions.children;
 	for(let i = 0; i < fragments.length; i++) {
 		fragments[i].update( delta );
+	}
+
+	let lasers = groupLasers.children;
+	for(let i = 0; i < lasers.length; i++) {
+		lasers[i].update( delta );
 	}
 
 	let naves = groupNaves.children;
