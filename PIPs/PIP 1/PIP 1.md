@@ -76,6 +76,8 @@ Proponer a debate si se deben cargar todos los recursos necesarios al principio 
 
 Una variable de *ENVIROMENT* dirá en que sección del juego estamos y se elegirá la escena a renderizar (y actualizar) en base a eso.
 
+Por ejemplo, habrá una escena para la pantalla de inicio, una para la selección de nave y una para el juego en sí.
+
 ### 4- Construccion de transiciones
 
 Se debe construir un sistema de transición entre escenas.
