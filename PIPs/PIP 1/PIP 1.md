@@ -61,9 +61,8 @@ Por ejemplo, la variable global *renderGlitch* es un booleano que determina si s
 Queda por debatir si al igual que *COMMON* debe ser de scope global, o si solo *COMMON* la verá y permitirá la vista y modificación de sus variables mediante métodos.
 
 
-:::::::::::::::::::::::::::::::::::::::::::::::
-::::::::::::::: EN CONSTRUCCIÓN :::::::::::::::
-:::::::::::::::::::::::::::::::::::::::::::::::
+
+#### EN CONSTRUCCIÓN ####
 
 ## 2- Pre-carga de recursos
 
@@ -84,7 +83,3 @@ Se debe construir un sistema de transición entre escenas.
 Por ejemplo, cuando estamos eligiendo la nave se renderizará la escena de selección, una vez seleccionada la nave, se debe transicionar a la escena de juego.
 
 ## ... 5- ?
-
-:::::::::::::::::::::::::::::::::::::::::::::::
-:::::::::::::::::::::::::::::::::::::::::::::::
-:::::::::::::::::::::::::::::::::::::::::::::::
