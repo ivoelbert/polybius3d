@@ -62,9 +62,9 @@ Queda por debatir si al igual que *COMMON* debe ser de scope global, o si solo *
 
 
 
-#### EN CONSTRUCCIÓN ####
+### EN CONSTRUCCIÓN ###
 
-## 2- Pre-carga de recursos
+### 2- Pre-carga de recursos
 
 Se debe formalizar la pre-carga de recursos del juego.
 
@@ -72,14 +72,14 @@ Los mismos incluyen modelos 3d, sonidos, etc.
 
 Proponer a debate si se deben cargar todos los recursos necesarios al principio del juego o si se deben cargar solo los necesarios para cada sección. Ventajas y desventajas.
 
-## 3- Separación por escenas
+### 3- Separación por escenas
 
 Una variable de *ENVIROMENT* dirá en que sección del juego estamos y se elegirá la escena a renderizar (y actualizar) en base a eso.
 
-## 4- Construccion de transiciones
+### 4- Construccion de transiciones
 
 Se debe construir un sistema de transición entre escenas.
 
 Por ejemplo, cuando estamos eligiendo la nave se renderizará la escena de selección, una vez seleccionada la nave, se debe transicionar a la escena de juego.
 
-## ... 5- ?
+### ... 5- ?
