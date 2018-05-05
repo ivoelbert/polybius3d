@@ -38,12 +38,14 @@ Por ejemplo, el método *ShootMisil(from, to)* permite disparar un misil desde u
 En el módulo incluimos el método *shootMisilFromCenter()* que dispara un misil desde el centro persiguiendo a la nave. Esto es posible gracias a que *COMMON* tiene referencia tanto al centro como a la nave. Lo único que definimos es
 
 ```javascript
-COMMON.shootMisilFromCenter = function {
+
+COMMON.shootMisilFromCenter = function() {
   let centerPosition = CENTRO.position.clone();
   let followedObject = NAVE;
 
   COMMON.shootMisil(centerPosition, followedObject);
 }
+
 ```
 
 Donde *NAVE* y *CENTRO* serán las referencias correspondientes (Esas referencias se obtienen de los *grupos*. ver el punto 1.2).
