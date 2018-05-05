@@ -13,4 +13,4 @@ Por ahora el estandar para mantener todo ordenado está basado en propuestas de 
 * Autor (opcional) -- El autor de la propuesta, si se quiere incluyendo contacto.
 * Tags (opcional) -- Una lista de temas relacionados con la propuesta. Por ejemplo: Performance, gráficos, jugabilidad.
 
-Un ejemplo puede verse en PIP 1
+Un ejemplo puede verse en [PIP 1](https://github.com/ivoelbert/polybius3d/blob/master/PIPs/PIP%201/PIP%201.md)
