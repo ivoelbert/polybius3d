@@ -8,9 +8,7 @@ var SCREEN_WIDTH  = window.innerWidth;
 
 var container, stats;
 var camera, scene, renderer;
-var dirLight, pointLight, ambientLight;
 
-var textureLoader = new THREE.TextureLoader();
 var clock = new THREE.Clock();
 var createAsteroidAvailable = false;
 var createMisilAvailable = false;
@@ -40,17 +38,13 @@ var groupExplosions = new THREE.Group();
 var groupPowerUps = new THREE.Group();
 var groupLasers = new THREE.Group();
 
-
-
 //colisiones
 var collider;
 
 //audio
 var polybiusAudio;
 
-
 function init() {
-	noise.seed(Math.random());
 
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
@@ -74,10 +68,6 @@ function init() {
 	  polybiusAudio.init(true, true, 'sounds/base_editada_3.mp3');
     camera.getCam().add( polybiusAudio.getListener() );
 
-    // luz (al pedo, el material wireframe no la calcula)
-	ambientLight = new THREE.AmbientLight( 0xffffff );
-	scene.add( ambientLight );
-
 	// centro
   let center = new Center(new THREE.Vector3(0, 0, 0), radius);
 		center.addToScene( scene );
@@ -88,16 +78,16 @@ function init() {
   createAsteroidAt(new THREE.Vector3( radius, 0, 0 ))
 
 	collider = new Collider();
-  	collider.addRegla(groupNaves, groupAsteroids);
-  	collider.addRegla(groupAsteroids, groupTiritos);
-    collider.addRegla(groupTiritos, groupCenters);
-    collider.addRegla(groupTiritos, groupCenterAsteroids);
-    collider.addRegla(groupNaves, groupExplosions);
-    collider.addRegla(groupNaves, groupPills);
-	collider.addRegla(groupNaves, groupMisiles);
-	collider.addRegla(groupAsteroids, groupMisiles);
-	collider.addRegla(groupTiritos, groupMisiles);
-	collider.addRegla(groupNaves, groupPowerUps);
+		collider.addRegla(groupNaves, groupAsteroids);
+		collider.addRegla(groupAsteroids, groupTiritos);
+		collider.addRegla(groupTiritos, groupCenters);
+		collider.addRegla(groupTiritos, groupCenterAsteroids);
+		collider.addRegla(groupNaves, groupExplosions);
+		collider.addRegla(groupNaves, groupPills);
+		collider.addRegla(groupNaves, groupMisiles);
+		collider.addRegla(groupAsteroids, groupMisiles);
+		collider.addRegla(groupTiritos, groupMisiles);
+		collider.addRegla(groupNaves, groupPowerUps);
 
 
 

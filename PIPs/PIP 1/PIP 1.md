@@ -60,9 +60,38 @@ Por ejemplo, la variable global *renderGlitch* es un booleano que determina si s
 
 Queda por debatir si al igual que *COMMON* debe ser de scope global, o si solo *COMMON* la verá y permitirá la vista y modificación de sus variables mediante métodos.
 
+### 1.5- SCENE
 
+El módulo *SCENE* tendrá todas las escenas, una escena para el index, una para la selección de nave, una para el juego.
 
 ### EN CONSTRUCCIÓN ###
+
+### 2- Reestructura del main.
+
+Se debe unificar el main para que haya un solo *init()* y un solo *animate()*
+
+El animate debe seleccionar el renderer y la escena según el *ENVIRONMENT*. Por ejemplo, en *COMMON* podríamos tener:
+
+```javascript
+COMMON.getActualRenderer = function() {
+  if(ENVIRONMENT.renderGlitch) {
+    return glitchComposer;
+  }
+
+  return RGBComposer;
+}
+
+COMMON.getActualScene = function() {
+
+}
+```
+
+```javascript
+let renderer = COMMON.getActualRenderer();
+let scene = COMMON.getActualScene();
+
+renderer.render( scene );
+```
 
 ### 2- Pre-carga de recursos
 
@@ -74,7 +103,7 @@ Proponer a debate si se deben cargar todos los recursos necesarios al principio 
 
 ### 3- Separación por escenas
 
-Una variable de *ENVIROMENT* dirá en que sección del juego estamos y se elegirá la escena a renderizar (y actualizar) en base a eso.
+Una variable de *ENVIRONMENT* dirá en que sección del juego estamos y se elegirá la escena a renderizar (y actualizar) en base a eso.
 
 Por ejemplo, habrá una escena para la pantalla de inicio, una para la selección de nave y una para el juego en sí.
 
