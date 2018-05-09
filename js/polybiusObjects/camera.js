@@ -18,7 +18,7 @@ FollowCamera = function(followed) {
     let followedMatrix = this.followed.getMatrix();
     this.pos.set(followedPos.x + this.offset.x, followedPos.y + this.offset.y, followedPos.z  + this.offset.z);
 
-    this.cam = new THREE.PerspectiveCamera( fov, SCREEN_WIDTH / SCREEN_HEIGHT, 10, 10000 );
+    this.cam = new THREE.PerspectiveCamera( fov, STATE.SCREEN_WIDTH / STATE.SCREEN_HEIGHT, 10, 10000 );
     this.cam.position.set(this.pos.x, this.pos.y, this.pos.z);
 
     let upvec = new THREE.Vector3(0, 1, 0);
@@ -56,19 +56,19 @@ FollowCamera = function(followed) {
       realPos.add(correc);
     }
 
-    this.pos.set(realPos.x, realPos.y, realPos.z);
+    this.pos.copy( realPos );
 
     // posiciono y roto la camara
-    this.cam.position.set(this.pos.x, this.pos.y, this.pos.z);
+    this.cam.position.copy( this.pos );
 
     let upvec = new THREE.Vector3(0, 1, 0);
-    upvec.applyMatrix4(followedMatrix);
+    upvec.applyMatrix4( followedMatrix );
 
     let lookvec = new THREE.Vector3(0, -this.pos.length() * 0.1, 0);
-    lookvec.applyMatrix4(followedMatrix);
+    lookvec.applyMatrix4( followedMatrix );
 
-    this.cam.up.set(upvec.x, upvec.y, upvec.z);
-    this.cam.lookAt(lookvec);
+    this.cam.up.copy( upvec );
+    this.cam.lookAt( lookvec );
   };
 
 

@@ -1,37 +1,29 @@
 class Nave extends PolyObject {
-  constructor(pos, size) {
-    super(pos, size);
+  constructor(parent, pos, size) {
+    super(parent, pos, size);
 
     this.position.copy(pos);
     this.size = size;
     this.matrix = new THREE.Matrix4();
-    /*
-    let naveGeometry = new THREE.SphereGeometry(size, 3, 3);
-    let naveMaterial = new THREE.MeshBasicMaterial({
-	     wireframe: true,
-       color: 0xffffff
-	  });
-    this.mesh = new THREE.Mesh(naveGeometry, naveMaterial);
-    this.mesh.scale.set(0.5, 0.25, 1);
-    */
-    let selectedMesh = parseInt(location.search.split('selectedMesh=')[1]);
+
+    let selectedMesh = STATE.selectedMesh;
 
     this.mesh = COMMON.naveMesh[selectedMesh === undefined ? 0 : selectedMesh];
     this.mesh.position.copy(this.position);
 
-    this.mesh.scale.multiplyScalar(this.size * getScale(selectedMesh));
-    this.hitbox.mesh.scale.multiplyScalar(getHitboxScale(selectedMesh));
-    this.updateHitbox(this.position, this.hitbox.radius * getHitboxScale(selectedMesh));
+    this.mesh.scale.multiplyScalar(this.size * COMMON.getNaveScale(selectedMesh));
+    this.hitbox.mesh.scale.multiplyScalar(COMMON.getHitboxScale(selectedMesh));
+    this.updateHitbox(this.position, this.hitbox.radius * COMMON.getHitboxScale(selectedMesh));
 
     this.setPower(500);
 
     // CONTROLS //
-    this.controls = new THREE.PolyControls(container);
+    this.controls = new THREE.PolyControls(STATE.container);
 
-    this.rad = 6 * radius;
-    this.minRad = 4 * radius;
-    this.maxRad = 10 * radius;
-  	this.radSpeed = radius / 6;
+    this.rad = 6 * STATE.radius;
+    this.minRad = 4 * STATE.radius;
+    this.maxRad = 10 * STATE.radius;
+  	this.radSpeed = STATE.radius / 6;
     this.angSpeed = 0.03;
     this.rotSpeed = 0.03;
 
@@ -43,16 +35,15 @@ class Nave extends PolyObject {
     this.upDown = 0;
     this.forwardBack = 0;
     this.rollLeftRollRight = 0;
-
     //////////////
   }
 
-  // Colisiones
+  // Colisiones TODO
   onCollide(who) {
     if(who.isAcid)
-      initAcid();
+      this.parentStage.naveCollideAcid();
     else
-      initGlitch();
+      this.parentStage.naveCollide();
   }
 
   updateControls()
@@ -121,7 +112,7 @@ class Nave extends PolyObject {
 			}
 		} else if (this.shoot === 1) {
 			this.tiritoAvailable = false;
-			shootTirito(this.position.clone());
+			COMMON.shootTirito( this.parentStage, this.position.clone());
 		}
   };
 

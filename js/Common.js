@@ -4,32 +4,12 @@ var COMMON = {};
 // .obj loader
 var loader = new THREE.OBJLoader();
 
-// Removes an object from the scene (and from its group)
-function removeFromScene(object) {
-	object.parent.remove(object);
-	scene.remove(object.mesh);
-	if(COMMON.debug)
-		scene.remove(object.hitbox.mesh);
-}
-
-// Initalizes glitch shader
-function initGlitch() {
-	renderGlitch = true;
-}
-
-// initializes acid shader
-function initAcid() {
-  if(renderAcid == true)
-    acidEllapsed = 5;
-  renderAcid = true;
-}
-
 // quadratic easing function
-function easeInOut(t) {
+COMMON.easeInOut = function(t) {
 	return t<.5 ? 2*t*t : -1+(4-2*t)*t
 }
 
-function randomUnitVector() {
+COMMON.randomUnitVector = function() {
 	let vec = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
 	vec.normalize();
 
@@ -37,13 +17,12 @@ function randomUnitVector() {
 }
 
 // random number between a and b
-function randBetween(a, b) {
+COMMON.randBetween = function(a, b) {
   return THREE.Math.mapLinear(Math.random(), 0, 1, a, b);
 }
 
 
 // TIRITO
-
 let tiritoGeometry = new THREE.SphereGeometry(1, 5, 5);
 let tiritoMaterial = new THREE.MeshBasicMaterial({
 	 wireframe: true,
@@ -52,13 +31,13 @@ let tiritoMaterial = new THREE.MeshBasicMaterial({
 COMMON.tiritoMesh = new THREE.Mesh( tiritoGeometry, tiritoMaterial );
 
 // Shoots from the vector -from- towards the center
-function shootTirito(from) {
+COMMON.shootTirito = function( stage, from ) {
 	let vel = from.clone();
-	vel.normalize().multiplyScalar(-radius * 0.5);
-	let tirito = new Tirito(from, radius * 0.1, vel);
-	tirito.addToScene(scene);
-	groupTiritos.add(tirito);
-	polybiusAudio.shoot(acidAmp);
+	vel.normalize().multiplyScalar(-STATE.radius * 0.5);
+	let tirito = new Tirito(stage, from, STATE.radius * 0.1, vel);
+	tirito.addToScene( stage.scene );
+	stage.groupTiritos.add(tirito);
+	STATE.polybiusAudio.shoot(stage.STATE.acidAmp || 0);
 }
 
 
@@ -94,19 +73,19 @@ COMMON.misilMesh.add(lightFire);
 COMMON.misilMesh.add(darkFire);
 
 // Shoots a misil from -from- following -to-
-function shootMisil( from, to )
+COMMON.shootMisil = function( stage, from, to )
 {
 	let randomDir = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
-	let misil = new CenterMisil(to, from, radius * 0.5, radius * 9, Math.PI * 0.9, randomDir);
-	misil.addToScene(scene);
-	groupMisiles.add(misil);
+	let misil = new CenterMisil(stage, to, from, STATE.radius * 0.5, STATE.radius * 9, Math.PI * 0.9, randomDir);
+	misil.addToScene( stage.scene );
+	stage.groupMisiles.add(misil);
 	//TODO: AUDIO
 }
 
 // Shoots a misil from the center Following nave
-function shootMisilFromCenter()
+COMMON.shootMisilFromCenter = function( stage )
 {
-	shootMisil(new THREE.Vector3(0, 0, 0), groupNaves.children[0]);
+	COMMON.shootMisil( stage, new THREE.Vector3(0, 0, 0), stage.groupNaves.children[0] );
 }
 
 
@@ -132,27 +111,27 @@ COMMON.asteroidMaterial = new THREE.MeshBasicMaterial({
 });
 
 // Creates asteroid at position -pos-
-function createAsteroidAt( pos, radvv, angvv ) {
+COMMON.createAsteroidAt = function( stage, pos, radvv, angvv ) {
   let rv = radvv === undefined ? 0.8 : radvv;
   let av = angvv === undefined ? 1 : angvv;
-	let asteroid = new Asteroid(pos, radius/2, rv, av);
-		asteroid.addToScene( scene );
-		groupAsteroids.add(asteroid);
+	let asteroid = new Asteroid( stage, pos, STATE.radius/2, rv, av);
+	asteroid.addToScene( stage.scene );
+	stage.groupAsteroids.add(asteroid);
 }
 
 // Creates a random asteroid
-function createRandomAsteroid() {
+COMMON.createRandomAsteroid = function( stage ) {
 	let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
-	pos.normalize().multiplyScalar( radius );
-	createAsteroidAt( pos );
+	pos.normalize().multiplyScalar( STATE.radius );
+	COMMON.createAsteroidAt( stage, pos );
 }
 
 // Creates an asteroid barrier
-function createAsteroidBarrier() {
-  let sph = new THREE.SphereGeometry(radius, 16, 8);
+COMMON.createAsteroidBarrier = function( stage ) {
+  let sph = new THREE.SphereGeometry(STATE.radius, 16, 8);
   for(let i = 0; i < sph.vertices.length; i++)
   {
-    createAsteroidAt(sph.vertices[i], 1.2, 0);
+    COMMON.createAsteroidAt( stage, sph.vertices[i], 1.2, 0 );
   }
 }
 
@@ -177,7 +156,7 @@ loader.load(
 		let pillGeometry = object.children[0].geometry;
 		COMMON.pillMesh = new THREE.Mesh(pillGeometry, pillMaterial);
 
-		loadNaves();
+		COMMON.loadNaves();
 	},
 
 	// called when loading is in progresses
@@ -192,17 +171,17 @@ loader.load(
 );
 
 // Creates acid pill at position -pos-
-function createAcidPillAt( pos ) {
-	let acidPill = new AcidPill(pos, radius/2, 1, 1);
-		acidPill.addToScene( scene );
-		groupPills.add(acidPill);
+COMMON.createAcidPillAt = function( stage, pos ) {
+	let acidPill = new AcidPill(stage, pos, STATE.radius/2, 1, 1);
+		acidPill.addToScene( stage.scene );
+		stage.groupPills.add(acidPill);
 }
 
 // Creates a random acid pill
-function createRandomAcidPill() {
+COMMON.createRandomAcidPill = function( stage ) {
   let pos = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
-	pos.normalize().multiplyScalar( radius );
-	createAcidPillAt( pos );
+	pos.normalize().multiplyScalar( STATE.radius );
+	COMMON.createAcidPillAt( stage, pos );
 }
 
 
@@ -220,7 +199,7 @@ COMMON.fragmentMaterial = new THREE.MeshBasicMaterial({
 
 
 // Creates an explosion of size -size- at -pos- with -frags- fragments
-function createExplosion( pos, size, frags, speed ) {
+COMMON.createExplosion = function( stage, pos, size, frags, speed ) {
   for(let i = 0; i < frags; i++) {
 
     let sp = speed === undefined ? 1 : speed;
@@ -229,19 +208,18 @@ function createExplosion( pos, size, frags, speed ) {
     let vz = Math.random() - 0.5;
     let dir = new THREE.Vector3(vx, vy, vz);
     dir.normalize();
-    dir.multiplyScalar(radius * THREE.Math.randFloat(1, 1.5));
+    dir.multiplyScalar(STATE.radius * THREE.Math.randFloat(1, 1.5));
     dir.multiplyScalar(sp);
 
-    let nFrag = new ExplosionFragment(pos, size * THREE.Math.randFloat(0.5, 1), dir);
-    nFrag.addToScene( scene );
-    groupExplosions.add( nFrag );
+    let nFrag = new ExplosionFragment( stage, pos, size * THREE.Math.randFloat(0.5, 1), dir );
+    nFrag.addToScene( stage.scene );
+    stage.groupExplosions.add( nFrag );
   }
 
 }
 
 
 // NAVES
-
 COMMON.naveMesh = [];
 
 COMMON.selectedMesh;
@@ -255,7 +233,7 @@ let naveMaterial = new THREE.MeshBasicMaterial({
 
 
 // Load naves from .obj files. This is called from loadPill() callback
-function loadNaves() {
+COMMON.loadNaves = function() {
 	let navesToLoad = [
 											"polyNave6wire.obj",
 											"starWars.obj",
@@ -305,7 +283,7 @@ function loadNaves() {
 }
 
 // .obj files have some trouble with scale. This sets scale manually. Order of naves comes from loadNaves() array of paths.
-function getScale(nave)
+COMMON.getNaveScale = function(nave)
 {
 	switch(nave)
 	{
@@ -339,7 +317,7 @@ function getScale(nave)
 
 
 // Manually set spherical hitbox radius, as complex models may need tweeking
-function getHitboxScale(nave)
+COMMON.getHitboxScale = function(nave)
 {
 	switch(nave)
 	{
@@ -456,7 +434,7 @@ laserGeometry.vertices.push( new THREE.Vector3( 0, 0, 1 ) );
 COMMON.laserMesh = new THREE.Line( laserGeometry, laserMaterial );
 
 function shootLaser() {
-	let laser = new polyLaser(groupNaves.children[0], radius * 50, 1.9);
+	let laser = new polyLaser(groupNaves.children[0], STATE.radius * 50, 1.9);
 	laser.addToScene( scene );
 	groupLasers.add( laser );
 }
@@ -491,4 +469,45 @@ function endLoading() {
 		init();
 		showHealth();
 	}, 1000 );
+}
+
+
+COMMON.createStars = function(scene) {
+  var i, r = STATE.radius, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
+	for ( i = 0; i < 250; i ++ ) {
+		var vertex = new THREE.Vector3();
+		vertex.x = Math.random() * 2 - 1;
+		vertex.y = Math.random() * 2 - 1;
+		vertex.z = Math.random() * 2 - 1;
+		vertex.multiplyScalar( r );
+		starsGeometry[ 0 ].vertices.push( vertex );
+	}
+	for ( i = 0; i < 1500; i ++ ) {
+		var vertex = new THREE.Vector3();
+		vertex.x = Math.random() * 2 - 1;
+		vertex.y = Math.random() * 2 - 1;
+		vertex.z = Math.random() * 2 - 1;
+		vertex.multiplyScalar( r );
+		starsGeometry[ 1 ].vertices.push( vertex );
+	}
+	var stars;
+	var starsMaterials = [
+		new THREE.PointsMaterial( { color: 0x555555, size: 2, sizeAttenuation: false } ),
+		new THREE.PointsMaterial( { color: 0x555555, size: 1, sizeAttenuation: false } ),
+		new THREE.PointsMaterial( { color: 0x333333, size: 2, sizeAttenuation: false } ),
+		new THREE.PointsMaterial( { color: 0x3a3a3a, size: 1, sizeAttenuation: false } ),
+		new THREE.PointsMaterial( { color: 0x1a1a1a, size: 2, sizeAttenuation: false } ),
+		new THREE.PointsMaterial( { color: 0x1a1a1a, size: 1, sizeAttenuation: false } )
+	];
+
+	for ( i = 10; i < 30; i ++ ) {
+		stars = new THREE.Points( starsGeometry[ i % 2 ], starsMaterials[ i % 6 ] );
+		stars.rotation.x = Math.random() * 6;
+		stars.rotation.y = Math.random() * 6;
+		stars.rotation.z = Math.random() * 6;
+		stars.scale.setScalar( i * 10 );
+		stars.matrixAutoUpdate = false;
+		stars.updateMatrix();
+		scene.add( stars );
+	}
 }

@@ -27,6 +27,35 @@
 			}
 			b { color:orange }
 
+      @keyframes show-health {
+			    from {top: -10vh;}
+			    to {top: 4vh;}
+			}
+
+			#health-bar {
+				position: absolute;
+				top: -10vh;
+				width: 50%;
+				margin-left: 25%;
+				padding: 0.6vh;
+				border-radius: 5vh;
+				border: 1px white;
+				background-color: #383838;
+				border-style: solid;
+				border-width: 1px;
+				border-color: grey;
+				animation-fill-mode: forwards;
+			}
+
+			#health {
+				height: 0.05vh;
+				float: right;
+				width: 98.5%;
+				padding: 0.4vh;
+				border-radius: 5vh;
+				background-color: red;
+			}
+
 			#loading-container {
 				width: 100vw;
 				height: 100vh;
@@ -64,6 +93,8 @@
 		<script src="js/controls/PolyControls.js"></script>
 		<script src="js/loaders/OBJLoader.js"></script>
 
+    
+    <script src="js/polybiusObjects/polyStage.js"></script>
 		<script src="js/polybiusObjects/polyobject.js"></script>
 		<script src="js/polybiusObjects/tirito.js"></script>
 		<script src="js/polybiusObjects/centerMisil.js"></script>
@@ -79,6 +110,11 @@
 		<script src="js/polybiusObjects/explosion.js"></script>
 		<script src="js/polybiusObjects/camera.js"></script>
 		<script src="js/polybiusObjects/sounds.js"></script>
+
+    <script src="js/polybiusModules/state.js"></script>
+    <script src="js/polybiusModules/collider.js"></script>
+    <script src="js/polybiusModules/stages/stageLevel1.js"></script>
+    <script src="js/polybiusModules/stage.js"></script>
 
 		<script src="js/shaders/CopyShader.js"></script>
 		<script src="js/shaders/FilmShader.js"></script>
@@ -99,10 +135,12 @@
 
 	<body>
 		<div id="loading-container">
-      <div id="loaded">
-
-      </div>
+      <div id="loaded"></div>
     </div>
+
+    <div id="health-bar">
+			<div id="health"></div>
+		</div>
 
     <script src="js/Common.js"></script>
 		<script src="js/polybius.js"></script>

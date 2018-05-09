@@ -1,6 +1,6 @@
 class CenterShield extends PolyObject {
-  constructor(pos, size) {
-      super(pos, size);
+  constructor( parent, pos, size ) {
+      super( parent, pos, size );
 
       this.position.copy(pos);
 
@@ -56,13 +56,13 @@ class CenterShield extends PolyObject {
       this.mesh.scale.set(scl, scl, scl);
       if(blow == 0)
       {
-        createAsteroidBarrier();
+        COMMON.createAsteroidBarrier( this.parentStage );
       }
 
       if(this.hp < 0)
       {
-        createExplosion(new THREE.Vector3(0, 0, 0), this.size, 16, 2);
-        removeFromScene(this);
+        COMMON.createExplosion( this.parentStage, new THREE.Vector3(0, 0, 0), this.size, 16, 2);
+        this.parentStage.removeFromScene(this);
       }
     }
   }

@@ -1,6 +1,6 @@
 class powerUp extends PolyObject {
-  constructor(pos, size) {
-      super(pos, size);
+  constructor(parent, pos, size) {
+      super(parent, pos, size);
 
       this.position.copy(pos);
       this.size = size;
@@ -18,7 +18,6 @@ class powerUp extends PolyObject {
   // UPDATE orbita
   update ( delta ) {
 
-
       this.mesh.position.copy(this.position);
       this.updateHitbox(this.position, this.size);
 
@@ -26,8 +25,8 @@ class powerUp extends PolyObject {
       if(this.t > this.timeToLive || this.position.length() > this.radToLive)
       {
           let explosionPos = this.position.clone();
-          createExplosion(explosionPos, this.size , 4);
-          removeFromScene(this);
+          COMMON.createExplosion(this.parentStage, explosionPos, this.size , 4);
+          this.parentStage.removeFromScene(this);
       }
   };
 

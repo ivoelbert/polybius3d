@@ -1,6 +1,6 @@
 class AcidPill extends PolyObject {
-  constructor(pos, size ,radv, angv, rotationVector) {
-      super(pos, size);
+  constructor(parent, pos, size ,radv, angv, rotationVector) {
+      super(parent, pos, size);
 
       this.position.copy(pos);
       this.radVel = radv > 0 ? radv : 0;
@@ -41,7 +41,7 @@ class AcidPill extends PolyObject {
       para.normalize().multiplyScalar(this.radVel);
       this.position.add(para);
 
-      this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+      this.mesh.position.copy(this.position);
       this.mesh.rotation
 
       this.updateHitbox(this.position, this.size);
@@ -52,7 +52,7 @@ class AcidPill extends PolyObject {
     let hit = who.getPower();
     this.hp -= hit;
     if(this.hp <= 0) {
-      removeFromScene(this);
+      this.parentStage.removeFromScene(this);
     }
   }
 }

@@ -73,11 +73,11 @@ PolybiusAudio = function() {
       let freq = Math.round(this.scale[this.cursor] / this.divisorFrec, 2);
       this.tiritoOscillator.frequency.setValueAtTime(freq, currentTime);
       if(acid > 0) {
-        let variations = Math.floor(randBetween(1, 5));
+        let variations = Math.floor(COMMON.randBetween(1, 5));
         let deltat = shootTime / variations;
         for(let i = 0; i < variations; i++) {
           let mult = THREE.Math.mapLinear(acid, 0, 0.03, 1, 1.2);
-          let nFreq = freq * randBetween(1, mult);
+          let nFreq = freq * COMMON.randBetween(1, mult);
           let startTime = currentTime + i * deltat;
           this.tiritoOscillator.frequency.setTargetAtTime(nFreq, startTime, deltat);
         }

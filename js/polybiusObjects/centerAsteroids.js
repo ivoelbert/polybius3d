@@ -1,6 +1,6 @@
 class CenterAsteroid extends PolyObject {
-  constructor(pos, size, angVel) {
-      super(pos, size * 1.3);
+  constructor(parent, pos, size, angVel) {
+      super(parent, pos, size * 1.3);
 
       this.position.copy(pos);
       this.size = size;
@@ -43,8 +43,8 @@ class CenterAsteroid extends PolyObject {
     let hit = who.getPower();
     this.hp -= hit;
     if(this.hp <= 0) {
-      createAsteroidAt(this.position.clone());
-      removeFromScene(this);
+      COMMON.createAsteroidAt(this.parentStage, this.position.clone());
+      this.parentStage.removeFromScene(this);
     }
   }
 }

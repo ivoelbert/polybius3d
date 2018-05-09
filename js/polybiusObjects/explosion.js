@@ -1,6 +1,6 @@
 class ExplosionFragment extends PolyObject {
-  constructor(pos, size, direction) {
-      super(pos, size);
+  constructor( parent, pos, size, direction ) {
+      super( parent, pos, size );
 
       this.position.copy(pos);
       this.size = size;
@@ -32,7 +32,7 @@ class ExplosionFragment extends PolyObject {
       this.mesh.material.color.lerp(black, l);
 
       if(l >= 0.1) {
-        removeFromScene(this);
+        this.parentStage.removeFromScene(this);
       }
 
       this.updateHitbox(this.position, this.size);
@@ -43,7 +43,7 @@ class ExplosionFragment extends PolyObject {
     let hit = who.getPower();
     this.hp -= hit;
     if(this.hp <= 0) {
-      removeFromScene(this);
+      this.parentStage.removeFromScene( this );
     }
   }
 }

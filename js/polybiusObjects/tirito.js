@@ -1,6 +1,6 @@
 class Tirito extends PolyObject {
-  constructor(pos, size, vel) {
-    super(pos, size);
+  constructor(parent, pos, size, vel) {
+    super(parent, pos, size);
     this.size = size;
     this.position.copy(pos);
     this.speed = vel.clone();
@@ -23,7 +23,7 @@ class Tirito extends PolyObject {
   }
   onCollide(who) {
     let explosionPos = this.position.clone();
-    createExplosion(explosionPos, this.size , 16);
-    removeFromScene(this);
+    COMMON.createExplosion(this.parentStage, explosionPos, this.size , 16);
+    this.parentStage.removeFromScene(this);
   }
 }

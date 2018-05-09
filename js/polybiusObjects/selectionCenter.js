@@ -1,6 +1,6 @@
 class selectionCenter extends PolyObject {
-  constructor(pos, size) {
-    super(pos, size);
+  constructor(parent, pos, size) {
+    super(parent, pos, size);
 
     this.position.copy(pos);
     this.size = size;
@@ -71,11 +71,6 @@ class selectionCenter extends PolyObject {
   onCollide( who ) {
     this.hp -= who.getPower();
     this.lastHit = 0;
-
-    if(this.hp < 0)
-    {
-      window.location.href = "polybius.html?selectedMesh=" + COMMON.selectedMesh;
-    }
   }
 
   addToScene(scene) {

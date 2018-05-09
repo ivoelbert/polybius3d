@@ -1,7 +1,8 @@
 class PolyObject extends THREE.Object3D {
-  constructor(hitboxPos, hitboxSize, hp, power) {
+  constructor(parentStage, hitboxPos, hitboxSize, hp, power) {
     super();
 
+    this.parentStage = parentStage;
     this.hp = Infinity;
     this.power = 0;
     this.hitbox = new Hitbox(hitboxPos, hitboxSize);
@@ -33,6 +34,7 @@ class PolyObject extends THREE.Object3D {
   getPower() {
     return this.power;
   }
+
 }
 
 class Hitbox extends THREE.Object3D {

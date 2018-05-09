@@ -1,6 +1,6 @@
 class polyLaser extends PolyObject {
-  constructor(followed, size, angSpeed) {
-    super(new THREE.Vector3(0, 0, 0), 0);
+  constructor(parent, followed, size, angSpeed) {
+    super(parent, new THREE.Vector3(0, 0, 0), 0);
 
     this.size = size;
     this.followed = followed;
@@ -42,7 +42,7 @@ class polyLaser extends PolyObject {
       normal.normalize();
     }
     else {
-      normal = randomUnitVector();
+      normal = COMMON.randomUnitVector();
     }
 
     let angle = this.position.angleTo(towards);
@@ -56,7 +56,7 @@ class polyLaser extends PolyObject {
 
     if(this.t > this.timeToLive)
     {
-      removeFromScene(this);
+      this.parentScene.removeFromScene(this);
     }
   }
 

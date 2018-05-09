@@ -1,6 +1,6 @@
 class Asteroid extends PolyObject {
-  constructor(pos, size ,radv, angv, rotationVector) {
-      super(pos, size);
+  constructor(parent, pos, size ,radv, angv, rotationVector) {
+      super(parent, pos, size);
 
       this.position.copy(pos);
       this.radVel = radv > 0 ? radv : 0;
@@ -52,8 +52,8 @@ class Asteroid extends PolyObject {
       if(this.t > this.timeToLive || this.position.length() > this.radToLive)
       {
           let explosionPos = this.position.clone();
-          createExplosion(explosionPos, this.size , 4);
-          removeFromScene(this);
+          COMMON.createExplosion(this.parentStage, explosionPos, this.size , 4);
+          this.parentStage.removeFromScene(this);
       }
   };
 
@@ -62,7 +62,7 @@ class Asteroid extends PolyObject {
     let hit = who.getPower();
     this.hp -= hit;
     if(this.hp <= 0) {
-      removeFromScene(this);
+      this.parentStage.removeFromScene(this);
     } else {
       let geom = Math.floor(THREE.Math.mapLinear(this.hp, 300, 0, 0, 3));
       this.mesh.geometry = COMMON.asteroidGeometry[geom];

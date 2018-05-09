@@ -1,6 +1,6 @@
 class Center extends PolyObject {
-  constructor(pos, size) {
-    super(pos, size);
+  constructor(parent, pos, size) {
+    super(parent, pos, size);
 
     this.position.copy(pos);
     this.size = size;
@@ -17,7 +17,7 @@ class Center extends PolyObject {
 
     this.hp = 100 * 1000;
 
-    this.shield = new CenterShield(this.position.clone(), this.lado * 1.6);
+    this.shield = new CenterShield( this.parentStage, this.position.clone(), this.lado * 1.6 );
 
     // CENTRO
 
@@ -50,7 +50,7 @@ class Center extends PolyObject {
     let sph = new THREE.SphereGeometry(this.lado * 1.8, this.wAsteroids, this.hAsteroids);
     for(let i = 0; i < sph.vertices.length; i++)
     {
-      this.asteroids.add( new CenterAsteroid(sph.vertices[i].clone(), this.lado / 6, 0 ) );
+      this.asteroids.add( new CenterAsteroid( this.parentStage, sph.vertices[i].clone(), this.lado / 6, 0 ) );
     }
   }
 
@@ -88,7 +88,7 @@ class Center extends PolyObject {
     this.hitsReceived = (this.hitsReceived + 1) % 4;
 
     if(this.hitsReceived == 3 && this.needToCreate) {
-      createRandomAsteroid();
+      COMMON.createRandomAsteroid( this.parentStage );
       this.needToCreate = false;
     }
 

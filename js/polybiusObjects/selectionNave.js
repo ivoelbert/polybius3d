@@ -1,6 +1,6 @@
 class selectionNave extends PolyObject {
-  constructor(pos, size) {
-    super(pos, size * 0.6);
+  constructor(parent, pos, size) {
+    super(parent, pos, size * 0.6);
 
     this.position.copy(pos);
     this.size = size;
@@ -41,12 +41,9 @@ class selectionNave extends PolyObject {
     this.generateMeshs();
   }
 
-  // Colisiones
+  // Collisions
   onCollide(who) {
-    if(who.isAcid)
-      initAcid();
-    else
-      initGlitch();
+    // We dont collide in selection
   }
 
   generateMeshs() {
@@ -66,7 +63,7 @@ class selectionNave extends PolyObject {
       position.add(this.carouselPivot);
       this.meshs[i] = COMMON.naveMesh[i].clone();
       this.meshs[i].position.copy(position);
-    
+
       this.meshs[i].scale.multiplyScalar(this.size * getScale(i));
 
       let upvec = new THREE.Vector3(0, 1, 0);
@@ -95,32 +92,32 @@ class selectionNave extends PolyObject {
     {
       let t = easeInOut(THREE.Math.mapLinear(this.rotatingTime, 0, this.timeToRotate, 0, 1));
 
-      let nextMesh = COMMON.selectedMesh + this.rotating;
+      let nextMesh = STATE.selectedMesh + this.rotating;
       if(nextMesh < 0)
         nextMesh += this.meshs.length;
       if(nextMesh >= this.meshs.length)
         nextMesh -= this.meshs.length;
-      
+
       if(this.rotating > 0)
       {
-        this.meshesAngles[COMMON.selectedMesh] = THREE.Math.mapLinear(t, 0, 1, Math.PI, Math.PI * 2);
+        this.meshesAngles[STATE.selectedMesh] = THREE.Math.mapLinear(t, 0, 1, Math.PI, Math.PI * 2);
         this.meshesAngles[nextMesh] = THREE.Math.mapLinear(t, 0, 1, 0, Math.PI);
       }
       else
       {
-        this.meshesAngles[COMMON.selectedMesh] = THREE.Math.mapLinear(t, 0, 1, Math.PI, 0);
+        this.meshesAngles[STATE.selectedMesh] = THREE.Math.mapLinear(t, 0, 1, Math.PI, 0);
         this.meshesAngles[nextMesh] = THREE.Math.mapLinear(t, 0, 1, 2 * Math.PI, Math.PI);
       }
-      
+
 
       this.rotatingTime += delta;
 
       if(this.rotatingTime > this.timeToRotate)
       {
-        this.meshesAngles[COMMON.selectedMesh] = 0;
+        this.meshesAngles[STATE.selectedMesh] = 0;
         this.meshesAngles[nextMesh] = Math.PI;
 
-        COMMON.selectedMesh = nextMesh;
+        STATE.selectedMesh = nextMesh;
 
         this.rotating = 0;
 
@@ -142,7 +139,7 @@ class selectionNave extends PolyObject {
 
       this.meshs[i].position.copy(position);
 
-      
+
       let upvec = new THREE.Vector3(0, 1, 0);
 
       let lookVec = this.meshs[i].position.clone();
@@ -152,7 +149,7 @@ class selectionNave extends PolyObject {
       lookAtPos.add(lookVec);
 
       this.meshs[i].lookAt(lookAtPos);
-      
+
     }
   }
 
@@ -160,7 +157,7 @@ class selectionNave extends PolyObject {
   {
     // Actualizo los controles
     this.updateControls();
-  
+
     var xrot = 0;
     var yrot = 0;
     var zrot = 0;
@@ -217,7 +214,7 @@ class selectionNave extends PolyObject {
 			}
 		} else if (this.shoot === 1) {
 			this.tiritoAvailable = false;
-			shootTirito(this.position.clone());
+			COMMON.shootTirito( this.parentStage, this.position.clone() );
 		}
   };
 

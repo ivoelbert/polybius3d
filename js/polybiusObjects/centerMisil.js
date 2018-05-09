@@ -1,6 +1,6 @@
 class CenterMisil extends PolyObject {
-  constructor(followed, pos, size, vel, angVel, dir) {
-    super(pos, size * 0.6);
+  constructor(parent, followed, pos, size, vel, angVel, dir) {
+    super(parent, pos, size * 0.6);
     this.size = size;
     this.position.copy(pos);
     this.speed = vel;
@@ -9,7 +9,7 @@ class CenterMisil extends PolyObject {
     this.followed = followed;
 
     this.t = 0;
-    this.radToLive = 700;
+    this.radToLive = 650;
 
     if(dir === undefined)
     {
@@ -68,11 +68,13 @@ class CenterMisil extends PolyObject {
     this.updateHitbox(this.position, this.size * 0.6);
     this.mesh.position.copy(this.position);
 
+    let actualRad = this.position.length();
     if(this.position.length() > this.radToLive)
     {
+
       let explosionPos = this.position.clone();
-      createExplosion(explosionPos, this.size , 12);
-      removeFromScene(this);
+      COMMON.createExplosion(this.parentStage, explosionPos, this.size , 12);
+      this.parentStage.removeFromScene(this);
     }
   }
 
@@ -85,7 +87,7 @@ class CenterMisil extends PolyObject {
 
   onCollide(who) {
     let explosionPos = this.position.clone();
-    createExplosion(explosionPos, this.size , 12);
-    removeFromScene(this);
+    COMMON.createExplosion(this.parentStage, explosionPos, this.size , 12);
+    this.parentStage.removeFromScene(this);
   }
 }
