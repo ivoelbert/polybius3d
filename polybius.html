@@ -5,6 +5,27 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
+
+			@font-face {
+				font-family: polyFont;
+				src: url(fonts/polyfont.ttf);
+			}
+
+			@keyframes fade-in {
+					from {opacity: 0;}
+					to {opacity: 1;}
+			}
+
+			@keyframes show-health {
+			    from {top: -10vh;}
+			    to {top: 4vh;}
+			}
+
+			@keyframes hide-health {
+			    from {top: 4vh;}
+			    to {top: -10vh;}
+			}
+
 			body {
 				background:#000;
 				color: #eee;
@@ -16,21 +37,23 @@
 				font-size:13px;
 				text-align:center;
 			}
+
 			#info {
-				position: absolute;
-				top: 0px; width: 100%;
-				padding: 5px;
-				z-index:100;
-			}
+        position: absolute;
+        top: 35%;
+        width: 100%;
+        padding: 0px;
+        z-index:100;
+
+        opacity: 0;
+				animation-fill-mode: forwards;
+      }
+
 			a {
 				color: #0080ff;
 			}
-			b { color:orange }
 
-      @keyframes show-health {
-			    from {top: -10vh;}
-			    to {top: 4vh;}
-			}
+			b { color:orange }
 
 			#health-bar {
 				position: absolute;
@@ -45,6 +68,7 @@
 				border-width: 1px;
 				border-color: grey;
 				animation-fill-mode: forwards;
+				display: none;
 			}
 
 			#health {
@@ -84,6 +108,35 @@
 				transition: width 1s;
 				transition-timing-function: ease-in-out;
 			}
+
+			.info_box {
+        width: 90vh;
+        margin: auto;
+        padding: 2%;
+        border-radius: 2vh;
+        background-color: rgba(255, 246, 246, 0.55);
+      }
+
+      .play_button {
+        font-size: 10vh;
+        font-family: polyFont;
+        color: black;
+				cursor: pointer;
+      }
+
+      #title {
+        margin: 0;
+        padding-top: 5%;
+      }
+
+      .controls {
+        padding-top: 5vh;
+        padding-bottom: 4vh;
+        font-size: 1.1em;
+      }
+
+      b { color: #b90404 }
+
 		</style>
 
 		<script src="js/math/noise.js"></script>
@@ -93,7 +146,7 @@
 		<script src="js/controls/PolyControls.js"></script>
 		<script src="js/loaders/OBJLoader.js"></script>
 
-    
+
     <script src="js/polybiusObjects/polyStage.js"></script>
 		<script src="js/polybiusObjects/polyobject.js"></script>
 		<script src="js/polybiusObjects/tirito.js"></script>
@@ -113,6 +166,7 @@
 
     <script src="js/polybiusModules/state.js"></script>
     <script src="js/polybiusModules/collider.js"></script>
+		<script src="js/polybiusModules/stages/stageIndex.js"></script>
     <script src="js/polybiusModules/stages/stageLevel1.js"></script>
     <script src="js/polybiusModules/stage.js"></script>
 
@@ -141,6 +195,17 @@
     <div id="health-bar">
 			<div id="health"></div>
 		</div>
+
+		<div id="info">
+      <div class="info_box">
+        <div>
+          <a onclick="console.log('va');" class="play_button" style="text-decoration:none"><div><p id="title">POLYBIUS</p></div></a>
+        </div>
+        <div class="controls">
+          <b>WASD</b> orbit, <b>IK</b> forwards/backwards, <b>JL</b> roll, <b>SPACE</b> shoot!
+        </div>
+      </div>
+    </div>
 
     <script src="js/Common.js"></script>
 		<script src="js/polybius.js"></script>

@@ -446,8 +446,14 @@ function shootLaser() {
 /////////////////////////////////////
 
 // SHOW HEALTH
-function showHealth() {
+COMMON.showHealth = function() {
+	document.getElementById("health-bar").style["display"] = "block";
 	document.getElementById("health-bar").style["animation-name"] = "show-health";
+	document.getElementById("health-bar").style["animation-duration"] = "1s";
+}
+
+COMMON.hideHealth = function() {
+	document.getElementById("health-bar").style["animation-name"] = "hide-health";
 	document.getElementById("health-bar").style["animation-duration"] = "1s";
 }
 
@@ -467,7 +473,7 @@ function endLoading() {
 		}
 
 		init();
-		showHealth();
+
 	}, 1000 );
 }
 

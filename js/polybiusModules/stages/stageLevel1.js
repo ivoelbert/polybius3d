@@ -87,6 +87,8 @@ stageLevel1.init = function() {
   }
 
   COMMON.createAsteroidAt( stageLevel1, new THREE.Vector3( STATE.radius, 0, 0 ) );
+
+  COMMON.showHealth();
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -95,69 +97,26 @@ stageLevel1.init = function() {
 ////////////////////////////////////////////////////////////////////////////////
 stageLevel1.update = function( delta ) {
   // Update every group
-	moveThings( delta );
+	stageLevel1.moveThings( delta );
   stageLevel1.camera.update( delta );
 
 	// Update composers
-	updateGlitchComposer( delta );
-  updateRGBComposer( delta );
+	stageLevel1.updateGlitchComposer( delta );
+  stageLevel1.updateRGBComposer( delta );
 
   // Do we need to create any object?
-	handleNewObjects();
+	stageLevel1.handleNewObjects();
 
   // Check if things collide
   COLLIDER.checkCollisions();
 
   // Finally render to screen
-	chooseRenderer( delta );
+	stageLevel1.chooseRenderer( delta );
 }
 ////////////////////////////////////////////////////////////////////////////////
 
 
-function moveThings( delta ) {
-  let centers = stageLevel1.groupCenters.children;
-	for(let i = 0; i < centers.length; i++) {
-		centers[i].update( delta );
-	}
-
-	let asteroids = stageLevel1.groupAsteroids.children;
-	for(let i = 0; i < asteroids.length; i++) {
-		asteroids[i].update( delta );
-	}
-
-  let pills = stageLevel1.groupPills.children;
-	for(let i = 0; i < pills.length; i++) {
-		pills[i].update( delta );
-	}
-
-  let tiritos = stageLevel1.groupTiritos.children;
-	for(let i = 0; i < tiritos.length; i++) {
-		tiritos[i].update( delta );
-	}
-
-	let misiles = stageLevel1.groupMisiles.children;
-	for(let i = 0; i < misiles.length; i++) {
-		misiles[i].update( delta );
-	}
-
-  let fragments = stageLevel1.groupExplosions.children;
-	for(let i = 0; i < fragments.length; i++) {
-		fragments[i].update( delta );
-	}
-
-	let lasers = stageLevel1.groupLasers.children;
-	for(let i = 0; i < lasers.length; i++) {
-		lasers[i].update( delta );
-	}
-
-	let naves = stageLevel1.groupNaves.children;
-	for(let i = 0; i < naves.length; i++) {
-		naves[i].update( delta );
-	}
-
-}
-
-function updateGlitchComposer( delta ) {
+stageLevel1.updateGlitchComposer = function( delta ) {
   if(stageLevel1.STATE.renderGlitch) {
 		stageLevel1.STATE.glitchEllapsed += delta;
 	}
@@ -167,7 +126,7 @@ function updateGlitchComposer( delta ) {
 	}
 }
 
-function updateRGBComposer( delta ) {
+stageLevel1.updateRGBComposer = function( delta ) {
   let speed = 0.1;
 
   let acidDuration = 15;
@@ -205,7 +164,7 @@ function updateRGBComposer( delta ) {
   }
 }
 
-function handleNewObjects() {
+stageLevel1.handleNewObjects = function() {
   let elapsed = STATE.clock.elapsedTime;
 	if(elapsed % 2 < 1 && stageLevel1.STATE.createMisilAvailable) {
 		stageLevel1.STATE.createMisilAvailable = false;
@@ -229,12 +188,11 @@ function handleNewObjects() {
 	}
 }
 
-function chooseRenderer( delta ) {
+stageLevel1.chooseRenderer = function( delta ) {
 	if(stageLevel1.STATE.renderGlitch)
 		stageLevel1.glitchComposer.render( delta );
 	else
 		stageLevel1.RGBComposer.render( delta );
-		//renderer.render( scene, camera.getCam() );
 }
 
 stageLevel1.naveCollideAcid = function() {

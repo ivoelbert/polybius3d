@@ -64,7 +64,7 @@ class selectionNave extends PolyObject {
       this.meshs[i] = COMMON.naveMesh[i].clone();
       this.meshs[i].position.copy(position);
 
-      this.meshs[i].scale.multiplyScalar(this.size * getScale(i));
+      this.meshs[i].scale.multiplyScalar(this.size * COMMON.getNaveScale(i));
 
       let upvec = new THREE.Vector3(0, 1, 0);
       this.meshs[i].lookAt(new THREE.Vector3(0, 0, 0));

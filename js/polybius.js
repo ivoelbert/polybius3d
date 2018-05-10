@@ -38,11 +38,9 @@ function onWindowResize( event ) {
 
 function animate() {
 	requestAnimationFrame( animate );
-	render();
-	STATE.stats.update();
-}
 
-function render() {
 	var delta = STATE.clock.getDelta();
   STAGE.stages[STATE.currentStage].update( delta );
+
+	STATE.stats.update();
 }
