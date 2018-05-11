@@ -16,6 +16,11 @@
 					to {opacity: 1;}
 			}
 
+			@keyframes fade-out {
+					from {opacity: 1;}
+					to {opacity: 0;}
+			}
+
 			@keyframes show-health {
 			    from {top: -10vh;}
 			    to {top: 4vh;}
@@ -168,6 +173,7 @@
     <script src="js/polybiusModules/collider.js"></script>
 		<script src="js/polybiusModules/stages/stageIndex.js"></script>
     <script src="js/polybiusModules/stages/stageLevel1.js"></script>
+    <script src="js/polybiusModules/stages/stageSurvival.js"></script>
     <script src="js/polybiusModules/stage.js"></script>
 
 		<script src="js/shaders/CopyShader.js"></script>
@@ -199,7 +205,7 @@
 		<div id="info">
       <div class="info_box">
         <div>
-          <a onclick="console.log('va');" class="play_button" style="text-decoration:none"><div><p id="title">POLYBIUS</p></div></a>
+          <a onclick="COMMON.hideElement('info', 0.5, 0); COMMON.changeToStage(2)" class="play_button" style="text-decoration:none"><div><p id="title">POLYBIUS</p></div></a>
         </div>
         <div class="controls">
           <b>WASD</b> orbit, <b>IK</b> forwards/backwards, <b>JL</b> roll, <b>SPACE</b> shoot!
@@ -208,6 +214,6 @@
     </div>
 
     <script src="js/Common.js"></script>
-		<script src="js/polybius.js"></script>
+	<script src="js/polybius.js"></script>
 	</body>
 </html>

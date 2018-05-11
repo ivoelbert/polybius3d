@@ -18,6 +18,7 @@ class Center extends PolyObject {
     this.hp = 100 * 1000;
 
     this.shield = new CenterShield( this.parentStage, this.position.clone(), this.lado * 1.6 );
+    this.indestructableShield = false;
 
     // CENTRO
 
@@ -81,6 +82,9 @@ class Center extends PolyObject {
     }
 
     this.shield.asteroidCount = this.asteroids.children.length;
+    if(this.indestructableShield)
+      this.shield.asteroidCount = 1;
+    
     this.shield.update( delta );
   }
 
@@ -96,6 +100,14 @@ class Center extends PolyObject {
       this.needToCreate = true;
     }
 
+  }
+
+  removeCenterAsteroids() {
+    for(let i = 0; i < this.asteroids.length; i++) {
+      this.parentStage.removeFromScene( this.asteroids.children[i] );
+    }
+
+    this.indestructableShield = true;
   }
 
   addShieldToGroup( gr ) {

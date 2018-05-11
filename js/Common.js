@@ -441,41 +441,7 @@ function shootLaser() {
 
 
 
-/////////////////////////////////////
-//////////////// CSS ////////////////
-/////////////////////////////////////
 
-// SHOW HEALTH
-COMMON.showHealth = function() {
-	document.getElementById("health-bar").style["display"] = "block";
-	document.getElementById("health-bar").style["animation-name"] = "show-health";
-	document.getElementById("health-bar").style["animation-duration"] = "1s";
-}
-
-COMMON.hideHealth = function() {
-	document.getElementById("health-bar").style["animation-name"] = "hide-health";
-	document.getElementById("health-bar").style["animation-duration"] = "1s";
-}
-
-// Update loading bar to show it is -percent-% finished
-function loadTo(percent) {
-	document.getElementById("loaded").style.width = percent + "%";
-}
-
-// When all objects load, update some css and call init() which starts each page three scene.
-function endLoading() {
-	setTimeout( () => {
-		document.getElementById("loading-container").style.display = "none";
-		if(document.getElementById("info") != null) {
-			document.getElementById("info").style["animation-name"] = "fade-in";
-			document.getElementById("info").style["animation-duration"] = "1.5s";
-			document.getElementById("info").style["animation-delay"] = "0.5s";
-		}
-
-		init();
-
-	}, 1000 );
-}
 
 
 COMMON.createStars = function(scene) {
@@ -516,4 +482,59 @@ COMMON.createStars = function(scene) {
 		stars.updateMatrix();
 		scene.add( stars );
 	}
+}
+
+COMMON.changeToStage = function( index ) {
+	STATE.currentStage = index;
+	STAGE.stages[STATE.currentStage].init();
+}
+
+/////////////////////////////////////
+//////////////// CSS ////////////////
+/////////////////////////////////////
+
+// SHOW HEALTH
+COMMON.showHealth = function() {
+	document.getElementById("health-bar").style["display"] = "block";
+	document.getElementById("health-bar").style["animation-name"] = "show-health";
+	document.getElementById("health-bar").style["animation-duration"] = "1s";
+}
+
+COMMON.hideHealth = function() {
+	document.getElementById("health-bar").style["animation-name"] = "hide-health";
+	document.getElementById("health-bar").style["animation-duration"] = "1s";
+}
+
+// Update loading bar to show it is -percent-% finished
+function loadTo(percent) {
+	document.getElementById("loaded").style.width = percent + "%";
+}
+
+// When all objects load, update some css and call init() which starts each page three scene.
+function endLoading() {
+	setTimeout( () => {
+		document.getElementById("loading-container").style.display = "none";
+		if(document.getElementById("info") != null) {
+			COMMON.showElement("info", 1.5, 0.5);
+		}
+
+		init();
+
+	}, 1000 );
+}
+
+COMMON.showElement = function(id, time, delay) {
+	document.getElementById(id).style["display"] = "block";
+	document.getElementById(id).style["animation-name"] = "fade-in";
+	document.getElementById(id).style["animation-duration"] = time + "s";
+	document.getElementById(id).style["animation-delay"] = delay + "s";
+}
+
+COMMON.hideElement = function(id, time, delay) {
+	document.getElementById(id).style["animation-name"] = "fade-out";
+	document.getElementById(id).style["animation-duration"] = time + "s";
+	document.getElementById(id).style["animation-delay"] = delay + "s";
+	setTimeout( function() {
+		document.getElementById(id).style["display"] = "none";
+	}, time + delay );
 }

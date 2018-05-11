@@ -13,6 +13,7 @@ stageLevel1.init = function() {
   stageLevel1.STATE.acidEllapsed = 0;
   stageLevel1.STATE.acidAmp = 0;
   stageLevel1.STATE.renderAcid = false;
+  stageLevel1.STATE.time = 0;
 
   // Scene
   stageLevel1.scene = new THREE.Scene();
@@ -96,6 +97,9 @@ stageLevel1.init = function() {
 //   UPDATE                                                                   //
 ////////////////////////////////////////////////////////////////////////////////
 stageLevel1.update = function( delta ) {
+  // Update local time
+  stageLevel1.STATE.time += delta;
+
   // Update every group
 	stageLevel1.moveThings( delta );
   stageLevel1.camera.update( delta );
@@ -165,7 +169,7 @@ stageLevel1.updateRGBComposer = function( delta ) {
 }
 
 stageLevel1.handleNewObjects = function() {
-  let elapsed = STATE.clock.elapsedTime;
+  let elapsed = stageLevel1.STATE.time;
 	if(elapsed % 2 < 1 && stageLevel1.STATE.createMisilAvailable) {
 		stageLevel1.STATE.createMisilAvailable = false;
     if(Math.random() > 0.5)
