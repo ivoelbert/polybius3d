@@ -23,7 +23,7 @@ COMMON.randBetween = function(a, b) {
 
 
 // TIRITO
-let tiritoGeometry = new THREE.SphereGeometry(1, 5, 5);
+let tiritoGeometry = new THREE.SphereBufferGeometry(1, 5, 5);
 let tiritoMaterial = new THREE.MeshBasicMaterial({
 	 wireframe: true,
 	 color: 0xffffff
@@ -43,13 +43,13 @@ COMMON.shootTirito = function( stage, from ) {
 
 // MISIL
 
-let misilGeometry = new THREE.CylinderGeometry(0.2, 0.4, 1, 6, 1);
+let misilGeometry = new THREE.CylinderBufferGeometry(0.2, 0.4, 1, 6, 1);
 let misilMaterial = new THREE.MeshBasicMaterial({
 	 wireframe: true,
 	 color: 0xffffff
 });
 
-let fireGeom = new THREE.ConeGeometry( 0.2, 0.6, 6 );
+let fireGeom = new THREE.ConeBufferGeometry( 0.2, 0.6, 6 );
 
 let lightFireMat = new THREE.MeshBasicMaterial({
 	 wireframe: true,
@@ -91,7 +91,7 @@ COMMON.shootMisilFromCenter = function( stage )
 
 // CENTER ASTEROIDS
 
-let centerAsteroidGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+let centerAsteroidGeometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
 let centerAsteroidMaterial = new THREE.MeshBasicMaterial({
 	color: 0xffffff,
 	wireframe: true
@@ -101,9 +101,9 @@ COMMON.centerAsteroidMesh = new THREE.Mesh( centerAsteroidGeometry, centerAstero
 
 
 // ASTEROIDS
-COMMON.asteroidGeometry = [ new THREE.SphereGeometry(1, 10, 10),
-                            new THREE.SphereGeometry(1, 6, 6),
-                            new THREE.SphereGeometry(1, 3, 3)
+COMMON.asteroidGeometry = [ new THREE.SphereBufferGeometry(1, 10, 10),
+                            new THREE.SphereBufferGeometry(1, 6, 6),
+                            new THREE.SphereBufferGeometry(1, 3, 3)
                           ];
 COMMON.asteroidMaterial = new THREE.MeshBasicMaterial({
   color: 0xffff00,
@@ -188,8 +188,8 @@ COMMON.createRandomAcidPill = function( stage ) {
 
 // EXPLOSION
 
-COMMON.fragmentGeometry = [ new THREE.TetrahedronGeometry( 1, 0 ),
-                            new THREE.TetrahedronGeometry( 1, 1 )
+COMMON.fragmentGeometry = [ new THREE.TetrahedronBufferGeometry( 1, 0 ),
+                            new THREE.TetrahedronBufferGeometry( 1, 1 )
                           ];
 
 COMMON.fragmentMaterial = new THREE.MeshBasicMaterial({
@@ -392,7 +392,7 @@ let hitboxMaterial = new THREE.MeshBasicMaterial({
   wireframe: true
 });
 
-let hitboxGeometry = new THREE.SphereGeometry(1, 12, 8);
+let hitboxGeometry = new THREE.SphereBufferGeometry(1, 12, 8);
 
 COMMON.hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
 
@@ -438,8 +438,6 @@ function shootLaser() {
 	laser.addToScene( scene );
 	groupLasers.add( laser );
 }
-
-
 
 
 
