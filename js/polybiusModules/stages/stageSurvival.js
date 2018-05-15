@@ -19,7 +19,6 @@ stageSurvival.init = function() {
   // Set up collider
   COLLIDER.resetReglas();
   COLLIDER.addRegla(stageSurvival.groupTiritos, stageSurvival.groupCenters);
-  COLLIDER.addRegla(stageSurvival.groupTiritos, stageSurvival.groupCenterAsteroids);
   COLLIDER.addRegla(stageSurvival.groupNaves, stageSurvival.groupMisiles);
   COLLIDER.addRegla(stageSurvival.groupTiritos, stageSurvival.groupMisiles);
 
@@ -140,7 +139,7 @@ stageSurvival.getAcidAmp = function() {
   // This totals 130 seconds loops
 
   let t = stageSurvival.STATE.time % 130;
-  console.log(Math.floor(t));
+
   if(t < 60) {
     return 0;
   }
