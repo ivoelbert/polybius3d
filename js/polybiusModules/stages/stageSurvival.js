@@ -6,10 +6,12 @@ let stageSurvival = new polyStage();
 stageSurvival.init = function() {
   // State
   stageSurvival.STATE = {};
+  stageSurvival.STATE.createAsteroidAvailable = false;
   stageSurvival.STATE.createMisilAvailable = false;
   stageSurvival.STATE.glitchEllapsed = 0;
   stageSurvival.STATE.renderGlitch = false;
   stageSurvival.STATE.acidAmp = 0;
+  stageSurvival.STATE.acidTrips = 0;
   stageSurvival.STATE.time = 0;
 
   // Scene
@@ -19,8 +21,10 @@ stageSurvival.init = function() {
   // Set up collider
   COLLIDER.resetReglas();
   COLLIDER.addRegla(stageSurvival.groupTiritos, stageSurvival.groupCenters);
-  COLLIDER.addRegla(stageSurvival.groupNaves, stageSurvival.groupMisiles);
   COLLIDER.addRegla(stageSurvival.groupTiritos, stageSurvival.groupMisiles);
+  COLLIDER.addRegla(stageSurvival.groupNaves, stageSurvival.groupMisiles);
+  COLLIDER.addRegla(stageSurvival.groupNaves, stageSurvival.groupAsteroids);
+  COLLIDER.addRegla(stageSurvival.groupTiritos, stageSurvival.groupAsteroids);
 
   // Stars
   COMMON.createStars( stageSurvival.scene );
@@ -80,6 +84,8 @@ stageSurvival.init = function() {
   }
 
   COMMON.hideHealth();
+
+  COMMON.createAsteroidAt( stageSurvival, new THREE.Vector3( STATE.radius, 0, 0 ) );
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -139,31 +145,55 @@ stageSurvival.getAcidAmp = function() {
   // This totals 130 seconds loops
 
   let t = stageSurvival.STATE.time % 130;
+  console.log(stageSurvival.STATE.acidTrips);
 
-  if(t < 60) {
+  if(t < 30) {
+
+    if(stageSurvival.STATE.resetAcidTrip) {
+      stageSurvival.STATE.acidTrips++;
+      stageSurvival.STATE.resetAcidTrip = false;
+    }
+
     return 0;
   }
   else if(t < 120) {
-    let amp = THREE.Math.mapLinear(t, 60, 120, 0, 1);
+    let amp = THREE.Math.mapLinear(t, 30, 120, 0, 1);
     return amp;
   }
   else if(t < 130) {
     let amp = COMMON.easeInOut(THREE.Math.mapLinear(t, 120, 130, 1, 0));
+    stageSurvival.STATE.resetAcidTrip = true;
     return amp;
   }
+
+
 
   return 0;
 }
 
 stageSurvival.handleNewObjects = function() {
+
   let elapsed = stageSurvival.STATE.time;
-	if(elapsed % 2 < 1 && stageSurvival.STATE.createMisilAvailable) {
+
+  // Create a new misil every 2 seconds
+  let misilInterval = Math.min(THREE.Math.mapLinear(stageSurvival.STATE.acidTrips, 0, 5), 0.5);
+	if(elapsed % misilInterval < misilInterval / 3 && stageSurvival.STATE.createMisilAvailable) {
 		stageSurvival.STATE.createMisilAvailable = false;
 		COMMON.shootMisilFromCenter( stageSurvival );
 	}
-	else if (elapsed % 2 > 1) {
+	else if (elapsed % misilInterval > misilInterval / 3) {
 		stageSurvival.STATE.createMisilAvailable = true;
 	}
+
+  // Create an Asteroid every 3 seconds.
+  let asteroidInterval = 3;
+  if(elapsed % asteroidInterval < asteroidInterval / 3 && stageSurvival.STATE.createAsteroidAvailable) {
+    stageSurvival.STATE.createAsteroidAvailable = false;
+      COMMON.createRandomAsteroid( stageSurvival );
+  }
+  else if(elapsed % asteroidInterval > asteroidInterval / 3) {
+    stageSurvival.STATE.createAsteroidAvailable = true;
+  }
 }
 
 stageSurvival.chooseRenderer = function( delta ) {

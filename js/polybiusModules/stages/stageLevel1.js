@@ -169,6 +169,8 @@ stageLevel1.updateRGBComposer = function( delta ) {
 }
 
 stageLevel1.handleNewObjects = function() {
+
+  // Create a new acid every 2 seconds
   let elapsed = stageLevel1.STATE.time;
 	if(elapsed % 2 < 1 && stageLevel1.STATE.createMisilAvailable) {
 		stageLevel1.STATE.createMisilAvailable = false;
@@ -179,7 +181,7 @@ stageLevel1.handleNewObjects = function() {
 		stageLevel1.STATE.createMisilAvailable = true;
 	}
 
-
+  // Create (50% - 50%) either a new Asteroid or a new acid every 5 seconds.
 	if(elapsed % 5 < 1 && stageLevel1.STATE.createAsteroidAvailable) {
 		stageLevel1.STATE.createAsteroidAvailable = false;
     if(Math.random() > 0.5)
