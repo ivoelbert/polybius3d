@@ -235,8 +235,8 @@ let naveMaterial = new THREE.MeshBasicMaterial({
 // Load naves from .obj files. This is called from loadPill() callback
 COMMON.loadNaves = function() {
 	let navesToLoad = [
-											"polyNave6wire.obj",
-											"starWars.obj",
+											"polyNave7wire.obj",
+											"starWars2.obj",
 											"ApoloWireframeFix.obj",
 											"naveChala180origSize.obj",
 											"fetusLow6666.obj"
