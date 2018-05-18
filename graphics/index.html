@@ -1,18 +1,64 @@
 <html>
-  <head>
-    <script src="js/p5.min.js"></script>
-    <script src="js/sketch.js"></script>
+<head>
+  <script src="js/p5.min.js"></script>
+  <script src="js/p5.dom.min.js"></script>
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/easing.js"></script>
+  <script src="js/graphs.js"></script>
 
-    <style>
-    	body {
-    		background-color: white;
-    		overflow-y: hidden;
-    		overflow-x: hidden;
-    	}
-	</style>
+  <style>
+    body {
+      background-color: white;
+      overflow-y: hidden;
+      overflow-x: hidden;
+    }
 
-  </head>
-  <body>
+    #graph1 {
+      width: 40%;
+      height: 400px;
+      background-color: #eaeaea;
+    }
 
-  </body>
+    #graph2 {
+      width: 40%;
+      height: 400px;
+      background-color: #eaeaea;
+    }
+
+    .graphs-container {
+      display: flex;
+    }
+
+  </style>
+
+</head>
+<body>
+  <div class="graphs-container">
+    <div id="graph1"></div>
+    <div id="graph2"></div>
+  <div>
+
+  <script>
+    var dataPie = [ {'name': 'manzana', 'val': 33.3},
+                    {'name': 'banana', 'val': 6.6},
+                    {'name': 'pera', 'val': 10},
+                    {'name': 'pomelo', 'val': 30},
+                    {'name': 'naranja', 'val': 20} ];
+
+    createPieGraph("Fruta", dataPie, "graph1");
+
+    var dataBar = [ {'name': 'whisky', 'val': 10000},
+                    {'name': 'vino', 'val': 25000},
+                    {'name': 'cerveza', 'val': 35000},
+                    {'name': 'ron', 'val': 10000},
+                    {'name': 'vermut', 'val': 20000} ];
+
+    createSimpleBarGraph("Bebidas", dataBar, "graph2");
+
+    function setHeight(h) {
+      $("#graph1").css("height", h);
+      $("#graph2").css("height", h);
+    }
+  </script>
+</body>
 </html>
