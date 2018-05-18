@@ -247,7 +247,7 @@ function createSimpleBarGraph(title, data, id) {
   };
 
   var myp5 = new p5(s, id);
-  }
+}
 
 simpleBarGraph = function(elem, wd, ht, data) {
   /*
@@ -425,5 +425,240 @@ simpleBarGraph = function(elem, wd, ht, data) {
     } else {
       return (n / 1000000).toFixed(1) + "M"
     }
+  }
+}
+
+function createSlidingGraph(title, data, id) {
+  var s = function( p ) {
+    var gra;
+    var parentElem;
+
+    let $p = $("#" + id);
+    let w = $p.width();
+    let h = $p.height();
+    let mSz = Math.min(w, h);
+
+    p.setup = function() {
+      p.createCanvas(w, h);
+      p.smooth(8);
+      p.frameRate(30);
+      p.colorMode(p.HSB, 100);
+
+      parentElem = p.select("#" + id);
+
+      gra = new slidingGraph(p, w, h, data);
+      gra.setTitle(title);
+      p.resize();
+    };
+
+    p.draw = function() {
+      p.clear();
+      let t = Easing.easeInOutCubic(p.constrain(p.map(p.frameCount, 0, 20, 0, 1), 0, 1));
+      gra.graph(t);
+    };
+
+    p.windowResized = function() {
+      p.resize();
+    }
+
+    p.mouseClicked = function() {
+      console.log("puede ser...");
+    }
+
+    p.resize = function() {
+      let nw = parentElem.size().width;
+      let nh = parentElem.size().height;
+      let minSz = Math.min(nw, nh);
+
+      p.resizeCanvas(nw, nh);
+      gra.reSz(nw, nh);
+    }
+  };
+
+  var myp5 = new p5(s, id);
+}
+
+slidingGraph = function(elem, wd, ht, data) {
+  this.p = elem;
+  this.w = wd;
+  this.h = ht;
+  this.values = [];
+  this.totalValues = 200;
+  for(let i = 0; i < this.totalValues; i++)
+    this.values[i] = data.hist[i];
+
+  this.basePointer = 200;
+  this.maxVal = 0;
+  this.title = "";
+
+  this.reSz = function(nw, nh) {
+    this.w = nw;
+    this.h = nh;
+  }
+
+  this.setTitle = function(title) {
+    this.title = title;
+  }
+
+  this.setValues = function() {
+
+    this.values[this.basePointer] = data.newVal;
+    this.basePointer = (this.basePointer + 1) % this.totalValues;
+
+    this.maxVal = 0;
+    for(let i = 0; i < this.values.length; i++) {
+      if(this.values[i] > this.maxVal)
+        this.maxVal = this.values[i];
+    }
+
+    return;
+  }
+
+  this.graph = function(horizSpan) {
+    if(this.p.frameCount % 30 == 1)
+      this.setValues();
+
+    let paddingX = this.w / 12;
+    let paddingY = this.h / 4;
+    let pos0 = this.p.createVector(paddingX, paddingY);
+    let posX = this.p.createVector(this.w - paddingX, paddingY);
+    let posY = this.p.createVector(paddingX, this.h - paddingY);
+
+    this.p.push();
+    this.p.translate(0, this.h);
+    this.p.applyMatrix(1, 0, 0, -1, 0, 0);
+
+    // Show title
+    this.p.noStroke();
+    this.p.fill(0);
+    this.p.textAlign(this.p.CENTER, this.p.CENTER);
+    this.p.textSize(this.p.constrain(this.p.map(this.h, 50, 400, 15, 25), 15, 25));
+    this.p.push();
+    this.p.translate(this.w / 2, paddingY / 2);
+    this.p.applyMatrix(1, 0, 0, -1, 0, 0);
+    this.p.text(this.title, 0, 0);
+    this.p.pop();
+
+    // Draw the guide lines
+    let guideLines = 4;
+    for(let i = 0; i < guideLines; i++) {
+      let py = this.p.map(i, 0, guideLines - 1, pos0.y, posY.y);
+
+      this.p.stroke(0, 0, 80);
+      this.p.strokeWeight(1);
+      this.p.line(pos0.x - this.p.constrain(paddingX / 10, 8, 1000), py, posX.x, py);
+    }
+
+    ////// GRAPH
+    // Stroke
+    this.p.noFill();
+    this.p.stroke(0, 90, 90);
+    this.p.strokeWeight(2);
+    this.p.beginShape();
+    for(let i = 0; i < this.totalValues * horizSpan; i++) {
+      let px = this.p.map(i, 0, this.totalValues-1, paddingX, this.w - paddingX);
+      let val = this.values[((this.basePointer + i) % this.totalValues)];
+      let py = this.p.map(val, 0, this.maxVal, paddingY, this.h - paddingY);
+      this.p.vertex(px, py);
+    }
+    this.p.endShape();
+
+    // Fill
+    this.p.fill(0, 90, 90, 20);
+    this.p.noStroke();
+    this.p.beginShape();
+    this.p.vertex(paddingX, paddingY);
+    for(let i = 0; i < this.totalValues * horizSpan; i++) {
+      let px = this.p.map(i, 0, this.totalValues-1, paddingX, this.w - paddingX);
+      let val = this.values[((this.basePointer + i) % this.totalValues)];
+      let py = this.p.map(val, 0, this.maxVal, paddingY, this.h - paddingY);
+      this.p.vertex(px, py);
+    }
+    this.p.vertex(this.p.map(horizSpan, 0, 1, paddingX, this.w - paddingX), paddingY);
+    this.p.endShape(this.p.CLOSE);
+
+    let overGraph = false;
+    for(let i = 0; i < this.totalValues * horizSpan; i++) {
+      let px = this.p.map(i, 0, this.totalValues-1, paddingX, this.w - paddingX);
+      let val = this.values[((this.basePointer + i) % this.totalValues)];
+      let py = this.p.map(val, 0, this.maxVal, paddingY, this.h - paddingY);
+
+      if(this.p.mouseX > px - 5 && this.p.mouseX < px + 5 && this.h - this.p.mouseY > paddingY && this.h - this.p.mouseY < py) {
+        overGraph = true;
+
+        this.p.stroke(0, 90, 90);
+        this.p.strokeWeight(6);
+        this.p.point(px, py);
+
+        this.p.stroke(0);
+        this.p.strokeWeight(1);
+        this.dottedLine(pos0.x - this.p.constrain(paddingX / 10, 8, 1000), px, py);
+
+        let tpx = pos0.x - this.p.constrain(paddingX / 6, 8, 1000);
+        let formattedVal = this.formatNumber(val);
+
+        this.p.noStroke();
+        this.p.fill(0, 0, 20);
+        this.p.textAlign(this.p.RIGHT, this.p.CENTER);
+        this.p.textSize(this.p.constrain(this.p.map(this.h, 50, 300, 11, 20), 11, 20));
+        this.p.push();
+        this.p.translate(tpx, py);
+        this.p.applyMatrix(1, 0, 0, -1, 0, 0);
+        this.p.text(formattedVal, 0, 0);
+        this.p.pop();
+
+        break;
+      }
+    }
+
+
+    // Draw some reference values
+    this.p.noStroke();
+    this.p.textAlign(this.p.RIGHT, this.p.CENTER);
+    this.p.textSize(this.p.constrain(this.p.map(this.h, 50, 300, 11, 20), 11, 20));
+    this.p.fill(0);
+    if(!overGraph) {
+      for(let i = 0; i < guideLines; i++) {
+        let px = pos0.x - this.p.constrain(paddingX / 6, 8, 1000);
+        let py = this.p.map(i, 0, guideLines - 1, pos0.y, posY.y);
+        let val = this.formatNumber(this.p.map(i, 0, guideLines-1, 0, this.maxVal));
+        this.p.push();
+        this.p.translate(px, py);
+        this.p.applyMatrix(1, 0, 0, -1, 0, 0);
+        this.p.text(val, 0, 0);
+        this.p.pop();
+      }
+    }
+
+    // Last the axes
+    this.p.stroke(0, 0, 0);
+    this.p.strokeWeight(2);
+    this.p.line(pos0.x, pos0.y, posX.x, posX.y);
+    this.p.line(pos0.x, pos0.y, posY.x, posY.y);
+
+    this.p.pop();
+  }
+
+  this.formatNumber = function(n) {
+    if(n < 1000) {
+      return n.toFixed(1);
+    } else if(n < 1000000) {
+      return (n / 1000).toFixed(1) + "K";
+    } else {
+      return (n / 1000000).toFixed(1) + "M"
+    }
+  }
+
+  this.dottedLine = function(x1, x2, y) {
+    let lw = 5;
+    let pos = x1;
+    while(pos < x2) {
+      let px2 = pos + lw < x2 ? pos + lw : x2;
+
+      this.p.line(pos, y, px2, y);
+      pos += lw * 2;
+    }
+
+    return;
   }
 }

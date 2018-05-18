@@ -4,6 +4,7 @@
   <script src="js/p5.dom.min.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/easing.js"></script>
+  <script src="js/noise.js"></script>
   <script src="js/graphs.js"></script>
 
   <style>
@@ -13,20 +14,24 @@
       overflow-x: hidden;
     }
 
+    .graphs-container {
+      display: flex;
+    }
+
     #graph1 {
       width: 40%;
       height: 400px;
-      background-color: #eaeaea;
     }
 
     #graph2 {
       width: 40%;
       height: 400px;
-      background-color: #eaeaea;
     }
 
-    .graphs-container {
-      display: flex;
+    #graph3 {
+      width: 80%;
+      height: 200px;
+      margin-top: 100px;
     }
 
   </style>
@@ -36,9 +41,11 @@
   <div class="graphs-container">
     <div id="graph1"></div>
     <div id="graph2"></div>
-  <div>
+  </div>
+  <div id="graph3"></div>
 
   <script>
+
     var dataPie = [ {'name': 'manzana', 'val': 33.3},
                     {'name': 'banana', 'val': 6.6},
                     {'name': 'pera', 'val': 10},
@@ -55,10 +62,26 @@
 
     createSimpleBarGraph("Bebidas", dataBar, "graph2");
 
-    function setHeight(h) {
-      $("#graph1").css("height", h);
-      $("#graph2").css("height", h);
+    // Simulate historical data
+    extNoise.seed(Math.random());
+    let t = 0;
+    let incr = 0.08;
+    let hist = [];
+    for(let i = 0; i < 200; i++) {
+      t += incr;
+      hist.push((extNoise.perlin2(t, 0) + 1) * 30);
     }
+    t += incr / 2;
+    var dataSlide = {'hist': hist, 'newVal': (extNoise.perlin2(t, 0) + 1) * 30};
+
+    createSlidingGraph("Compras", dataSlide, "graph3");
+
+    // Simulate data over time
+    let id = setInterval(function() {
+      t += incr / 2;
+      dataSlide.newVal = (extNoise.perlin2(t, 0) + 1) * 30;
+    }, 500);
+
   </script>
 </body>
 </html>
