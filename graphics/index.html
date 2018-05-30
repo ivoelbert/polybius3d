@@ -7,60 +7,64 @@
   <script src="js/noise.js"></script>
   <script src="js/graphs.js"></script>
 
-  <style>
-    body {
-      background-color: white;
-      overflow-y: hidden;
-      overflow-x: hidden;
-    }
-
-    .graphs-container {
-      display: flex;
-    }
-
-    #graph1 {
-      width: 40%;
-      height: 400px;
-    }
-
-    #graph2 {
-      width: 40%;
-      height: 400px;
-    }
-
-    #graph3 {
-      width: 80%;
-      height: 200px;
-      margin-top: 100px;
-    }
-
-  </style>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 
 </head>
 <body>
-  <div class="graphs-container">
-    <div id="graph1"></div>
-    <div id="graph2"></div>
+  <div class="categorias-title-container">
+    <p class="categorias-title-text">Por categorías</p>
   </div>
-  <div id="graph3"></div>
+
+  <div class="table-container">
+    <table class="graphs-container">
+      <tr>
+        <th class="pie-graph" id="graphFruta"></th>
+        <th class="pie-graph" id="graphBebidas"></th>
+      </tr>
+      <tr>
+        <th class="pie-graph" id="graphAlmac"></th>
+        <th class="pie-graph" id="graphHogar"></th>
+      </tr>
+    </table>
+  </div>
+
+  <div class="real-time-container">
+    <div class="real-time-parent">
+      <div id="graph3"></div>
+    </div>
+  </div>
 
   <script>
 
-    var dataPie = [ {'name': 'manzana', 'val': 33.3},
+    var dataFruta = [ {'name': 'manzana', 'val': 33.3},
                     {'name': 'banana', 'val': 6.6},
                     {'name': 'pera', 'val': 10},
                     {'name': 'pomelo', 'val': 30},
                     {'name': 'naranja', 'val': 20} ];
 
-    createPieGraph("Fruta", dataPie, "graph1");
+    createPieGraph("Fruta", dataFruta, "graphFruta");
 
-    var dataBar = [ {'name': 'whisky', 'val': 10000},
+    var dataBeb = [ {'name': 'whisky', 'val': 10000},
                     {'name': 'vino', 'val': 25000},
                     {'name': 'cerveza', 'val': 35000},
                     {'name': 'ron', 'val': 10000},
                     {'name': 'vermut', 'val': 20000} ];
 
-    createSimpleBarGraph("Bebidas", dataBar, "graph2");
+    createPieGraph("Bebidas", dataBeb, "graphBebidas");
+
+    var dataAlmac = [{'name': 'aceite', 'val': 100},
+                     {'name': 'aderezo', 'val': 80},
+                     {'name': 'especias', 'val': 40},
+                     {'name': 'panificados', 'val': 75}];
+
+    createPieGraph("Almacen", dataAlmac, "graphAlmac");
+
+    var dataHogar = [{'name': 'muebles', 'val': 10},
+                     {'name': 'libros', 'val': 20},
+                     {'name': 'jugueteria', 'val': 40},
+                     {'name': 'cocina', 'val': 100}, ];
+
+    createPieGraph("Hogar", dataHogar, "graphHogar");
 
     // Simulate historical data
     extNoise.seed(Math.random());

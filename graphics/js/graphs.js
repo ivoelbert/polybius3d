@@ -43,12 +43,13 @@ function createPieGraph(title, data, id) {
     }
 
     p.resize = function() {
-      let nw = parentElem.size().width;
-      let nh = parentElem.size().height;
-      let minSz = Math.min(nw, nh);
+      let nw = parentElem.elt.clientWidth;
+      let nh = parentElem.elt.clientHeight;
 
-      p.resizeCanvas(nw, nh);
-      gra.setPosition(nw / 2, nh / 2);
+      let minSz = Math.min(nw, nh) - 10;
+
+      p.resizeCanvas(minSz, minSz);
+      gra.setPosition(minSz / 2, minSz / 2);
       gra.reSz(minSz * 0.25, minSz * 0.45);
     }
   };
@@ -70,7 +71,7 @@ pieGraph = function(elem, inner, outer, data) {
   this.outerRad = outer;
   this.values = [];
   this.position = this.p.createVector(0, 0);
-  this.ongraph = false;
+  this.onGraph = false;
   this.ang = 0;
   this.title = "";
   this.shownText = this.title;
@@ -119,7 +120,7 @@ pieGraph = function(elem, inner, outer, data) {
       let hue = this.p.map(i, 0, this.values.length, 0, 100);
       this.p.fill(hue, 90, 90);
       this.p.strokeWeight(1);
-      this.p.stroke(0, 0, 20);
+      this.p.stroke(0, 0, 0);
       this.ringSection(this.innerRad, this.outerRad, ang, endAng, dotsToDraw);
 
       ang = endAng;
@@ -127,6 +128,8 @@ pieGraph = function(elem, inner, outer, data) {
 
     if(this.onGraph) {
       ang = 0;
+      let innerMult = 0.95;
+      let outerMult = 1.05;
       for(let i = 0; i < this.values.length; i++) {
         let angularSpan = 2 * Math.PI * this.values[i].val;
         let endAng = ang + angularSpan;
@@ -134,10 +137,10 @@ pieGraph = function(elem, inner, outer, data) {
         if(this.ang > ang && this.ang < endAng) {
           let dotsToDraw = Math.floor(dots * this.values[i].val);
           this.p.strokeWeight(3);
-          this.p.stroke(0, 0, 20);
+          this.p.stroke(0, 0, 0);
           let hue = this.p.map(i, 0, this.values.length, 0, 100);
           this.p.fill(hue, 100, 100);
-          this.ringSection(this.innerRad, this.outerRad, ang, endAng, dotsToDraw);
+          this.ringSection(this.innerRad * innerMult, this.outerRad * outerMult, ang, endAng, dotsToDraw);
           this.shownText = this.values[i].name + "\n" + (this.values[i].val * 100).toFixed(2) + "%";
           break;
         }
@@ -148,9 +151,9 @@ pieGraph = function(elem, inner, outer, data) {
     }
 
     this.p.textAlign(this.p.CENTER, this.p.CENTER);
-    this.p.fill(0, 0, 20);
+    this.p.fill(90);
     this.p.noStroke();
-    this.p.textSize(this.p.constrain(this.p.map(this.innerRad, 50, 200, 14, 30), 14, 30));
+    this.p.textSize(this.p.constrain(this.p.map(this.innerRad, 50, 200, 15, 30), 15, 30));
     this.p.text(this.shownText, 0, 0);
 
     this.p.pop();
@@ -241,8 +244,8 @@ function createSimpleBarGraph(title, data, id) {
       let nh = parentElem.size().height;
       let minSz = Math.min(nw, nh);
 
-      p.resizeCanvas(nw, nh);
-      gra.reSz(nw, nh);
+      p.resizeCanvas(nw - 10, nh - 10);
+      gra.reSz(nw - 10, nh - 10);
     }
   };
 
@@ -302,7 +305,7 @@ simpleBarGraph = function(elem, wd, ht, data) {
 
     // Show title
     this.p.noStroke();
-    this.p.fill(0);
+    this.p.fill(90);
     this.p.textAlign(this.p.CENTER, this.p.CENTER);
     this.p.textSize(this.p.constrain(this.p.map(this.w, 50, 800, 12, 30), 12, 30));
     this.p.push();
@@ -316,7 +319,7 @@ simpleBarGraph = function(elem, wd, ht, data) {
     for(let i = 0; i < guideLines; i++) {
       let py = this.p.map(i, 0, guideLines - 1, pos0.y, posY.y);
 
-      this.p.stroke(0, 0, 80);
+      this.p.stroke(40);
       this.p.strokeWeight(1);
       this.p.line(pos0.x - this.p.constrain(paddingX / 6, 8, 1000), py, posX.x, py);
     }
@@ -340,7 +343,7 @@ simpleBarGraph = function(elem, wd, ht, data) {
       if(this.p.mouseX > bx && this.p.mouseX < bx + xSpace * (1 - spacing) && this.h - this.p.mouseY > by && this.h - this.p.mouseY < by + ty) {
 
         // Draw dotted line
-        this.p.stroke(0);
+        this.p.stroke(90);
         this.p.strokeWeight(1);
         this.dottedLine(pos0.x - this.p.constrain(paddingX / 6, 8, 1000), bx, by + ty);
 
@@ -349,7 +352,7 @@ simpleBarGraph = function(elem, wd, ht, data) {
         let val = this.formatNumber(this.values[i].val);
 
         this.p.noStroke();
-        this.p.fill(0, 0, 20);
+        this.p.fill(100);
         this.p.textAlign(this.p.RIGHT, this.p.CENTER);
         this.p.textSize(this.p.constrain(this.p.map(xSpace, 50, 500, 11, 30), 11, 30));
         this.p.push();
@@ -361,7 +364,7 @@ simpleBarGraph = function(elem, wd, ht, data) {
         overGraph = true;
 
         this.p.stroke(0);
-        this.p.strokeWeight(1);
+        this.p.strokeWeight(2);
         this.p.fill(hue, 100, 100);
       }
       this.p.rect(bx, by, xSpace * (1 - spacing), ty );
@@ -370,7 +373,7 @@ simpleBarGraph = function(elem, wd, ht, data) {
       this.p.textAlign(this.p.CENTER, this.p.CENTER);
       this.p.textSize(this.p.constrain(this.p.map(xSpace, 50, 500, 12, 40), 12, 40));
       this.p.noStroke();
-      this.p.fill(0, 0, 20);
+      this.p.fill(80);
       this.p.push();
       this.p.translate(px + xSpace * 0.5, paddingY * 0.5);
       this.p.applyMatrix(1, 0, 0, -1, 0, 0);
@@ -396,10 +399,10 @@ simpleBarGraph = function(elem, wd, ht, data) {
     }
 
     // Last the axes
-    this.p.stroke(0, 0, 0);
+    this.p.stroke(90);
     this.p.strokeWeight(2);
-    this.p.line(pos0.x, pos0.y, posX.x, posX.y);
-    this.p.line(pos0.x, pos0.y, posY.x, posY.y);
+    this.p.line(pos0.x, pos0.y, posX.x + 10, posX.y);
+    this.p.line(pos0.x, pos0.y, posY.x, posY.y + 10);
 
     this.p.pop();
   }
@@ -530,7 +533,7 @@ slidingGraph = function(elem, wd, ht, data) {
 
     // Show title
     this.p.noStroke();
-    this.p.fill(0);
+    this.p.fill(90);
     this.p.textAlign(this.p.CENTER, this.p.CENTER);
     this.p.textSize(this.p.constrain(this.p.map(this.h, 50, 400, 15, 25), 15, 25));
     this.p.push();
@@ -544,7 +547,7 @@ slidingGraph = function(elem, wd, ht, data) {
     for(let i = 0; i < guideLines; i++) {
       let py = this.p.map(i, 0, guideLines - 1, pos0.y, posY.y);
 
-      this.p.stroke(0, 0, 80);
+      this.p.stroke(40);
       this.p.strokeWeight(1);
       this.p.line(pos0.x - this.p.constrain(paddingX / 10, 8, 1000), py, posX.x, py);
     }
@@ -590,7 +593,7 @@ slidingGraph = function(elem, wd, ht, data) {
         this.p.strokeWeight(6);
         this.p.point(px, py);
 
-        this.p.stroke(0);
+        this.p.stroke(100);
         this.p.strokeWeight(1);
         this.dottedLine(pos0.x - this.p.constrain(paddingX / 10, 8, 1000), px, py);
 
@@ -598,7 +601,7 @@ slidingGraph = function(elem, wd, ht, data) {
         let formattedVal = this.formatNumber(val);
 
         this.p.noStroke();
-        this.p.fill(0, 0, 20);
+        this.p.fill(100);
         this.p.textAlign(this.p.RIGHT, this.p.CENTER);
         this.p.textSize(this.p.constrain(this.p.map(this.h, 50, 300, 11, 20), 11, 20));
         this.p.push();
@@ -616,7 +619,7 @@ slidingGraph = function(elem, wd, ht, data) {
     this.p.noStroke();
     this.p.textAlign(this.p.RIGHT, this.p.CENTER);
     this.p.textSize(this.p.constrain(this.p.map(this.h, 50, 300, 11, 20), 11, 20));
-    this.p.fill(0);
+    this.p.fill(90);
     if(!overGraph) {
       for(let i = 0; i < guideLines; i++) {
         let px = pos0.x - this.p.constrain(paddingX / 6, 8, 1000);
@@ -631,10 +634,10 @@ slidingGraph = function(elem, wd, ht, data) {
     }
 
     // Last the axes
-    this.p.stroke(0, 0, 0);
+    this.p.stroke(90);
     this.p.strokeWeight(2);
-    this.p.line(pos0.x, pos0.y, posX.x, posX.y);
-    this.p.line(pos0.x, pos0.y, posY.x, posY.y);
+    this.p.line(pos0.x, pos0.y, posX.x + 10, posX.y);
+    this.p.line(pos0.x, pos0.y, posY.x, posY.y + 10);
 
     this.p.pop();
   }
