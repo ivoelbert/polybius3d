@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>TEST</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    
+    <style>
+        .local-content {
+            width: 200px;
+            height: 200px;
+            margin: auto;
+            background-color: grey;
+        }
+    </style>
+
+    <script src="jquery.js"></script>
+    <script>
+        function loadGUI(which)
+        {
+            $("#outside-content").load("GUIs/" + which + ".html");
+            $("head").append($("<link rel='stylesheet' href='GUIs/" + which + ".css' type='text/css' media='screen' />"));
+        }
+    </script>
+</head>
+
+<body>
+    <div class="external-css"></div>
+
+    <div class="local-content">
+        SOME CONTENT
+    </div>
+
+    <div id="outside-content"></div>
+
+</body>
+
+</html>
