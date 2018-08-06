@@ -59,49 +59,6 @@
             text-align: center;
         }
         
-        #info {
-            position: absolute;
-            top: 35%;
-            width: 100%;
-            padding: 0px;
-            z-index: 100;
-            opacity: 0;
-            animation-fill-mode: forwards;
-        }
-        
-        a {
-            color: #0080ff;
-        }
-        
-        b {
-            color: orange
-        }
-        
-        #health-bar {
-            position: absolute;
-            top: -10vh;
-            width: 50%;
-            margin-left: 25%;
-            padding: 0.6vh;
-            border-radius: 5vh;
-            border: 1px white;
-            background-color: #383838;
-            border-style: solid;
-            border-width: 1px;
-            border-color: grey;
-            animation-fill-mode: forwards;
-            display: none;
-        }
-        
-        #health {
-            height: 0.05vh;
-            float: right;
-            width: 98.5%;
-            padding: 0.4vh;
-            border-radius: 5vh;
-            background-color: red;
-        }
-        
         #loading-container {
             width: 100vw;
             height: 100vh;
@@ -125,39 +82,10 @@
             transition: width 1s;
             transition-timing-function: ease-in-out;
         }
-        
-        .info_box {
-            width: 90vh;
-            margin: auto;
-            padding: 2%;
-            border-radius: 2vh;
-            background-color: rgba(255, 246, 246, 0.55);
-        }
-        
-        .play_button {
-            font-size: 10vh;
-            font-family: polyFont;
-            color: black;
-            cursor: pointer;
-        }
-        
-        #title {
-            margin: 0;
-            padding-top: 5%;
-        }
-        
-        .controls {
-            padding-top: 5vh;
-            padding-bottom: 4vh;
-            font-size: 1.1em;
-        }
-        
-        b {
-            color: #b90404
-        }
     </style>
 
     <script src="js/math/noise.js"></script>
+    <script src="js/jquery.js"></script>
 
     <script src="build/three.js"></script>
 
@@ -207,27 +135,10 @@
 </head>
 
 <body>
+    <div id="gui-container"></div>
+
     <div id="loading-container">
         <div id="loaded"></div>
-    </div>
-
-    <div id="health-bar">
-        <div id="health"></div>
-    </div>
-
-    <div id="info">
-        <div class="info_box">
-            <div>
-                <a onclick="COMMON.hideElement('info', 0.5, 0); COMMON.changeToStage(2)" class="play_button" style="text-decoration:none">
-                    <div>
-                        <p id="title">POLYBIUS</p>
-                    </div>
-                </a>
-            </div>
-            <div class="controls">
-                <b>WASD</b> orbit, <b>IK</b> forwards/backwards, <b>JL</b> roll, <b>SPACE</b> shoot!
-            </div>
-        </div>
     </div>
 
     <script src="js/Common.js"></script>

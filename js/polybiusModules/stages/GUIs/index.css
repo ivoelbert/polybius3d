@@ -1,0 +1,70 @@
+@font-face {
+    font-family: polyFont;
+    src: url(fonts/polyfont.ttf);
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+#info {
+    position: absolute;
+    top: 35%;
+    width: 100%;
+    padding: 0px;
+    z-index: 100;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+a {
+    color: #0080ff;
+}
+
+b {
+    color: orange
+}
+
+.info_box {
+    width: 90vh;
+    margin: auto;
+    padding: 2%;
+    border-radius: 2vh;
+    background-color: rgba(255, 246, 246, 0.55);
+}
+
+.play_button {
+    font-size: 10vh;
+    font-family: polyFont;
+    color: black;
+    cursor: pointer;
+}
+
+#title {
+    margin: 0;
+    padding-top: 5%;
+}
+
+.controls {
+    padding-top: 5vh;
+    padding-bottom: 4vh;
+    font-size: 1.1em;
+}
+
+b {
+    color: #b90404
+}

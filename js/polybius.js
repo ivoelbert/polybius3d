@@ -15,15 +15,11 @@ function init() {
 	STATE.stats = new Stats();
 	STATE.container.appendChild( STATE.stats.dom );
 
-  STATE.currentStage = 0;
-  STATE.nextStage = 0;
-
 	window.addEventListener( 'resize', onWindowResize, false );
 
-  STAGE.createStages();
-  STAGE.stages[STATE.currentStage].init();
+  	STAGE.createStages();
+	COMMON.changeToStage('index', animate);
 
-  animate();
 }
 
 function onWindowResize( event ) {
@@ -31,8 +27,8 @@ function onWindowResize( event ) {
 	STATE.SCREEN_WIDTH  = window.innerWidth;
 	STATE.renderer.setSize( STATE.SCREEN_WIDTH, STATE.SCREEN_HEIGHT );
 
-  STAGE.stages[STATE.currentStage].resetSize( STATE.SCREEN_WIDTH / STATE.SCREEN_HEIGHT );
-  STAGE.stages[STATE.nextStage].resetSize( STATE.SCREEN_WIDTH / STATE.SCREEN_HEIGHT );
+	STAGE.stages[STATE.currentStage].resetSize( STATE.SCREEN_WIDTH / STATE.SCREEN_HEIGHT );
+	STAGE.stages[STATE.nextStage].resetSize( STATE.SCREEN_WIDTH / STATE.SCREEN_HEIGHT );
 }
 
 
@@ -40,7 +36,7 @@ function animate() {
 	requestAnimationFrame( animate );
 
 	var delta = STATE.clock.getDelta();
-  STAGE.stages[STATE.currentStage].update( delta );
+	STAGE.stages[STATE.currentStage].update( delta );
 
 	STATE.stats.update();
 }

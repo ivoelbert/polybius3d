@@ -482,26 +482,21 @@ COMMON.createStars = function(scene) {
 	}
 }
 
-COMMON.changeToStage = function( index ) {
-	STATE.currentStage = index;
-	STAGE.stages[STATE.currentStage].init();
+COMMON.changeToStage = function( which, callback ) {
+	$("#gui-style").remove();
+	$("#gui-container").load("/js/polybiusModules/stages/GUIs/" + which + ".html", function() {
+		$("head").append($("<link id='gui-style' rel='stylesheet' href='/js/polybiusModules/stages/GUIs/" + which + ".css' type='text/css' media='screen' />"));
+
+		STATE.currentStage = which;
+		STAGE.stages[STATE.currentStage].init();
+	});
+	
+	callback();
 }
 
 /////////////////////////////////////
 //////////////// CSS ////////////////
 /////////////////////////////////////
-
-// SHOW HEALTH
-COMMON.showHealth = function() {
-	document.getElementById("health-bar").style["display"] = "block";
-	document.getElementById("health-bar").style["animation-name"] = "show-health";
-	document.getElementById("health-bar").style["animation-duration"] = "1s";
-}
-
-COMMON.hideHealth = function() {
-	document.getElementById("health-bar").style["animation-name"] = "hide-health";
-	document.getElementById("health-bar").style["animation-duration"] = "1s";
-}
 
 // Update loading bar to show it is -percent-% finished
 function loadTo(percent) {
@@ -511,13 +506,8 @@ function loadTo(percent) {
 // When all objects load, update some css and call init() which starts each page three scene.
 function endLoading() {
 	setTimeout( () => {
-		document.getElementById("loading-container").style.display = "none";
-		if(document.getElementById("info") != null) {
-			COMMON.showElement("info", 1.5, 0.5);
-		}
-
+		COMMON.hideElement("loading-container", 0, 0);
 		init();
-
 	}, 1000 );
 }
 

@@ -58,7 +58,7 @@ stageIndex.init = function() {
             stageIndex.RGBComposer.reset();
         }
 
-        COMMON.hideHealth();
+        COMMON.showElement("info", 1.5, 0.5);
     }
     ////////////////////////////////////////////////////////////////////////////////
 
