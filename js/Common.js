@@ -504,23 +504,14 @@ function loadTo(percent) {
 // When all objects load, update some css and call init() which starts each page three scene.
 function endLoading() {
 	setTimeout( () => {
-		COMMON.hideElement("loading-container", 0, 0);
-		init();
+		COMMON.hideElement("loading-container", 0, init);
 	}, 1000 );
 }
 
-COMMON.showElement = function(id, time, delay) {
-	document.getElementById(id).style["display"] = "block";
-	document.getElementById(id).style["animation-name"] = "fade-in";
-	document.getElementById(id).style["animation-duration"] = time + "s";
-	document.getElementById(id).style["animation-delay"] = delay + "s";
+COMMON.showElement = function(id, delay, callback) {
+	$("#" + id).fadeIn(delay, callback);
 }
 
-COMMON.hideElement = function(id, time, delay) {
-	document.getElementById(id).style["animation-name"] = "fade-out";
-	document.getElementById(id).style["animation-duration"] = time + "s";
-	document.getElementById(id).style["animation-delay"] = delay + "s";
-	setTimeout( function() {
-		document.getElementById(id).style["display"] = "none";
-	}, time + delay );
+COMMON.hideElement = function(id, delay, callback) {
+	$("#" + id).fadeOut(delay, callback);
 }

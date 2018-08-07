@@ -79,6 +79,14 @@ stageTutorial.init = function() {
     stageTutorial.RGBComposer.reset();
   }
 
+  COMMON.hideElement("ik-rules", 0);
+  COMMON.hideElement("wasd-rules", 0);
+  COMMON.showElement("wasd-rules", 500);
+  
+  stageTutorial.STATE.GUIElement = "wasd-rules";
+
+  document.addEventListener("keydown", event => stageTutorial.pressKey(event.key));
+  document.addEventListener("keyup", event => stageTutorial.releaseKey(event.key));
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -105,6 +113,89 @@ stageTutorial.update = function( delta ) {
 
   // Finally render to screen
 	stageTutorial.chooseRenderer( delta );
+}
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+// GUI
+////////////////////////////////////////////////////////////////////////////////
+stageTutorial.pressKey = function(which) {
+  
+  let loweredWASD = false;
+  let loweredIK = false;
+
+  let lowerWASD = function() {
+    loweredWASD = true;
+    $("#wasd-rules").css("transform", "scale(0.6)");
+    $("#wasd-rules").css("top", "calc(80% - 15vh)");
+
+    setTimeout(function() {
+      COMMON.hideElement("wasd-rules", 500, function() {
+        stageTutorial.STATE.GUIElement = "ik-rules";
+        COMMON.showElement("ik-rules", 500);
+      });
+    }, 3000);
+  }
+
+  let lowerIK = function() {
+    loweredIK = true;
+    $("#ik-rules").css("transform", "scale(0.6)");
+    $("#ik-rules").css("top", "calc(80% - 15vh)");
+
+    setTimeout(function() {
+      COMMON.hideElement("ik-rules", 500, function() {
+        stageTutorial.STATE.GUIElement = "no-rules";
+      });
+    }, 3000);
+  }
+
+  let keys = {};
+  switch(stageTutorial.STATE.GUIElement) {
+    case "wasd-rules":
+      keys = {'w': 0, 'a': 1, 's': 2, 'd': 3};
+      if(keys[which] !== undefined) {
+        $(".wasd-rules .key")[keys[which]].style["border-bottom"] = "0.2vw solid grey";
+        $(".wasd-rules .key")[keys[which]].style["margin"] = "calc(1% + 0.3vw) 1% 1% 1%"
+        
+        if(!loweredWASD)
+          lowerWASD();
+      }
+      break;
+
+    case "ik-rules":
+      keys = {'i': 0, 'k': 1};
+      if(keys[which] !== undefined) {
+        $(".ik-rules .key")[keys[which]].style["border-bottom"] = "0.2vw solid grey";
+        $(".ik-rules .key")[keys[which]].style["margin"] = "calc(1% + 0.3vw) 1% 1% 1%"
+
+        if(!loweredIK)
+          lowerIK();
+      }
+      break;
+  }
+}
+
+stageTutorial.releaseKey = function(which) {
+
+  let keys = {};
+  switch(stageTutorial.STATE.GUIElement) {
+    case "wasd-rules":
+      keys = {'w': 0, 'a': 1, 's': 2, 'd': 3};
+      if(keys[which] !== undefined) {
+        $(".wasd-rules .key")[keys[which]].style["border-bottom"] = "0.5vw solid grey"
+        $(".wasd-rules .key")[keys[which]].style["margin"] = "1%"
+      }
+      break;
+
+    case "ik-rules":
+      keys = {'i': 0, 'k': 1};
+      if(keys[which] !== undefined) {
+        $(".ik-rules .key")[keys[which]].style["border-bottom"] = "0.5vw solid grey"
+        $(".ik-rules .key")[keys[which]].style["margin"] = "1%"
+      }
+      break;
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -1,14 +1,33 @@
+.ik-rules {
+    position: absolute;
+    width: 100%;
+    height: 30vh;
+    top: calc(50% - 15vh);
+    transform: scale(1.5);
+    transition: transform 0.5s, top 0.5s;
+}
+
+.ik-rules .rules-container {
+    width: 30vw;
+    height: 100%;
+    margin: auto;
+    background-color: #1b1b1bf0;
+    border-radius: 10px;
+}
+
 .wasd-rules {
     position: absolute;
     width: 100%;
     height: 30vh;
     top: calc(50% - 15vh);
+    transform: scale(1.5);
+    transition: transform 0.5s, top 0.5s;
 }
 .wasd-rules .rules-container {
     width: 30vw;
     height: 100%;
     margin: auto;
-    background-color: #80808059;
+    background-color: #1b1b1bf0;
     border-radius: 10px;
 }
 
@@ -28,13 +47,14 @@
     border-radius: 5px;
     text-align: center;
     font-family: arial, helvetica;
+    color: black;
     align-items: center;
     justify-content: center;
     font-size: 2vw;
     font-weight: 600;
     box-shadow: 0 0 2px 1px black;
     border-bottom: 0.5vw solid grey;
-    transition: 0.1s all;
+    transition: all 0.1s;
 }
 
 .orbit-text {

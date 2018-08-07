@@ -1,7 +1,7 @@
 <div id="info">
     <div class="info_box">
         <div>
-            <a onclick="COMMON.hideElement('info', 0.5, 0); COMMON.changeToStage('tutorial')" class="play_button" style="text-decoration:none">
+            <a onclick="COMMON.hideElement('info', 1000, () => { COMMON.changeToStage('tutorial') });" class="play_button" style="text-decoration:none">
                 <div>
                     <p id="title">POLYBIUS</p>
                 </div>

@@ -1,38 +1,29 @@
-
-<div id="wasd-rules" class="wasd-rules">
-    <script>
-        var pressKey = function(which) {
-            let keys = {'w': 0, 'a': 1, 's': 2, 'd': 3};
-
-            if(keys[which] !== undefined) {
-                document.getElementsByClassName('key')[keys[which]].style["border-bottom"] = "0.2vw solid grey";
-                document.getElementsByClassName('key')[keys[which]].style["margin"] = "calc(1% + 0.3vw) 1% 1% 1%"
-            }
-        }
-
-        var releaseKey = function(which) {
-            let keys = {'w': 0, 'a': 1, 's': 2, 'd': 3};
-
-            if(keys[which] !== undefined) {
-                document.getElementsByClassName('key')[keys[which]].style["border-bottom"] = "0.5vw solid grey"
-                document.getElementsByClassName('key')[keys[which]].style["margin"] = "1%"
-            }
-        }
-
-        document.addEventListener("keydown", event => pressKey(event.key));
-        document.addEventListener("keyup", event => releaseKey(event.key));
-    </script>
-
-    <div class="rules-container">
-        <div class="keys-container">
-            <div class="key"> W </div>
-            <div class="key"> A </div>
-            <div class="key"> S </div>
-            <div class="key"> D </div>
+<div>
+    <div id="ik-rules" class="ik-rules">
+        <div class="rules-container">
+            <div class="keys-container">
+                <div class="key"> I </div>
+                <div class="key"> K </div>
+            </div>
+    
+            <div class="orbit-text">
+                <p>to go <b>forwards/backwards</b></p>
+            </div>
         </div>
-
-        <div class="orbit-text">
-            <p>to <b>orbit</b> the center</p>
+    </div>
+    
+    <div id="wasd-rules" class="wasd-rules">
+        <div class="rules-container">
+            <div class="keys-container">
+                <div class="key"> W </div>
+                <div class="key"> A </div>
+                <div class="key"> S </div>
+                <div class="key"> D </div>
+            </div>
+    
+            <div class="orbit-text">
+                <p>to <b>orbit</b> the center</p>
+            </div>
         </div>
     </div>
 </div>
