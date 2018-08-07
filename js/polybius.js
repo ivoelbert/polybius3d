@@ -18,8 +18,9 @@ function init() {
 	window.addEventListener( 'resize', onWindowResize, false );
 
   	STAGE.createStages();
-	COMMON.changeToStage('index', animate);
+	COMMON.changeToStage('index');
 
+	animate();
 }
 
 function onWindowResize( event ) {
@@ -36,7 +37,9 @@ function animate() {
 	requestAnimationFrame( animate );
 
 	var delta = STATE.clock.getDelta();
-	STAGE.stages[STATE.currentStage].update( delta );
+
+	if(STAGE.stages[STATE.currentStage])
+		STAGE.stages[STATE.currentStage].update( delta );
 
 	STATE.stats.update();
 }

@@ -88,8 +88,6 @@ stageLevel1.init = function() {
   }
 
   COMMON.createAsteroidAt( stageLevel1, new THREE.Vector3( STATE.radius, 0, 0 ) );
-
-  COMMON.showHealth();
 }
 ////////////////////////////////////////////////////////////////////////////////
 

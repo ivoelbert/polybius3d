@@ -1,0 +1,45 @@
+.wasd-rules {
+    position: absolute;
+    width: 100%;
+    height: 30vh;
+    top: calc(50% - 15vh);
+}
+.wasd-rules .rules-container {
+    width: 30vw;
+    height: 100%;
+    margin: auto;
+    background-color: #80808059;
+    border-radius: 10px;
+}
+
+.keys-container {
+    padding-top: 2vw;
+    display: flex;
+    margin: auto;
+    justify-content: center;
+}
+
+.key {
+    display: flex;
+    width: 5vw;
+    height: 5vw;
+    margin: 1%;
+    background-color: #d2d2d2;
+    border-radius: 5px;
+    text-align: center;
+    font-family: arial, helvetica;
+    align-items: center;
+    justify-content: center;
+    font-size: 2vw;
+    font-weight: 600;
+    box-shadow: 0 0 2px 1px black;
+    border-bottom: 0.5vw solid grey;
+    transition: 0.1s all;
+}
+
+.orbit-text {
+    text-align: center;
+    font-family: arial, helvetica;
+    font-size: 2vw;
+    color: white;
+}
