@@ -13,7 +13,8 @@ polyStage = function() {
   this.groupMisiles = new THREE.Group();
   this.groupExplosions = new THREE.Group();
   this.groupPowerUps = new THREE.Group();
-  this.groupLasers = new THREE.Group();
+	this.groupLasers = new THREE.Group();
+	this.groupCheckpoints = new THREE.Group();
 
   this.update;
   this.init;

@@ -20,9 +20,9 @@ class Nave extends PolyObject {
     // CONTROLS //
     this.controls = new THREE.PolyControls(STATE.container);
 
-    this.rad = 6 * STATE.radius;
-    this.minRad = 4 * STATE.radius;
-    this.maxRad = 10 * STATE.radius;
+    this.rad = this.position.length();
+    this.minRad = STATE.minRadius;
+    this.maxRad = STATE.maxRadius;
   	this.radSpeed = STATE.radius / 6;
     this.angSpeed = 0.03;
     this.rotSpeed = 0.03;
@@ -38,6 +38,14 @@ class Nave extends PolyObject {
     //////////////
   }
 
+  blockKeys(keys) {
+    this.controls.blockKeys(keys);
+  }
+
+  unblockKeys(keys) {
+    this.controls.unblockKeys(keys);
+  }
+  
   // Colisiones TODO
   onCollide(who) {
     if(who.isAcid)

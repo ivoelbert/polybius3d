@@ -1,6 +1,8 @@
 STATE = {};
 
 STATE.radius = 50;
+STATE.minRadius = 4 * STATE.radius;
+STATE.maxRadius = 10 * STATE.radius;
 
 STATE.MARGIN = 0;
 STATE.SCREEN_HEIGHT = window.innerHeight - STATE.MARGIN * 2;

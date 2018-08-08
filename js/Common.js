@@ -21,7 +21,6 @@ COMMON.randBetween = function(a, b) {
   return THREE.Math.mapLinear(Math.random(), 0, 1, a, b);
 }
 
-
 // TIRITO
 let tiritoGeometry = new THREE.SphereBufferGeometry(1, 5, 5);
 let tiritoMaterial = new THREE.MeshBasicMaterial({
@@ -216,6 +215,33 @@ COMMON.createExplosion = function( stage, pos, size, frags, speed ) {
     stage.groupExplosions.add( nFrag );
   }
 
+}
+
+
+// TIRITO
+let checkpointGeometry = new THREE.SphereBufferGeometry(1, 10, 10);
+let checkpointMaterial = new THREE.MeshBasicMaterial({
+	 wireframe: true,
+	 color: 0xffffff
+});
+COMMON.checkpointMesh = new THREE.Mesh( checkpointGeometry, checkpointMaterial );
+
+COMMON.createCheckpoint = function( stage, pos, size, picked ) {
+	COMMON.createExplosion( stage, pos, size, 6, 2 );
+
+	let checkpoint = new Checkpoint( stage, pos, size, picked );
+	checkpoint.addToScene( stage.scene );
+	stage.groupCheckpoints.add( checkpoint );
+}
+
+// Shoots from the vector -from- towards the center
+COMMON.shootTirito = function( stage, from ) {
+	let vel = from.clone();
+	vel.normalize().multiplyScalar(-STATE.radius * 0.5);
+	let tirito = new Tirito(stage, from, STATE.radius * 0.1, vel);
+	tirito.addToScene( stage.scene );
+	stage.groupTiritos.add(tirito);
+	STATE.polybiusAudio.shoot(stage.STATE.acidAmp || 0);
 }
 
 

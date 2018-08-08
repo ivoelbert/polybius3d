@@ -22,6 +22,7 @@ stageTutorial.init = function() {
   COLLIDER.addRegla(stageTutorial.groupNaves, stageTutorial.groupMisiles);
   COLLIDER.addRegla(stageTutorial.groupNaves, stageTutorial.groupAsteroids);
   COLLIDER.addRegla(stageTutorial.groupTiritos, stageTutorial.groupAsteroids);
+  COLLIDER.addRegla(stageTutorial.groupNaves, stageTutorial.groupCheckpoints);
 
   // Stars
   COMMON.createStars( stageTutorial.scene );
@@ -84,9 +85,13 @@ stageTutorial.init = function() {
   COMMON.showElement("wasd-rules", 500);
   
   stageTutorial.STATE.GUIElement = "wasd-rules";
+  stageTutorial.STATE.loweredWASD = false;
+  stageTutorial.STATE.loweredIK = false;
 
-  document.addEventListener("keydown", event => stageTutorial.pressKey(event.key));
-  document.addEventListener("keyup", event => stageTutorial.releaseKey(event.key));
+  document.addEventListener("keydown", stageTutorial.pressKey);
+  document.addEventListener("keyup", stageTutorial.releaseKey);
+
+  stageTutorial.groupNaves.children[0].blockKeys("wasdijkl");
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -120,34 +125,55 @@ stageTutorial.update = function( delta ) {
 ////////////////////////////////////////////////////////////////////////////////
 // GUI
 ////////////////////////////////////////////////////////////////////////////////
-stageTutorial.pressKey = function(which) {
-  
-  let loweredWASD = false;
-  let loweredIK = false;
+stageTutorial.pressKey = function(event) {
+  let which = event.key;
 
   let lowerWASD = function() {
-    loweredWASD = true;
+    stageTutorial.STATE.loweredWASD = true;
+    stageTutorial.groupNaves.children[0].unblockKeys("wasd");
+
     $("#wasd-rules").css("transform", "scale(0.6)");
     $("#wasd-rules").css("top", "calc(80% - 15vh)");
 
-    setTimeout(function() {
-      COMMON.hideElement("wasd-rules", 500, function() {
-        stageTutorial.STATE.GUIElement = "ik-rules";
-        COMMON.showElement("ik-rules", 500);
+    let navePos = stageTutorial.groupNaves.children[0].position.clone();
+    navePos.negate();
+
+    COMMON.createCheckpoint(stageTutorial, navePos, STATE.radius, function() {
+      let naveRad = stageTutorial.groupNaves.children[0].position.length();
+      let upVector = stageTutorial.groupNaves.children[0].up.clone();
+      upVector.setLength(naveRad);
+
+      COMMON.createCheckpoint(stageTutorial, upVector, STATE.radius, function() {
+        COMMON.hideElement("wasd-rules", 500, function() {
+          stageTutorial.STATE.GUIElement = "ik-rules";
+          COMMON.showElement("ik-rules", 500);
+        });
       });
-    }, 3000);
+    });
   }
 
+  
   let lowerIK = function() {
-    loweredIK = true;
+    stageTutorial.groupNaves.children[0].unblockKeys("ik");
+    stageTutorial.STATE.loweredIK = true;
     $("#ik-rules").css("transform", "scale(0.6)");
     $("#ik-rules").css("top", "calc(80% - 15vh)");
 
-    setTimeout(function() {
-      COMMON.hideElement("ik-rules", 500, function() {
-        stageTutorial.STATE.GUIElement = "no-rules";
+    let navePos = stageTutorial.groupNaves.children[0].position.clone();
+    navePos.setLength( STATE.maxRadius );
+    navePos.negate();
+
+    COMMON.createCheckpoint(stageTutorial, navePos, STATE.radius, function() {
+      let newPos = stageTutorial.groupNaves.children[0].position.clone();
+      newPos.negate();
+      newPos.setLength( STATE.minRadius );
+
+      COMMON.createCheckpoint(stageTutorial, newPos, STATE.radius, function() {
+        COMMON.hideElement("ik-rules", 500, function() {
+          stageTutorial.STATE.GUIElement = "no-rules";
+        });
       });
-    }, 3000);
+    });
   }
 
   let keys = {};
@@ -158,7 +184,7 @@ stageTutorial.pressKey = function(which) {
         $(".wasd-rules .key")[keys[which]].style["border-bottom"] = "0.2vw solid grey";
         $(".wasd-rules .key")[keys[which]].style["margin"] = "calc(1% + 0.3vw) 1% 1% 1%"
         
-        if(!loweredWASD)
+        if(!stageTutorial.STATE.loweredWASD)
           lowerWASD();
       }
       break;
@@ -169,14 +195,15 @@ stageTutorial.pressKey = function(which) {
         $(".ik-rules .key")[keys[which]].style["border-bottom"] = "0.2vw solid grey";
         $(".ik-rules .key")[keys[which]].style["margin"] = "calc(1% + 0.3vw) 1% 1% 1%"
 
-        if(!loweredIK)
+        if(!stageTutorial.STATE.loweredIK)
           lowerIK();
       }
       break;
   }
 }
 
-stageTutorial.releaseKey = function(which) {
+stageTutorial.releaseKey = function(event) {
+  let which = event.key;
 
   let keys = {};
   switch(stageTutorial.STATE.GUIElement) {

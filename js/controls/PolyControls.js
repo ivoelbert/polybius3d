@@ -3,6 +3,7 @@
  */
 
 THREE.PolyControls = function (domelem) {
+	this.blockedKeys = "";
 
 	this.domElement = domelem;
 	this.domElement.setAttribute( 'tabindex', - 1 );
@@ -17,6 +18,17 @@ THREE.PolyControls = function (domelem) {
 										 rollLeft: 0,
 										 rollRight: 0 };
 
+	this.blockKeys = function ( keys ) {
+		this.blockedKeys += keys;
+	}
+
+	this.unblockKeys = function ( keys ) {
+		for(let i = 0; i < keys.length; i++) {
+			let regExp = new RegExp(keys.charAt(i), "g");
+			this.blockedKeys = this.blockedKeys.replace(regExp, "");
+		}
+	}
+
 	this.handleEvent = function ( event ) {
 
 		if ( typeof this[ event.type ] == 'function' ) {
@@ -30,9 +42,11 @@ THREE.PolyControls = function (domelem) {
 	this.keydown = function( event ) {
 
 		if ( event.altKey ) {
-
 			return;
+		}
 
+		if ( this.blockedKeys.indexOf(event.key) != -1 ) {
+			return;
 		}
 
 		//event.preventDefault();
