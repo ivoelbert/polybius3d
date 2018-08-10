@@ -6,9 +6,9 @@ class Nave extends PolyObject {
     this.size = size;
     this.matrix = new THREE.Matrix4();
 
-    let selectedMesh = STATE.selectedMesh;
+    let selectedMesh = 0;
 
-    this.mesh = COMMON.naveMesh[selectedMesh === undefined ? 0 : selectedMesh];
+    this.mesh = COMMON.naveMesh[selectedMesh];
     this.mesh.position.copy(this.position);
 
     this.mesh.scale.multiplyScalar(this.size * COMMON.getNaveScale(selectedMesh));
