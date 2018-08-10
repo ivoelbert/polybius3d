@@ -158,14 +158,12 @@ loader.load(
 		COMMON.loadNaves();
 	},
 
-	// called when loading is in progresses
-	function ( xhr ) {
-		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-	},
+	// when loading
+	function ( loaded ) {},
 
 	// called when loading has errors
 	function ( error ) {
-		console.log( 'An error happened' );
+		console.log( error );
 	}
 );
 
@@ -291,11 +289,8 @@ COMMON.loadNaves = function() {
 					loadNextNave();
 				},
 
-				// called when loading is in progresses
-				function ( xhr ) {
-					loadedPercent = (loadedNaves + 1) * (100 / naves) + (( xhr.loaded / xhr.total * 100 ) / naves);
-					loadTo(loadedPercent);
-				},
+				// when loading
+				function ( loaded ) {},
 
 				// called when loading has errors
 				function ( error ) {
@@ -387,16 +382,14 @@ loader.load(
 	function ( object ) {
 		COMMON.powerUpMesh = object;
 	},
-	// called when loading is in progresses
-	function ( xhr ) {
 
-		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-	},
+	// when loading
+	function ( loaded ) {},
+	
 	// called when loading has errors
 	function ( error ) {
 
-		console.log( 'An error happened' );
+		console.log( error );
 
 	}
 );
@@ -439,16 +432,14 @@ loader.load(
 		let laserGeometry = object.children[0].geometry;
 		COMMON.laserMesh = new THREE.Mesh(laserGeometry, laserMaterial);
 	},
-	// called when loading is in progresses
-	function ( xhr ) {
 
-		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-	},
+	// when loading
+	function ( loaded ) {},
+	
 	// called when loading has errors
 	function ( error ) {
 
-		console.log( 'An error happened' );
+		console.log( error );
 
 	}
 );
@@ -522,14 +513,10 @@ COMMON.changeToStage = function( which ) {
 //////////////// CSS ////////////////
 /////////////////////////////////////
 
-// Update loading bar to show it is -percent-% finished
-function loadTo(percent) {
-	document.getElementById("loaded").style.width = percent + "%";
-}
-
 // When all objects load, update some css and call init() which starts each page three scene.
 function endLoading() {
 	setTimeout( () => {
+		stopLoading();
 		COMMON.hideElement("loading-container", 0, init);
 	}, 1000 );
 }
