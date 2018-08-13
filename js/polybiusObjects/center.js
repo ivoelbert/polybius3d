@@ -103,8 +103,9 @@ class Center extends PolyObject {
   }
 
   removeCenterAsteroids() {
-    for(let i = 0; i < this.asteroids.length; i++) {
-      this.parentStage.removeFromScene( this.asteroids.children[i] );
+    let asteroidsCount = this.asteroids.children.length
+    for(let i = 0; i < asteroidsCount; i++) {
+      this.parentStage.removeFromScene( this.asteroids.children[0] );
     }
 
     this.indestructableShield = true;

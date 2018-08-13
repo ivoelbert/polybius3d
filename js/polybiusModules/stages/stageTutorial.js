@@ -44,6 +44,7 @@ stageTutorial.init = function() {
     center.addToScene( stageTutorial.scene );
     stageTutorial.groupCenters.add(center);
     center.addShieldToGroup( stageTutorial.groupCenters );
+    stageTutorial.groupCenters.children[0].removeCenterAsteroids();
 
 
     ///////////////////////////// POSTPROCESSING /////////////////////////////////
