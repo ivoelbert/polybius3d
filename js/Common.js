@@ -202,8 +202,8 @@ function createPowerUp(pos, sz) {
 // Laser
 
 let laserMaterial = new THREE.MeshBasicMaterial({
-color: 0xffb6b5,
-wireframe: true
+    color: 0xffb6b5,
+    wireframe: true
 });
 
 loader.load(
@@ -246,6 +246,7 @@ let tiritoMaterial = new THREE.MeshBasicMaterial({
     wireframe: true,
     color: 0xffffff
 });
+
 COMMON.tiritoMesh = new THREE.Mesh( tiritoGeometry, tiritoMaterial );
 
 // Shoots from the vector -from- towards the center
