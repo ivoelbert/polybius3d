@@ -24,7 +24,7 @@ var loader = new THREE.OBJLoader();
 
 COMMON.loadObject = function(url) {
     return new Promise( (resolve, reject) => {
-        loader.load(url, resolve, loaded => {}, reject);
+        loader.load(url, resolve, () => {}, reject);
     });
 };
 
