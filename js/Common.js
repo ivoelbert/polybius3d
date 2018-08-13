@@ -434,7 +434,7 @@ COMMON.createExplosion = function( stage, pos, size, frags, speed ) {
 let checkpointGeometry = new THREE.SphereBufferGeometry(1, 10, 10);
 let checkpointMaterial = new THREE.MeshBasicMaterial({
     wireframe: true,
-    color: 0xffffff
+    color: 0xa1f731
 });
 COMMON.checkpointMesh = new THREE.Mesh( checkpointGeometry, checkpointMaterial );
 

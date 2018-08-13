@@ -1,31 +1,52 @@
-.ik-rules {
+
+.color-dash {
     position: absolute;
-    width: 100%;
-    height: 30vh;
-    top: calc(50% - 15vh);
-    transform: scale(1.5);
-    transition: transform 0.5s, top 0.5s;
+    display: none;
+    width: 100vw;
+    height: 100vh;
 }
 
-.ik-rules .rules-container {
-    width: 30vw;
+.pick-checkpoint {
+    position: absolute;
+    width: 100%;
+    height: 10vh;
+    top: -10vh;
+    transition: top 0.5s;
+}
+
+.pick-checkpoint .rules-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
     height: 100%;
     margin: auto;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
     background-color: #1b1b1bf0;
-    border-radius: 10px;
 }
 
-.wasd-rules {
+.pick-checkpoint p {
+    font-family: arial, helvetica;
+    font-size: 2vw;
+    color: white;
+    margin: 0;
+}
+
+.pick-checkpoint b {
+    color: #a1f731;
+}
+
+.rules {
     position: absolute;
     width: 100%;
-    height: 30vh;
     top: calc(50% - 15vh);
     transform: scale(1.5);
     transition: transform 0.5s, top 0.5s;
 }
-.wasd-rules .rules-container {
+
+.rules-container {
     width: 30vw;
-    height: 100%;
     margin: auto;
     background-color: #1b1b1bf0;
     border-radius: 10px;
@@ -57,9 +78,14 @@
     transition: all 0.1s;
 }
 
+.long-key {
+    width: 20vw;
+}
+
 .orbit-text {
     text-align: center;
     font-family: arial, helvetica;
     font-size: 2vw;
     color: white;
+    padding-bottom: 0.5em;
 }

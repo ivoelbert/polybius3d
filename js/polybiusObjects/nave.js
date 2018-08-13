@@ -51,7 +51,7 @@ class Nave extends PolyObject {
         if(who.isAcid)
             this.parentStage.naveCollideAcid();
         else
-            this.parentStage.naveCollide();
+            this.parentStage.naveCollide(who);
     }
 
     updateControls()

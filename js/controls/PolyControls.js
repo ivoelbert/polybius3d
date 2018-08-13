@@ -8,15 +8,17 @@ THREE.PolyControls = function (domelem) {
 	this.domElement = domelem;
 	this.domElement.setAttribute( 'tabindex', - 1 );
 
-	this.moveState = { shoot: 0,
-										 up: 0,
-										 down: 0,
-										 left: 0,
-										 right: 0,
-										 forward: 0,
-										 back: 0,
-										 rollLeft: 0,
-										 rollRight: 0 };
+	this.moveState = { 
+		shoot: 0,
+		up: 0,
+		down: 0,
+		left: 0,
+		right: 0,
+		forward: 0,
+		back: 0,
+		rollLeft: 0,
+		rollRight: 0
+	};
 
 	this.blockKeys = function ( keys ) {
 		this.blockedKeys += keys;

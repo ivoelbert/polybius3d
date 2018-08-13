@@ -5,6 +5,7 @@ class Checkpoint extends PolyObject {
         this.position.copy(pos);
         this.size = size;
 
+        this.isCheckpoint = true;
         this.picked = picked;
   
         this.setHp(10);
