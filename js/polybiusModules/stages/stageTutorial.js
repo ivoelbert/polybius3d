@@ -130,13 +130,17 @@ stageTutorial.update = function( delta ) {
 
 stageTutorial.checkpointMessageTimeout = -1;
 
-stageTutorial.showPickCheckpointMessage = function(time) {
+stageTutorial.showPickCheckpointMessage = function() {
     clearTimeout(stageTutorial.checkpointMessageTimeout);
     $("#pick-checkpoint").css("top", "0");
     
     stageTutorial.checkpointMessageTimeout = setTimeout(function() {
         $("#pick-checkpoint").css("top", "-10vh");
     }, 1500);
+}
+
+stageTutorial.showShootCenterMessage = function() {
+    $("#shoot-center").css("top", "0");
 }
 
 stageTutorial.colorDash = function(color, time) {
@@ -201,6 +205,8 @@ stageTutorial.pressKey = function(event) {
 
     let lowerSPACE = function() {
         stageTutorial.groupNaves.children[0].unblockKeys(" ");
+        stageTutorial.showShootCenterMessage();
+
         $("#space-rules").css("transform", "scale(0.6)");
         $("#space-rules").css("top", "calc(80% - 15vh)");
     };

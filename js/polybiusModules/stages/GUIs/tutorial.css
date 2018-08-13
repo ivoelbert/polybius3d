@@ -6,6 +6,37 @@
     height: 100vh;
 }
 
+.shoot-center {
+    position: absolute;
+    width: 100%;
+    height: 10vh;
+    top: -10vh;
+    transition: top 0.5s;
+}
+
+.shoot-center .rules-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 100%;
+    margin: auto;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: #1b1b1bf0;
+}
+
+.shoot-center p {
+    font-family: arial, helvetica;
+    font-size: 2vw;
+    color: white;
+    margin: 0;
+}
+
+.shoot-center b {
+    color: #ff3f3f;
+}
+
 .pick-checkpoint {
     position: absolute;
     width: 100%;
