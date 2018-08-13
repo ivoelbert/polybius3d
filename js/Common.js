@@ -463,8 +463,8 @@ COMMON.hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
 
 COMMON.changeToStage = function( which ) {
     $("#gui-style").remove();
-    $("#gui-container").load("/js/polybiusModules/stages/GUIs/" + which + ".html", () => {
-        $("head").append($("<link id='gui-style' rel='stylesheet' href='/js/polybiusModules/stages/GUIs/" + which + ".css' type='text/css' media='screen' />"));
+    $("#gui-container").load("/polybius3d/js/polybiusModules/stages/GUIs/" + which + ".html", () => {
+        $("head").append($("<link id='gui-style' rel='stylesheet' href='/polybius3d/js/polybiusModules/stages/GUIs/" + which + ".css' type='text/css' media='screen' />"));
 
         STATE.currentStage = which;
         STAGE.stages[STATE.currentStage].init();
