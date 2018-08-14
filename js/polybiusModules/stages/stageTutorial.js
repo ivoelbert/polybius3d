@@ -129,19 +129,12 @@ stageTutorial.update = function( delta ) {
 // GUI
 ////////////////////////////////////////////////////////////////////////////////
 
-stageTutorial.checkpointMessageTimeout = -1;
-
-stageTutorial.showPickCheckpointMessage = function() {
-    clearTimeout(stageTutorial.checkpointMessageTimeout);
-    $("#pick-checkpoint").css("top", "0");
-    
-    stageTutorial.checkpointMessageTimeout = setTimeout(function() {
-        $("#pick-checkpoint").css("top", "-10vh");
-    }, 1500);
+stageTutorial.showTopMessage = function(which) {
+    $("#" + which).css("top", "0");   
 }
 
-stageTutorial.showShootCenterMessage = function() {
-    $("#shoot-center").css("top", "0");
+stageTutorial.hideTopMessage = function(which) {
+    $("#" + which).css("top", "-10vh");
 }
 
 stageTutorial.colorDash = function(color, time) {
@@ -159,17 +152,17 @@ stageTutorial.pressKey = function(event) {
         $("#wasd-rules").css("transform", "scale(0.6)");
         $("#wasd-rules").css("top", "calc(80% - 15vh)");
 
-        stageTutorial.showPickCheckpointMessage();
         let navePos = stageTutorial.groupNaves.children[0].position.clone();
         navePos.negate();
         
+        stageTutorial.showTopMessage("pick-checkpoint");
         COMMON.createCheckpoint(stageTutorial, navePos, STATE.radius, function() {
-            stageTutorial.showPickCheckpointMessage();
             let naveRad = stageTutorial.groupNaves.children[0].position.length();
             let upVector = stageTutorial.groupNaves.children[0].up.clone();
             upVector.setLength(naveRad);
 
             COMMON.createCheckpoint(stageTutorial, upVector, STATE.radius, function() {
+                stageTutorial.hideTopMessage("pick-checkpoint");
                 COMMON.hideElement("wasd-rules", 500, function() {
                     stageTutorial.STATE.GUIElement = "ik-rules";
                     COMMON.showElement("ik-rules", 500);
@@ -178,24 +171,23 @@ stageTutorial.pressKey = function(event) {
         });
     };
 
-    
     let lowerIK = function() {
         stageTutorial.groupNaves.children[0].unblockKeys("ik");
         $("#ik-rules").css("transform", "scale(0.6)");
         $("#ik-rules").css("top", "calc(80% - 15vh)");
 
-        stageTutorial.showPickCheckpointMessage();
         let navePos = stageTutorial.groupNaves.children[0].position.clone();
         navePos.setLength( STATE.maxRadius );
         navePos.negate();
 
+        stageTutorial.showTopMessage("pick-checkpoint");
         COMMON.createCheckpoint(stageTutorial, navePos, STATE.radius, function() {
-            stageTutorial.showPickCheckpointMessage();
             let newPos = stageTutorial.groupNaves.children[0].position.clone();
             newPos.negate();
             newPos.setLength( STATE.minRadius );
 
             COMMON.createCheckpoint(stageTutorial, newPos, STATE.radius, function() {
+                stageTutorial.hideTopMessage("pick-checkpoint");
                 COMMON.hideElement("ik-rules", 500, function() {
                     stageTutorial.STATE.GUIElement = "space-rules";
                     COMMON.showElement("space-rules", 500);
@@ -206,7 +198,7 @@ stageTutorial.pressKey = function(event) {
 
     let lowerSPACE = function() {
         stageTutorial.groupNaves.children[0].unblockKeys(" ");
-        stageTutorial.showShootCenterMessage();
+        stageTutorial.showTopMessage("shoot-center");
 
         $("#space-rules").css("transform", "scale(0.6)");
         $("#space-rules").css("top", "calc(80% - 15vh)");
