@@ -198,11 +198,31 @@ stageTutorial.pressKey = function(event) {
 
     let lowerSPACE = function() {
         stageTutorial.groupNaves.children[0].unblockKeys(" ");
-        stageTutorial.showTopMessage("shoot-center");
-
         $("#space-rules").css("transform", "scale(0.6)");
         $("#space-rules").css("top", "calc(80% - 15vh)");
+
+        stageTutorial.showTopMessage("shoot-asteroid");
+        createAsteroidsUntilDestroyed();        
     };
+
+    let createAsteroidsUntilDestroyed = function () {
+        let navePos = stageTutorial.groupNaves.children[0].position.clone();
+        navePos.setLength( STATE.radius * 2 );
+
+        COMMON.createAsteroidAt(stageTutorial, navePos);
+        stageTutorial.groupAsteroids.children[0].setDeadCallback( function(who) {
+            if(who.isTirito) {
+                stageTutorial.hideTopMessage("shoot-asteroid");
+                COMMON.hideElement("space-rules", 500);
+                setTimeout(function() {
+                    stageTutorial.showTopMessage("shoot-center");
+                }, 1000);
+            }
+            else {
+                createAsteroidsUntilDestroyed();
+            }
+        });
+    }
 
     let keys = {};
     switch(stageTutorial.STATE.GUIElement) {

@@ -5,6 +5,8 @@ class Tirito extends PolyObject {
     this.position.copy(pos);
     this.speed = vel.clone();
 
+    this.isTirito = true;
+
     this.setPower(100);
 
     this.mesh = COMMON.tiritoMesh.clone();

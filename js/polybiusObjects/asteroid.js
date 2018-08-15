@@ -38,7 +38,7 @@ class Asteroid extends PolyObject {
 
   // UPDATE orbita
   update ( delta ) {
-      this.position.applyAxisAngle(this.rot, this.angVel * delta);﻿
+      this.position.applyAxisAngle(this.rot, this.angVel * delta);
 
       let para = this.position.clone();
       para.normalize().multiplyScalar(this.radVel);
@@ -54,8 +54,15 @@ class Asteroid extends PolyObject {
           let explosionPos = this.position.clone();
           COMMON.createExplosion(this.parentStage, explosionPos, this.size , 4);
           this.parentStage.removeFromScene(this);
+
+          if(typeof(this.deadCallback) == "function")
+            this.deadCallback({});
       }
   };
+
+  setDeadCallback(callback) {
+    this.deadCallback = callback;
+  }
 
   // colisiones
   onCollide(who) {
@@ -63,6 +70,8 @@ class Asteroid extends PolyObject {
     this.hp -= hit;
     if(this.hp <= 0) {
       this.parentStage.removeFromScene(this);
+      if(typeof(this.deadCallback) == "function")
+        this.deadCallback(who);
     } else {
       let geom = Math.floor(THREE.Math.mapLinear(this.hp, 300, 0, 0, 3));
       this.mesh.geometry = COMMON.asteroidGeometry[geom];

@@ -6,7 +6,7 @@
     height: 100vh;
 }
 
-.shoot-center {
+.top-message {
     position: absolute;
     width: 100%;
     height: 10vh;
@@ -14,7 +14,7 @@
     transition: top 0.5s;
 }
 
-.shoot-center .rules-container {
+.top-message .rules-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -26,46 +26,23 @@
     background-color: #1b1b1bf0;
 }
 
-.shoot-center p {
+.top-message p {
     font-family: arial, helvetica;
     font-size: 2vw;
     color: white;
     margin: 0;
 }
 
-.shoot-center b {
+#shoot-center b {
     color: #ff3f3f;
 }
 
-.pick-checkpoint {
-    position: absolute;
-    width: 100%;
-    height: 10vh;
-    top: -10vh;
-    transition: top 0.5s;
+#shoot-asteroid b {
+    color: #ffff00;
 }
 
-.pick-checkpoint .rules-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60%;
-    height: 100%;
-    margin: auto;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    background-color: #1b1b1bf0;
-}
-
-.pick-checkpoint p {
-    font-family: arial, helvetica;
-    font-size: 2vw;
-    color: white;
-    margin: 0;
-}
-
-.pick-checkpoint b {
-    color: #a1f731;
+#pick-checkpoint b {
+    color: #3ef730;
 }
 
 .rules {
