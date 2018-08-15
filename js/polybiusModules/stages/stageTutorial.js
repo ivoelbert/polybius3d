@@ -172,7 +172,7 @@ stageTutorial.pressKey = function(event) {
     };
 
     let lowerIK = function() {
-        stageTutorial.groupNaves.children[0].unblockKeys("ik");
+        stageTutorial.groupNaves.children[0].unblockKeys("ijkl");
         $("#ik-rules").css("transform", "scale(0.6)");
         $("#ik-rules").css("top", "calc(80% - 15vh)");
 
@@ -253,7 +253,7 @@ stageTutorial.pressKey = function(event) {
             break;
         
         case "space-rules":
-            keys = {' ': 0}
+            keys = {' ': 0};
             if(keys[which] !== undefined) {
                 $("#space-rules .key")[keys[which]].style["border-bottom"] = "0.2vw solid grey";
                 $("#space-rules .key")[keys[which]].style["margin"] = "calc(1% + 0.3vw) 1% 1% 1%"

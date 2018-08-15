@@ -85,9 +85,10 @@ class Nave extends PolyObject {
         var yrot = this.leftRight * this.angSpeed;
         var zrot = this.rollLeftRollRight * this.rotSpeed;
 
-        var xAxis = new THREE.Vector3(1, 0, 0).applyMatrix4(this.matrix);
-        var yAxis = new THREE.Vector3(0, 1, 0).applyMatrix4(this.matrix);
-        var zAxis = new THREE.Vector3(0, 0, 1).applyMatrix4(this.matrix);
+        var xAxis = new THREE.Vector3();
+        var yAxis = new THREE.Vector3();
+        var zAxis = new THREE.Vector3();
+        this.matrix.extractBasis(xAxis, yAxis, zAxis);
 
         var rxmatrix = new THREE.Matrix4().makeRotationAxis(xAxis, xrot);
         var rymatrix = new THREE.Matrix4().makeRotationAxis(yAxis, yrot);
