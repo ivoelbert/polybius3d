@@ -17,12 +17,12 @@ class Asteroid extends PolyObject {
 
         //Calculo vector para orbitar
         if(rotationVector == undefined) {
-            let orb = new THREE.Vector3(Math.random(), Math.random(), Math.random());
-            orb.normalize().multiplyScalar(this.radio);
+            let orb = COMMON.randomUnitVector();
+            orb.multiplyScalar(this.radio);
             this.rot.crossVectors(pos, orb);
             while(this.rot.length() < 0.0001) {
-                orb = new THREE.Vector3(Math.random(), Math.random(), Math.random());
-                orb.normalize().multiplyScalar(this.radio);
+                let orb = COMMON.randomUnitVector();
+                orb.multiplyScalar(this.radio);
                 this.rot.crossVectors(pos, orb);
             }
         } else {
@@ -32,7 +32,7 @@ class Asteroid extends PolyObject {
 
         // geometria, material y mesh
         this.mesh = new THREE.Mesh(COMMON.asteroidGeometry[0], COMMON.asteroidMaterial);
-        this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+        this.mesh.position.copy(this.position);
         this.mesh.scale.multiplyScalar(this.size);
     };
 
@@ -44,7 +44,7 @@ class Asteroid extends PolyObject {
         para.normalize().multiplyScalar(this.radVel);
         this.position.add(para);
 
-        this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+        this.mesh.position.copy(this.position);
 
         this.updateHitbox(this.position, this.size);
 
