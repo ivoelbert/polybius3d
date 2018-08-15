@@ -1,31 +1,31 @@
 class Tirito extends PolyObject {
-  constructor(parent, pos, size, vel) {
-    super(parent, pos, size);
-    this.size = size;
-    this.position.copy(pos);
-    this.speed = vel.clone();
+    constructor(parent, pos, size, vel) {
+        super(parent, pos, size);
+        this.size = size;
+        this.position.copy(pos);
+        this.speed = vel.clone();
 
-    this.isTirito = true;
+        this.isTirito = true;
 
-    this.setPower(100);
+        this.setPower(100);
 
-    this.mesh = COMMON.tiritoMesh.clone();
-    this.mesh.scale.multiplyScalar( this.size );
-  }
+        this.mesh = COMMON.tiritoMesh.clone();
+        this.mesh.scale.multiplyScalar( this.size );
+    }
 
-  update( delta ) {
-    this.position.add(this.speed);
-    this.updateHitbox(this.position, this.size);
+    update( delta ) {
+        this.position.add(this.speed);
+        this.updateHitbox(this.position, this.size);
 
-    this.mesh.position.copy(this.position);
-  }
+        this.mesh.position.copy(this.position);
+    }
 
-  addToScene( scene ) {
-    scene.add(this.mesh);
-  }
-  onCollide(who) {
-    let explosionPos = this.position.clone();
-    COMMON.createExplosion(this.parentStage, explosionPos, this.size , 16);
-    this.parentStage.removeFromScene(this);
-  }
+    addToScene( scene ) {
+        scene.add(this.mesh);
+    }
+    onCollide(who) {
+        let explosionPos = this.position.clone();
+        COMMON.createExplosion(this.parentStage, explosionPos, this.size , 16);
+        this.parentStage.removeFromScene(this);
+    }
 }
