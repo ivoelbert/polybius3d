@@ -15,7 +15,7 @@ stageTutorial.init = function() {
     stageTutorial.scene = new THREE.Scene();
     stageTutorial.scene.fog = new THREE.FogExp2( 0x000000, 0.000025 );
 
-    var light = new THREE.AmbientLight( 0xffffff ); // soft white light
+    var light = new THREE.AmbientLight( 0xffffff );
     stageTutorial.scene.add( light );
 
     // Set up collider
