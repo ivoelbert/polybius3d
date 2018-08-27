@@ -21,11 +21,33 @@ COMMON.randBetween = function(a, b) {
 
 // .obj loader
 var loader = new THREE.OBJLoader();
+var mtlLoader = new THREE.MTLLoader();
 
-COMMON.loadObject = function(url) {
-    return new Promise( (resolve, reject) => {
-        loader.load(url, resolve, () => {}, reject);
-    });
+loader.setPath("models/");
+mtlLoader.setPath("models/");
+
+COMMON.loadObject = function(url, materialUrl) {
+    if(materialUrl === undefined)
+    {
+        return new Promise( (resolve, reject) => {
+            loader.load(url, resolve, () => {}, reject);
+        });
+    }
+    else
+    {
+        return new Promise( (resolve, reject) => {
+            mtlLoader.load(materialUrl, function(materials) {
+                materials.preload();
+
+                let localLoader = new THREE.OBJLoader()
+                localLoader.setMaterials( materials )
+                localLoader.setPath( 'models/' )
+                localLoader.load( url, resolve, () => {}, reject );
+            },
+            () => {},
+            reject);
+        });
+    }
 };
 
 // NAVES
@@ -47,7 +69,7 @@ COMMON.loadNaves = function() {
     ];
 
     let promises = navesToLoad.map( name => { 
-        return COMMON.loadObject('models/' + name);
+        return COMMON.loadObject(name);
     });
 
     Promise.all(promises).then(
@@ -134,7 +156,7 @@ COMMON.pillMesh;
 // load pill mesh, when finished load naves
 loader.load(
     // resource URL
-    'models/acidpill.obj',
+    'acidpill.obj',
 
     // called when resource is loaded
     function ( object ) {
@@ -174,7 +196,7 @@ COMMON.powerUpMesh;
 
 loader.load(
     // resource URL
-    'models/powerUp.obj',
+    'powerUp.obj',
     // called when resource is loaded
     function ( object ) {
         COMMON.powerUpMesh = object;
@@ -208,7 +230,7 @@ let laserMaterial = new THREE.MeshBasicMaterial({
 
 loader.load(
     // resource URL
-    'models/laser.obj',
+    'laser.obj',
     // called when resource is loaded
     function ( object ) {
         let laserGeometry = object.children[0].geometry;
@@ -349,6 +371,12 @@ COMMON.createStars = function(scene) {
     }
 };
 
+// CENTER
+
+COMMON.centerMesh;
+COMMON.loadObject('planet1.obj', 'planet1.mtl').then(function(obj) {
+    COMMON.centerMesh = obj.clone();
+});
 
 // CENTER ASTEROIDS
 

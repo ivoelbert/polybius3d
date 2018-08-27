@@ -15,6 +15,9 @@ stageTutorial.init = function() {
     stageTutorial.scene = new THREE.Scene();
     stageTutorial.scene.fog = new THREE.FogExp2( 0x000000, 0.000025 );
 
+    var light = new THREE.AmbientLight( 0xffffff ); // soft white light
+    stageTutorial.scene.add( light );
+
     // Set up collider
     COLLIDER.resetReglas();
     COLLIDER.addRegla(stageTutorial.groupTiritos, stageTutorial.groupCenters);
