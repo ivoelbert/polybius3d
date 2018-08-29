@@ -18,6 +18,14 @@ stageTutorial.init = function() {
     var light = new THREE.AmbientLight( 0xffffff );
     stageTutorial.scene.add( light );
 
+    var dirLight1 = new THREE.DirectionalLight( 0xffffff, 1 );
+    stageTutorial.scene.add( dirLight1 );
+    dirLight1.position.set( STATE.radius, STATE.radius, STATE.radius );
+
+    var dirLight2 = new THREE.DirectionalLight( 0xffffff, 1 );
+    stageTutorial.scene.add( dirLight2 );
+    dirLight2.position.set( -STATE.radius, -STATE.radius, -STATE.radius );
+
     // Set up collider
     COLLIDER.resetReglas();
     COLLIDER.addRegla(stageTutorial.groupTiritos, stageTutorial.groupCenters);

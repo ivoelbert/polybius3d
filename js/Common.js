@@ -374,7 +374,7 @@ COMMON.createStars = function(scene) {
 // CENTER
 
 COMMON.centerMesh;
-COMMON.loadObject('planet1.obj', 'planet1.mtl').then(function(obj) {
+COMMON.loadObject('planet2.obj', 'planet2.mtl').then(function(obj) {
     COMMON.centerMesh = obj.clone();
 });
 

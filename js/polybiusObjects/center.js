@@ -10,7 +10,7 @@ class Center extends PolyObject {
         this.t = 0;
 
         this.mesh = COMMON.centerMesh.clone();
-        this.mesh.scale.setLength(STATE.radius);
+        this.mesh.scale.setLength(this.size);
 
         this.asteroids = new THREE.Group();
         this.wAsteroids = 8; //32;
@@ -32,6 +32,9 @@ class Center extends PolyObject {
 
     update( delta ) {
         this.t += delta;
+        this.updateHitbox(this.position, this.size * 2.5);
+
+        this.mesh.rotation.y = this.t * 0.2;
 
         for(let i = 0; i < this.asteroids.children.length; i++)
         {
