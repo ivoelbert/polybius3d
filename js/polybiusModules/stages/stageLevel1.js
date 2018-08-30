@@ -19,6 +19,17 @@ stageLevel1.init = function() {
   stageLevel1.scene = new THREE.Scene();
   stageLevel1.scene.fog = new THREE.FogExp2( 0x000000, 0.000025 );
 
+  var light = new THREE.AmbientLight( 0xffffff );
+  stageLevel1.scene.add( light );
+
+  var dirLight1 = new THREE.DirectionalLight( 0xffffff, 1 );
+  stageLevel1.scene.add( dirLight1 );
+  dirLight1.position.set( STATE.radius, STATE.radius, STATE.radius );
+
+  var dirLight2 = new THREE.DirectionalLight( 0xffffff, 1 );
+  stageLevel1.scene.add( dirLight2 );
+  dirLight2.position.set( -STATE.radius, -STATE.radius, -STATE.radius );
+
   // Set up collider
   COLLIDER.resetReglas();
   COLLIDER.addRegla(stageLevel1.groupNaves, stageLevel1.groupAsteroids);
