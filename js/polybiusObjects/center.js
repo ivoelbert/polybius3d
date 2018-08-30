@@ -36,6 +36,11 @@ class Center extends PolyObject {
 
         this.mesh.rotation.y = this.t * 0.2;
 
+        let lava = this.mesh.children[0];
+        lava.scale.x = THREE.Math.mapLinear(Math.sin(this.t), -1, 1, 0.98, 1.02);
+        lava.scale.z = THREE.Math.mapLinear(-Math.sin(this.t), -1, 1, 0.98, 1.02);
+        lava.rotation.y = this.t * -0.1;
+
         for(let i = 0; i < this.asteroids.children.length; i++)
         {
             this.asteroids.children[i].update( delta );
