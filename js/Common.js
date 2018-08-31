@@ -390,15 +390,9 @@ COMMON.centerAsteroidMesh = new THREE.Mesh( centerAsteroidGeometry, centerAstero
 
 
 // ASTEROIDS
-COMMON.asteroidGeometry = [ 
-    new THREE.SphereBufferGeometry(1, 10, 10),
-    new THREE.SphereBufferGeometry(1, 6, 6),
-    new THREE.SphereBufferGeometry(1, 3, 3)
-];
-
-COMMON.asteroidMaterial = new THREE.MeshBasicMaterial({
-    color: 0xffff00,
-    wireframe: true
+COMMON.asteroidMesh;
+COMMON.loadObject('blackAsteroid.obj', 'blackAsteroid.mtl').then(function(obj) {
+    COMMON.asteroidMesh = obj.clone();
 });
 
 // Creates asteroid at position -pos-

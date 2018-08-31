@@ -31,13 +31,15 @@ class Asteroid extends PolyObject {
         this.rot.normalize();
 
         // geometria, material y mesh
-        this.mesh = new THREE.Mesh(COMMON.asteroidGeometry[0], COMMON.asteroidMaterial);
+        this.mesh = COMMON.asteroidMesh.clone();
         this.mesh.position.copy(this.position);
-        this.mesh.scale.multiplyScalar(this.size);
+        this.mesh.scale.setLength(this.size);
     };
 
     // UPDATE orbita
     update ( delta ) {
+        this.t += delta;
+
         this.position.applyAxisAngle(this.rot, this.angVel * delta);
 
         let para = this.position.clone();
@@ -45,10 +47,13 @@ class Asteroid extends PolyObject {
         this.position.add(para);
 
         this.mesh.position.copy(this.position);
+        let rotationMultiplyer = THREE.Math.mapLinear(this.hp, 300, 0, 0.3, 10);
+        this.mesh.rotation.x = this.t * rotationMultiplyer;
+        this.mesh.rotation.y = this.t * rotationMultiplyer * 0.75;
 
         this.updateHitbox(this.position, this.size);
 
-        this.t += delta;
+        
         if(this.t > this.timeToLive || this.position.length() > this.radToLive)
         {
             let explosionPos = this.position.clone();
@@ -72,9 +77,6 @@ class Asteroid extends PolyObject {
             this.parentStage.removeFromScene(this);
             if(typeof(this.deadCallback) == "function")
                 this.deadCallback(who);
-        } else {
-            let geom = Math.floor(THREE.Math.mapLinear(this.hp, 300, 0, 0, 3));
-            this.mesh.geometry = COMMON.asteroidGeometry[geom];
         }
     }
 }
