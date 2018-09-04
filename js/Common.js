@@ -388,7 +388,6 @@ let centerAsteroidMaterial = new THREE.MeshBasicMaterial({
 
 COMMON.centerAsteroidMesh = new THREE.Mesh( centerAsteroidGeometry, centerAsteroidMaterial );
 
-
 // ASTEROIDS
 COMMON.asteroidMesh;
 COMMON.loadObject('blackAsteroid.obj', 'blackAsteroid.mtl').then(function(obj) {
