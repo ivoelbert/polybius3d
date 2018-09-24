@@ -23,8 +23,6 @@ stageIndex.init = function() {
     stageIndex.scene.add( dirLight2 );
     dirLight2.position.set( -STATE.radius, -STATE.radius, -STATE.radius );
 
-    console.log("lights created")
-
     // Set up collider
     COLLIDER.resetReglas();
 
