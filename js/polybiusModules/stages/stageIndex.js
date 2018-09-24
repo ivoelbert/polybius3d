@@ -12,6 +12,17 @@ stageIndex.init = function() {
     stageIndex.scene = new THREE.Scene();
     stageIndex.scene.fog = new THREE.FogExp2(0x000000, 0.000025);
 
+    var light = new THREE.AmbientLight( 0xffffff );
+    stageIndex.scene.add( light );
+
+    var dirLight1 = new THREE.DirectionalLight( 0xffffff, 1 );
+    stageIndex.scene.add( dirLight1 );
+    dirLight1.position.set( STATE.radius, STATE.radius, STATE.radius );
+
+    var dirLight2 = new THREE.DirectionalLight( 0xffffff, 1 );
+    stageIndex.scene.add( dirLight2 );
+    dirLight2.position.set( -STATE.radius, -STATE.radius, -STATE.radius );
+
     // Set up collider
     COLLIDER.resetReglas();
 
